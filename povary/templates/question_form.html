@@ -1,0 +1,28 @@
+{% load static %}
+
+<div class="pop-up" id="pop-up1">
+    <div class="pop-title">
+        <a href="javascript:$.fancybox.close()" class="close">закрыть</a>
+        <div class="mess-img"><img src="{% static 'images/fone1.jpg' %}" alt=""></div>
+        <div class="mess-title">Задать вопрос</div>
+    </div>
+    <div class="pop-in">
+        <div class="message-form">
+            <form data-url="{% url 'ajax_send_question' id %}" id="message">
+                {% csrf_token %}
+                <div class="form-row">
+                    <label>Тема</label>
+                    <input type="text" name='title' class="input-text" />
+                </div>
+                <div class="form-row">
+                    <label>Вопрос</label>
+                    <div class="textarea-block"><textarea name='body' class="textarea"></textarea></div>
+                </div>
+                <input type="hidden" name="to_user" value="{{ recipient_id }}"/>
+                <input type="hidden" name="from_name" value="{{ author_name }}"/>
+                <input type="hidden" name="is_question" value="True"/>
+                <input type="submit" class="submit" value="Отправить"/>
+            </form>
+        </div>
+    </div>
+</div>

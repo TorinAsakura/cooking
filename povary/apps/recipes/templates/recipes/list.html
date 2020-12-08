@@ -1,0 +1,121 @@
+{% extends 'base.html' %}
+{% load thumbnail static vote_tags core_tags%}
+
+{% block extra_header %}
+{#    <script src="js/masonry.pkgd.js" type="text/javascript"></script>#}
+{% endblock extra_header %}
+
+{% block breadcrumbs %}
+    <a href="/"><img src="{% static 'images/home.png' %}" alt=""/></a> →
+    <a href="{% url 'recipe_list' %}">Рецепты</a>
+{% endblock breadcrumbs %}
+
+{% block content %}
+
+<div class="center-block">
+    {% include 'recipes/recipe_list_central_block.html' %}
+</div>
+<div class="left-block">
+    <div class="filter-block">
+        <form>
+            <div class="title">
+                <h3>Фильтры</h3>
+            </div>
+            <div class="custom-div">
+                <label>Ингридиенты</label>
+                <div class="ing-line"><input type="text" class="ing-text" name="include_ing" placeholder="С ингридиентом" value="{{ request.GET.include_ing }}"/><a class="add-ing"></a></div>
+                <div class="ing-line"><input type="text" class="ing-text" name="exclude_ing" placeholder="С ингридиентом" value="{{ request.GET.exclude_ing }}"><a class="remove-ing"></a></div>
+            </div>
+            <div class="custom-div">
+                <label>Диета</label>
+                {% for diet in diets %}
+                {% with y=forloop.counter0|stringformat:"s" %}
+                {% with "diet_"|add:y as diet_name %}
+                    <div class="check check2"><input type="checkbox" name="{{ diet_name }}" {% if request.GET|get_dict_value_by_key:diet_name %}checked{% endif %}/><label>{{diet}}</label></div>
+                {% endwith %}
+                {% endwith %}
+                {% endfor %}
+                <div class="clear"></div>
+            </div>
+            <div class="custom-div">
+                <label>Национальная кухня</label>
+                {% for cuisine in cuisines %}
+                {% with y=cuisine.id|stringformat:"s" %}
+                {% with "cuisine_"|add:y as cuisine_name %}
+                    <div class="check check2"><input type="checkbox" name="{{ cuisine_name }}" {% if request.GET|get_dict_value_by_key:cuisine_name %}checked{% endif %}/><label>{{cuisine.title}}</label></div>
+                {% endwith %}
+                {% endwith %}
+                {% endfor %}
+                <a href="#" class="show-more">Другие национальности</a>
+                <div class="clear"></div>
+            </div>
+            <div class="custom-div range">
+                <label>Nutrtion</label>
+                <div class="range-cover">
+                    <p><b>Жиры:</b> < <input id="amount3" class="recipe_slider" name="lipid_total" type="text" placeholder="Не указано" readonly="readonly" {% if request.GET.lipid_total %}value="{{ request.GET.lipid_total }}"{% endif %}/></p>
+                    <div id="range3"></div>
+                </div>
+                <div class="range-cover">
+                    <p><b>Белки:</b> < <input id="amount4" class="recipe_slider" name="protein" type="text" placeholder="Не указано" readonly="readonly" {% if request.GET.protein %}value="{{ request.GET.protein }}"{% endif %}/></p>
+                    <div id="range4"></div>
+                </div>
+                <div class="range-cover">
+                    <p><b>Углеводы:</b> < <input id="amount5" class="recipe_slider" name="carbohydrt" type="text" placeholder="Не указано" readonly="readonly" {% if request.GET.carbohydrt %}value="{{ request.GET.carbohydrt }}"{% endif %}/></p>
+                    <div id="range5"></div>
+                </div>
+                <div class="range-cover">
+                    <p><b>Холестирин:</b> < <input id="amount6" class="recipe_slider" name="cholestrl" type="text" placeholder="Не указано" readonly="readonly" {% if request.GET.cholestrl %}value="{{ request.GET.cholestrl }}"{% endif %}/></p>
+                    <div id="range6"></div>
+                </div>
+            </div>
+            <div class="custom-div">
+                <label>Блюда к празднику</label>
+                <select name="to_holiday">
+                    {% if not request.GET.to_holiday %}
+                        <option selected disabled hidden value=''></option>
+                    {% endif %}
+                    {% for holiday in holidays %}
+                        {% if not request.GET.to_holiday %}
+                            <option value="{{ holiday.id }}">{{ holiday }}</option>
+                        {% elif request.GET.to_holiday == holiday.id|stringformat:"s" %}
+                            <option selected value="{{ holiday.id }}">{{ holiday }}</option>
+                        {% endif %}
+                    {% endfor %}
+                </select>
+            </div>
+            <div class="custom-div">
+                <label>Способ приготовления</label>
+                <select  name="preparation_method">
+                    {% if not request.GET.preparation_method %}
+                        <option selected disabled hidden value=''></option>
+                    {% endif %}
+                    {% for pm in prep_methods%}
+                        {% if not request.GET.preparation_method %}
+                            <option value="{{ pm.id }}">{{ pm }}</option>
+                        {% elif request.GET.preparation_method == pm.id|stringformat:"s" %}
+                            <option selected value="{{ pm.id }}">{{ pm }}</option>
+                        {% endif %}
+                    {% endfor %}
+                </select>
+            </div>
+            <div class="custom-div range">
+                <p>Время готовки: <span>< <input id="amount9" class="recipe_slider" name="time" type="text" placeholder="Не указано" readonly="readonly" {% if request.GET.time %}value="{{ request.GET.time }}"{% endif %}/></span></p>
+                <div id="range9"></div>
+            </div>
+            <div class="custom-div">
+                <label>Время употребления</label>
+                <div class="check check2"><input name="supper" type="checkbox" {% if request.GET.supper %}checked{% endif %}/><label>Ужин</label></div>
+                <div class="check check2"><input name="breakfast" type="checkbox" {% if request.GET.breakfast %}checked{% endif %}/><label>Завтрак</label></div>
+                <div class="check check2"><input name="dinner" type="checkbox" {% if request.GET.dinner %}checked{% endif %}/><label>Обед</label></div>
+                <div class="check check2"><input name="lunch" type="checkbox" {% if request.GET.lunch %}checked{% endif %}/><label>Полудник</label></div>
+                <div class="clear"></div>
+            </div>
+
+            <input type="submit"/>
+
+        </form>
+    </div>
+</div>
+<div class="clear"></div>
+
+{% endblock content %}

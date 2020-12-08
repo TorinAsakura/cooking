@@ -1,0 +1,127 @@
+{% extends "base.html" %}
+{% load i18n %}
+
+{% block extra_header %}
+	<script type="text/javascript" src="{{ STATIC_URL }}js/jquery.formset.js"></script>
+	<script type="text/javascript" src="{{ STATIC_URL }}js/chosen/chosen.jquery.min.js"></script>
+	<script type="text/javascript" src="{{ STATIC_URL }}js/ajax-chosen.js"></script>
+	<link type="text/css" rel="stylesheet" href="{{ STATIC_URL }}js/chosen/chosen.css" />
+	{{ wizard.form.media }}
+
+	<script type="text/javascript">
+		var add_ajax_chosen = function (id_name){
+		$("#" + id_name).ajaxChosen(
+			{
+				method: 'GET',
+				url: "/ingredients/autocomplete/",
+				dataType: 'json'
+			},
+			function (data) {
+				var terms = {};
+				$.each(data, function (i, val) {
+					terms[val.id] = val.value
+				});
+				console.log(this);
+				return terms;
+			}
+		);
+	};
+
+    $(function() {
+    	{% for fid in formset_id_list %}
+    		add_ajax_chosen("{{fid}}");
+    	{% endfor %}
+
+    	// Ingredient dynamic formset
+        $('#id_empty_form').formset({
+            formTemplate: '#id_empty_form',
+            prefix: 'ingredients',
+            added: function(data){
+				var new_form_id = data.find('p').eq(0).find('select').attr('id');
+				add_ajax_chosen(new_form_id);
+            },
+        });
+
+        // Recipe step dynamic formset
+        $('#id_empty_stepform').formset({
+            formTemplate: '#id_empty_stepform',
+            addText: "Добавить шаг",
+            prefix: 'steps',
+        });
+
+    });
+	</script>
+{% endblock extra_header %}
+
+{% block content %}
+	<p>Шаг {{ wizard.steps.step1 }} из {{ wizard.steps.count }}</p>
+	<form action="." method="post" enctype="multipart/form-data">{% csrf_token %}
+		<table>
+			{{ wizard.management_form }}
+
+			{% if wizard.form.forms %}
+			    {{ wizard.form.management_form }}
+			    {% for form in wizard.form.forms %}
+			        {{ form.as_p }}
+			    {% endfor %}
+			{% else %}
+			    {{ wizard.form.as_p }}
+			{% endif %}
+
+			{# STEP FORMSET #}
+				{% if step_formset %}
+					<h3>Шаги приготовления блюда:</h3>
+					{{ step_formset.management_form }}
+					<div id="step_formset">
+						{% for step_form in step_formset.forms %}
+							<div>
+								{{ step_form.as_p }}
+							</div>
+							<hr/>
+						{% endfor %}
+					</div>
+					<div id="recipe_step_form">
+						{% with step_formset.empty_form as form %}
+					        <div id="id_empty_stepform" style="display:none">
+								{{ form.as_p}}
+								<hr/>
+					        </div>
+						{% endwith %}
+					</div>
+				{% endif %}
+			{# STEP FORMSET #}
+
+			{# INGREDIENT FORMSET #}
+				{% if ingredients_formset %}
+					<h3>Ингредиенты:</h3>
+					{{ ingredients_formset.management_form }}
+					<div id="ingredients_formset">
+						{% for ingredient_form in ingredients_formset.forms %}
+							<div>
+								{{ ingredient_form.as_p }}
+							</div>
+							<hr/>
+						{% endfor %}
+					</div>
+					<div id="ingredient_form">
+						{% with ingredients_formset.empty_form as form %}
+					        <div id="id_empty_form" style="display:none">
+								{{ form.as_p}}
+								<hr/>
+					        </div>
+						{% endwith %}
+					</div>
+				{% endif %}
+			{# INGREDIENT FORMSET #}
+		</table>
+	{% if wizard.steps.prev %}
+		<button name="wizard_goto_step" type="submit" value="{{ wizard.steps.prev }}">{% trans "Назад" %}</button>
+	{% endif %}
+
+	{% if wizard.steps.current == wizard.steps.last %}
+		<input type="submit" value="Сохранить"/>
+	{% else %}
+		<input type="submit" value="Далее"/>
+	{% endif %}
+	</form>
+{% endblock %}

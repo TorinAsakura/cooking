@@ -1,0 +1,29 @@
+<link type="text/css" rel="stylesheet" href="/static/css/jquery.autocomplete/styles.css">
+<script type="text/javascript" src="/static/js/jquery-1.8.2.js"></script>
+<script type="text/javascript" src="/static/js/jquery.autocomplete.js"></script>
+<script type="text/javascript">
+	var options, a;
+	
+	jQuery(document).ready(function ($) {
+	  options = {
+	  	serviceUrl: '/events/country_autocomplete/',
+	  	width: 300,
+	  	onSelect: function(value, data){
+			$('#id_city_str').autocomplete(
+				{
+					serviceUrl: '/events/city_autocomplete/',
+					width: 300,
+					params: { "country": $("#id_country_str").val()},
+					onSelect: function(value, data){
+						$("#id_city").val(data);
+					}
+				}
+			);
+			$("#id_country").val(data);
+	  	},
+	  };
+	  a = $('#id_country_str').autocomplete(options);
+	});
+</script>
+<input id="id_country_str" type="text" name="country_str" value="{{ value_name }}" {{ attrs }}/>
+<input id="id_country" type="hidden" name="country" value="{{ value_id }}"/>

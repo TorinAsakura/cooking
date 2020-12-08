@@ -1,0 +1,19 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<h1>Конкурсы</h1>
+<br/>
+<div class="center-div">
+    <div class="compet-tabs" id="main1">
+        <ul class="tabs">
+            <li><a href="#"><span>Активные конкурсы</span></a></li>
+            <li><a href="#" {% if ended %}class="current"{% endif %}><span>Прошедшие конкурсы</span></a></li>
+        </ul>
+        <div class="panes">
+            {% include "competitions/competition_pane.html" with open=True   part_list=part_list       object_list=competition_list       prev_base_page=prev_base_page       next_base_page=next_base_page       %}
+            {% include "competitions/competition_pane.html" with open=False  part_list=ended_part_list object_list=ended_competition_list prev_base_page=ended_prev_base_page next_base_page=ended_next_base_page %}
+        </div>
+    </div>
+</div>
+<div class="clear"></div>
+{% endblock content %}

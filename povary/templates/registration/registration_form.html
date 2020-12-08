@@ -1,0 +1,149 @@
+{% extends 'base.html' %}
+
+{% load widget_tweaks %}
+
+{% block css %}
+ 		<link href='http://fonts.googleapis.com/css?family=PT+Sans:400,700,400italic,700italic&subset=latin,latin-ext,cyrillic' rel='stylesheet' type='text/css'/>
+		<link href='http://fonts.googleapis.com/css?family=Lobster&subset=latin,cyrillic-ext,latin-ext,cyrillic' rel='stylesheet' type='text/css'>
+		<link href='http://fonts.googleapis.com/css?family=Marck+Script&subset=latin,latin-ext,cyrillic' rel='stylesheet' type='text/css'>
+		<link rel="stylesheet" href="{{ STATIC_URL }}css/main.css" type="text/css"/>
+      <link rel="stylesheet" href="{{ STATIC_URL }}css/scrollable-horizontal.css" type="text/css"/>		
+		<link rel="stylesheet" type="text/css" href="{{ STATIC_URL }}css/fancyfields.css" media="screen" />
+		<link rel="stylesheet" type="text/css" href="{{ STATIC_URL }}css/jquery.fancybox-thumbs.css?v=1.0.7" />
+{% endblock css %}
+
+{% block extra_header %}
+<style>
+ 	div#container{ 
+ 		border: 0px; 
+ 		background: none; 
+ 		box-shadow: none; 
+ 	}
+</style>
+{% endblock extra_header %}
+
+
+	<!--<style>
+		label[for=id_sex]{
+			display: none;
+		}
+		#id_sex{
+			display: none;
+		}
+		input:not([type=submit]){
+			background: #FBFBFB none repeat scroll 0 0;
+			border: 1px solid #E5E5E5;
+			margin-bottom: 16px;
+			font-size: 24px;
+			margin-right: 6px;
+			margin-top: 2px;
+			padding: 3px;
+			width: 97%;
+		}
+	</style>-->
+
+
+{% block header %}
+{% endblock header %}
+{% block content %}
+<div id="wrapper">
+			<div class="content">	
+			<div class="register-block">
+						<div class="register-block-top"></div>
+						<a href="{% url 'home' %}" id="logo"></a>
+						<a href="{% url 'home' %}" class="prev-link">На главную</a>
+						<a href="{% url 'django.contrib.auth.views.login' %}" class="next-link">Вход на сайт</a>
+						<fieldset class="fieldseblock1">
+							<legend align="center">Регистрация</legend>
+							{% if not request.user.is_authenticated %}
+							<div class="reg-form">
+								<form id="registration_form" method="post" action="." data-url="{% url 'check_user_existence' %}">
+								{% csrf_token %}									
+									<div class="form-row">
+										<label>Введите ваше имя (логин)</label>									
+										{{ form.username|attr:"class:reg-input inp1" }}
+										<div id="username_notify" class="ok"></div>
+										<div class="clear"></div>
+									</div>
+									<div class="form-row">
+										<label>Введите e-mail</label>
+										{{ form.email|attr:"class:reg-input inp1" }}
+										<!--<input type="text" class="reg-input inp2"  value="mama#rumba@yahoo.com"/>-->
+										<div id="email_notify" class="ok"><!--Разрешено использование только букв и цифр.<br/> Введен неправильный символ (#).--></div>
+										<div class="clear"></div>
+									</div>
+									<div class="form-row">
+										<label>Введите свой пароль</label>
+										{{ form.password1|attr:"class:reg-input inp3" }}										
+										<div id="password1_notify" class="ok"></div>
+										<div class="clear"></div>
+									</div>									
+									<input type="submit" id="submit_button" class="submit" value="Зарегистрироваться"/>
+								</form>
+							</div>							
+							{% else %}
+								<table>
+									<p>Чтобы зарегистрировать нового пользователя нужно выйти из системы.</p>
+								</table>
+							{% endif %}
+						</fieldset>
+						<fieldset class="fieldseblock2">
+							<legend align="center">Войти с помощью</legend>
+							<div class="social-links">
+								<a href="#" class="social-link1"></a>
+								<a href="#" class="social-link2"></a>
+								<a href="#" class="social-link3"></a>
+							</div>
+						</fieldset>
+						<div class="clear"></div>
+				</div>	
+	
+	</div>
+	</div>
+{% endblock %}
+
+{% block extra_js %}
+<script type="text/javascript">
+	var check_user_existence = function(evnt){
+		var field = evnt.currentTarget.name;
+		var url = $("#registration_form").attr('data-url');
+		var data = {};
+		data[field] = $(this).val();
+		$.post(url, data, function(data){
+			var submit_button = $("#submit_button");
+			var field_notify = $("#"+field+"_notify");
+			if (data.status == "ok"){
+				if (data.user_exist){
+					submit_button.attr('disabled', 'true');
+					field_notify.attr('class','remark');
+					field_notify.html('Такое имя уже существует');
+					var existing_style = {
+						'border': '3px solid #FF0033',
+					};
+					$("#id_"+field).css(existing_style);
+				}
+				else{
+					$("#id_"+field).css('border', '1px solid #00CC00');
+					submit_button.removeAttr('disabled');
+					field_notify.attr('class','ok');
+					field_notify.html("");
+				}
+			}
+			else{
+				alert(message);
+			}
+		});
+	}
+	$(function(){
+		var field_list = {};
+		field_list.username ="username";
+		field_list.email = "email";
+		for (var field in field_list){
+			$("#id_" + field).live("keyup", check_user_existence);
+		}
+	});
+</script>
+{% endblock extra_js %}
+
+{% block footer%}
+{% endblock footer%}

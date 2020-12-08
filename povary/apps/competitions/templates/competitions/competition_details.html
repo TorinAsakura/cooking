@@ -1,0 +1,256 @@
+{% extends 'base.html' %}
+{% load static widget_tweaks thumbnail %}
+
+
+{% block breadcrumbs %}
+    <a href="/"><img src="{% static 'images/home.png' %}" alt=""/></a> →
+    <a href="{% url 'competition_list' %}">Конкурсы</a> →
+    <span>{{ competition.title }}</span>
+{% endblock breadcrumbs %}
+
+{% block subheader %}
+
+<div class="search-div">
+	<p>Поиск по рецептам</p>
+	<div class="search">
+			<form method="get" action="{% url 'haystack_search' %}">
+			  <span class="s-bg"></span>
+	                {{ search_form.q|attr:"class:search-text" }}
+	                <input type="submit" class="search-btn" value=""/>
+			</form>
+	</div>
+	 <a href="{% url 'haystack_search' %}">Расширеный поиск</a>
+</div>
+{% endblock subheader %}
+
+{% block content %}
+
+<br/>
+<div class="center-div">
+    <div class="" id="main1">
+        <ul class="tabs">
+            <li><a href="#"><span>Конкурс</span></a></li>
+            <li><a href="#"><span>Работы ({{ competition.competition_requests.count }})</span></a></li>
+            <li><a href="#"><span>Вопросы</span></a></li>
+        </ul>
+        <div class="panes">
+            <div>
+
+                    <div class="post konk">
+                        <h1>{{ competition.title }}{% if not open %}<span>(завершен)</span>{% endif %}</h1>
+                        <div class="block-img">
+                            {% if competition.image %}
+                                <img align="post-img f-left"  src="{{ competition.image.url }}" alt=""/>
+                            {% endif %}
+                        </div>
+                        <div class="distribution">
+                            <div class="distribution-com">
+                                <a id="send-message" href="#pop-up1" >Задать вопрос</a>
+                            </div>
+                            <div class="distribution-right">
+                            <!-- AddThis Button BEGIN -->
+                                <div class="addthis_toolbox addthis_default_style addthis_16x16_style" style="width: 100px; display: inline;">
+                                <a class="addthis_button_twitter"></a>
+                                <a class="addthis_button_facebook"></a>
+                                <a class="addthis_button_vk"></a>
+                                <a class="addthis_button_google_plusone_share"></a>
+                                </div>
+                                <script type="text/javascript">var addthis_config = {"data_track_addressbar":true};</script>
+                                <script type="text/javascript" src="//s7.addthis.com/js/300/addthis_widget.js#pubid=ra-52a0c46563ed4fbb"></script>
+                            <!-- AddThis Button END -->
+                                <div class="print_and_send">
+                                    <a href="#" class="send"><img src="{% static 'images/icons/send.jpg' %}" alt=""/></a>
+                                    <a href="#" class="send"><img src="{% static 'images/icons/send2.jpg' %}" alt=""/></a>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="table">
+                            <table>
+                                <tr class="gray">
+                                    <td align="left">Статус:</td><td align="right"><span class="{% if open %}green{% else %}red{% endif %}">{% if open %}Открыт сбор работ{% else %}Конкурс завершился{% endif %}</span></td>
+                                </tr>
+                                <tr>
+                                    <td align="left">Дата начала:</td><td align="right">{{ competition.start_date|date:"DATE_FORMAT" }} </td>
+                                </tr>
+                                <tr class="gray">
+                                    <td align="left">Дата окончания:</td><td align="right">{{ competition.end_date|date:"DATE_FORMAT" }} </td>
+                                </tr>
+                                <tr>
+                                    <td align="left">Голосование:</td><td align="right">{{ competition.voting_start|date:"DATE_FORMAT" }} </td>
+                                </tr>
+                                <tr class="gray">
+                                    <td align="left">Конец голосования:</td><td align="right">{{ competition.voting_end|date:"DATE_FORMAT" }} </td>
+                                </tr>
+
+                            </table>
+                        </div>
+                        <h4>Описание конкурса</h4>
+                        <p>{{ competition.description }}</p>
+                    </div>
+                {% if open %}
+                    <div class="how">
+                        <h4>Как принять участие в конкурсе?</h4>
+                        <ul class="u4ast-steps">
+                            {% for step in competition.term_steps.all %}
+                                <li><p><b>Шаг {{ step.step_num }}:</b><br/>{{ step.description }}</p></li>
+                            {% endfor %}
+                        </ul>
+                    </div>
+
+                    <div class="prizes">
+                        <div class="title"><h3>Призы конкурса</h3></div>
+                        <ul class="priz-ul">
+                            {% for prize in competition.prizes.all %}
+                                <li>
+                                    <div class="priz-block">
+                                        <div class="priz-div">
+                                            {% if prize.image %}
+                                                <div class="priz-div-in">
+                                                    <img src="{{ prize.image.url }}" width="208" height="204" alt="">
+                                                </div>
+                                            {% endif %}
+                                            <div class="mesto"><span>{{ prize.place }}</span>место</div>
+                                        </div>
+                                        <a href="#">{{ prize.description }} </a>
+                                    </div>
+                                </li>
+                            {% endfor %}
+                        </ul>
+                        <p>Программа включает проживание в отеле в течение 3 ночей (по лупансион), дегустацию местных вин, 3 урока шеф-повара, а также необходимые учебные материалы и ингредиенты для приготовления блюд во время занятий. Давно выяснено, что при оценке дизайна и композиции читаемый текст мешает сосредоточиться.  Хотя этот факт нуждается в дальнейшей проверке наблюдением и водкой.</p>
+                        <p align="center"><strong>Интеллект, несмотря на внешние воздействия принять участие в конкурсе.</strong></p>
+                        <a href="{% url 'competition_request_add' %}" class="submit submitpriz">Подать заявку</a>
+                    </div>
+                {% endif %}
+            </div>
+
+            <div>1</div>
+            <div id="question_list">
+                {% for question in competition.questions.all %}
+
+                    <a href="{% url 'notice_details' question.id %}">{{ question.title }} </a> <br>
+
+                {% endfor %}
+            </div>
+
+        </div>
+
+    </div>
+
+    <div class="slider-block">
+        <div class="d-carousel">
+            {% if open %}
+                <div class="title"><h3>Последние добавленные работы</h3></div>
+                <ul class="carousel">
+                    {% for cr in competition.competition_requests.all|slice:"6" %}
+                    <li>
+                        <div class="article-div">
+                            {% if cr.image %}
+                                <a href="#" class="articleimglink">
+                                 <img src="{% thumbnail cr.image "210x155" crop="center" as image %} {{ image.url }} {% endthumbnail %}" alt="{{ cr.title }}" title="{{ cr.title }}"/>
+                                </a>
+                            {% endif %}
+                            <div class="article-box">
+                                {% if cr.author %}
+                                <div class="athor">
+                                    <div class="athor-img">
+                                        <a href="{{ cr.author.get_absolute_url }}">
+                                            {% if cr.author.profile.avatar %}
+                                                <img src="{{ cr.author.profile.avatar.url }}" alt=""/>
+                                            {% endif %}
+                                        </a>
+                                    </div>
+                                    <span><a href="#">{{ cr.author.username }}</a></span>
+                                </div>
+                                {% endif %}
+                                <p><a href="#">{{ cr.description }}</a></p>
+                            </div>
+                        </div>
+                    </li>
+                    {% endfor %}
+                </ul>
+            {% else %}
+                <div class="title"><h3>Победители</h3></div>
+                <ul class="priz-ul priz-ul2">
+                    {% for cr in competition.competition_requests.all|slice:"6" %}
+                        {% if cr.place_number %}
+                            <li>
+                                <div class="priz-block">
+                                    <a href="#" class="priz-div">
+                                        {% if cr.image %}
+                                            <img src="{{ cr.image.url }}" alt="">
+                                        {% endif %}
+                                        <div class="mesto"><span>{{ cr.place_number }}</span>место</div>
+                                    </a>
+                                    <div class="winner">
+                                        {% if cr.author.profile.avatar %}
+                                            <a href="{{ cr.author.get_absolute_url }}" class="winner-img">
+                                                <img src="{{ cr.author.profile.avatar.url }}" alt=""/>
+                                            </a>
+                                        {% endif %}
+                                        <div class="winner-text">
+                                            <a href="#">{{ cr.title }}</a>
+                                            <a href="#" class="name">{{ cr.author.username }}</a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </li>
+                        {% endif %}
+                    {% endfor %}
+                </ul>
+            {% endif %}
+            <div class="clear"></div>
+        </div>
+    </div>
+
+</div>
+<div class="h-col-right">
+    <br/>
+    <div class="div-right">
+        {% if open %}
+            <div class="side-block"><a href="{% url 'competition_request_add' %}" class="submit submit-wide submit-wide2">Добавить рецепт</a></div>
+        {% endif %}
+        <div class="side-block sponsors">
+            <div class="title"><h3>Спонсоры</h3></div>
+            {% for sponsor in competition.sponsors.all %}
+                {% if sponsor.image %}
+                    <a href="#"><img src="{{ sponsor.image.url }}" alt="" width="195" height="97"/></a>
+                {% endif %}
+            {% endfor %}
+        </div>
+        {% if open %}
+            <div class="title"><h3>Участники</h3></div>
+            <div class="div-right">
+                <div class="uchast exp">
+
+                    {% for cr in competition.competition_requests.all %}
+
+                        <div class="comment-author">
+                        <div class="author">
+                            {% if cr.author.profile.avatar %}
+                                <a href="{{ cr.author.get_absolute_url }}"><img src="{{ cr.author.profile.avatar.url }}" alt=""/></a>
+                            {% endif %}
+                        </div>
+                        <a href="#" class="name-author">{{ cr.author.username }} </a>
+                    </div>
+
+                    {% endfor %}
+
+                    <a class="more" href="#">все рецепты (competition.competition_requests.count)</a>
+
+                </div>
+                <div class="expand-div">
+                    <a id="animate">свернуть</a>
+                </div>
+            </div>
+        {% endif %}
+    </div>
+</div>
+<div class="clear"></div>
+
+<div style="display:none;">
+
+    {% include 'question_form.html' with id=competition.id author_name=request.user recipient_id=competition.author.id %}
+
+</div>
+
+{% endblock %}

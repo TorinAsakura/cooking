@@ -1,0 +1,151 @@
+{% extends "base.html" %}
+{% load i18n static core_tags widget_tweaks %}
+
+{% block breadcrumbs %}
+    <a href="/"><img src="{% static 'images/home.png' %}" alt=""/></a> →
+    <a href="{% url 'recipe-add' %}">Добавление рецепта</a>
+{% endblock breadcrumbs %}
+
+{% block subheader %}
+
+<div class="search-div">
+	<p>Поиск по рецептам</p>
+	<div class="search">
+			<form method="get" action="{% url 'haystack_search' %}">
+			  <span class="s-bg"></span>
+	                {{ search_form.q|attr:"class:search-text" }}
+	                <input type="submit" class="search-btn" value=""/>
+			</form>
+	</div>
+	 <a href="{% url 'haystack_search' %}">Расширеный поиск</a>
+</div>
+{% endblock subheader %}
+
+{% block content %}
+
+    <form action="." method="post" enctype="multipart/form-data">{% csrf_token %}
+
+    {{ wizard.management_form }}
+
+    <div class="recept-page">
+    <h1>Добавление рецепта </h1>
+        <div class="steps">
+            <div class="step active"><div class="step-img"><img src="{% static 'images/icons/step1_1.jpg' %}" alt=""/></div><b>1</b><span>Оcновные данные</span><div class="corn"></div></div>
+            <div class="lineimg"><span style="width:60%;"></span></div>
+            <div class="step"><div class="step-img"><img src="{% static 'images/icons/step2.jpg' %}" alt=""/></div><b>2</b><span>Ингридиенты</span><div class="corn"></div></div>
+            <div class="lineimg"><span style="width:0%;"></span></div>
+            <div class="step"><div class="step-img"><img src="{% static 'images/icons/step3.jpg' %}" alt=""/></div><b>3</b><span>Приготовление</span><div class="corn"></div></div>
+        </div>
+        <div class="application">
+            <div class="recipe-block">
+                <div class="desc">
+                    <p>Добро пожаловать в святые святых сайта. Здесь мы будем “творить” рецепт на пользу других людей. </p>
+                    <p>Фотография и описание являеться обязательным. Текст для ознакомления </p>
+                </div>
+                <div class="col-right">
+
+
+
+                    <div class="form-row">
+                        <div class="form-col">
+                            <label>Основная категория рецепта<span>*</span></label>
+                            <div class="block-select block-select3">
+
+                                {% with form.category.value.0 as slc %}
+
+                                    <select name="first-category">
+
+                                        {% if not slc %}
+                                            <option selected disabled>выберите категорию</option>
+                                        {% endif %}
+                                        {% for x,y in wizard.form.fields.category.choices %}
+                                            <option value="{{ x }}" {% if slc == x|stringformat:"s" %}selected{% endif %}>{{ y }}</option>
+                                        {% endfor %}
+                                    </select>
+                                    {% if wizard.form.category.errors %}
+                                        <div class="errors" style="position: absolute; z-index: 99;">{{ wizard.form.category.errors|striptags }}</div>
+                                    {% endif %}
+
+                                {% endwith %}
+
+                            </div>
+                        </div>
+
+                        <div class="form-col">
+                            <label>Подкатегория рецепта<span>*</span></label>
+                            <div class="block-select block-select3">
+
+                            {% with form.sub_category.value.0 as slc %}
+
+                                <select name="first-sub_category">
+                                    {% if not slc %}
+                                        <option selected disabled>выберите категорию</option>
+                                    {% endif %}
+                                    {% for x,y in wizard.form.fields.sub_category.choices %}
+                                        <option value="{{ x }}" {% if slc == x|stringformat:"s" %}selected{% endif %}>{{ y }}</option>
+                                    {% endfor %}
+                                </select>
+
+                                {% if wizard.form.sub_category.errors %}
+                                    <div class="errors" style="position: absolute; z-index: 99;">{{ wizard.form.sub_category.errors|striptags }}</div>
+                                {% endif %}
+
+                            {% endwith %}
+
+                            </div>
+                        </div>
+                        <div class="clear"></div>
+                    </div>
+
+
+
+                    <div class="form-row">
+                        <label>Название рецепта<span>*</span></label>
+                        {{ wizard.form.title }}
+                        {% if wizard.form.title.errors %}
+                            <div class="errors">{{ wizard.form.title.errors|striptags }}</div>
+                        {% endif %}
+{#                        <div class="ok"></div>#}
+                        <div class="clear"></div>
+                    </div>
+                    <div class="form-row">
+                        <label>Описание блюда<span>*</span></label>
+                        {{ wizard.form.description }}
+                        {% if wizard.form.description.errors %}
+                            <div class="errors">{{ wizard.form.description.errors|striptags }}</div>
+                        {% endif %}
+                        <div id='tooltip' class="info-div" style="display: none">Правильное название не только отображает суть, но и даст больше шансов на рейтиг учшить сложное</div>
+                        <div class="clear"></div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-col range">
+                            <label>Время приготовления:</label>
+                            <div id="range8"></div>
+                            <span class="f-right"><b>до</b>{{ wizard.form.prepare_time_to }}<small>мин</small></span>
+                            <span class="f-left"><b>от</b>{{ wizard.form.prepare_time_from}}<small>мин</small></span>
+                        </div>
+                        <div class="form-col range range2">
+                            <label>Количество порций: {{ wizard.form.portion_num }}</label>
+                            <div id="range7"></div>
+                        </div>
+                        <div class="clear"></div>
+                    </div>
+
+                </div>
+                <div class="col-left">
+                    <div class="fot-h">Главная фотография рецепта</div>
+                    <div class="big-foto" id="big-foto" style="overflow:hidden;">
+                    {{ wizard.form.main_image }}
+                    </div>
+                </div>
+                <div class="clear"></div>
+            </div>
+        </div>
+
+        <div class="pagenavi2">
+            <input type="submit" class="submit" value="Далее"/>
+        </div>
+        <div class="clear"></div>
+    </div>
+</form>
+{% endblock %}

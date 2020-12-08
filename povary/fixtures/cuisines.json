@@ -1,0 +1,533 @@
+[
+    {
+        "pk": 1, 
+        "model": "recipes.cuisine", 
+        "fields": {
+            "description": "", 
+            "slug": "ujgurskaya-kuhnya", 
+            "title": "\u0423\u0439\u0433\u0443\u0440\u0441\u043a\u0430\u044f"
+        }
+    }, 
+    {
+        "pk": 3, 
+        "model": "recipes.cuisine", 
+        "fields": {
+            "description": "", 
+            "slug": "italyanskaya-kuhnya", 
+            "title": "\u0418\u0442\u0430\u043b\u044c\u044f\u043d\u0441\u043a\u0430\u044f"
+        }
+    }, 
+    {
+        "pk": 4, 
+        "model": "recipes.cuisine", 
+        "fields": {
+            "description": "", 
+            "slug": "nemeckaya-kuhnya", 
+            "title": "\u041d\u0435\u043c\u0435\u0446\u043a\u0430\u044f"
+        }
+    }, 
+    {
+        "pk": 5, 
+        "model": "recipes.cuisine", 
+        "fields": {
+            "description": "", 
+            "slug": "afrikanskaya-kuhnya", 
+            "title": "\u0410\u0444\u0440\u0438\u043a\u0430\u043d\u0441\u043a\u0430\u044f"
+        }
+    }, 
+    {
+        "pk": 6, 
+        "model": "recipes.cuisine", 
+        "fields": {
+            "description": "", 
+            "slug": "evrejskaya-kuhnya", 
+            "title": "\u0415\u0432\u0440\u0435\u0439\u0441\u043a\u0430\u044f"
+        }
+    }, 
+    {
+        "pk": 7, 
+        "model": "recipes.cuisine", 
+        "fields": {
+            "description": "", 
+            "slug": "anglijskaya-kuhnya", 
+            "title": "\u0410\u043d\u0433\u043b\u0438\u0439\u0441\u043a\u0430\u044f"
+        }
+    }, 
+    {
+        "pk": 8, 
+        "model": "recipes.cuisine", 
+        "fields": {
+            "description": "", 
+            "slug": "avstrijskaya-kuhnya", 
+            "title": "\u0410\u0432\u0441\u0442\u0440\u0438\u0439\u0441\u043a\u0430\u044f"
+        }
+    }, 
+    {
+        "pk": 9, 
+        "model": "recipes.cuisine", 
+        "fields": {
+            "description": "", 
+            "slug": "avstalijskaya-kuhnya", 
+            "title": "\u0410\u0432\u0441\u0442\u0430\u043b\u0438\u0439\u0441\u043a\u0430\u044f"
+        }
+    }, 
+    {
+        "pk": 10, 
+        "model": "recipes.cuisine", 
+        "fields": {
+            "description": "", 
+            "slug": "belgijskaya-kuhnya", 
+            "title": "\u0411\u0435\u043b\u044c\u0433\u0438\u0439\u0441\u043a\u0430\u044f"
+        }
+    }, 
+    {
+        "pk": 11, 
+        "model": "recipes.cuisine", 
+        "fields": {
+            "description": "", 
+            "slug": "bolgarskaya-kuhnya", 
+            "title": "\u0411\u043e\u043b\u0433\u0430\u0440\u0441\u043a\u0430\u044f"
+        }
+    }, 
+    {
+        "pk": 12, 
+        "model": "recipes.cuisine", 
+        "fields": {
+            "description": "", 
+            "slug": "vengerskaya-kuhnya", 
+            "title": "\u0412\u0435\u043d\u0433\u0435\u0440\u0441\u043a\u0430\u044f"
+        }
+    }, 
+    {
+        "pk": 13, 
+        "model": "recipes.cuisine", 
+        "fields": {
+            "description": "", 
+            "slug": "gollandskaya-kuhnya", 
+            "title": "\u0413\u043e\u043b\u043b\u0430\u043d\u0434\u0441\u043a\u0430\u044f"
+        }
+    }, 
+    {
+        "pk": 14, 
+        "model": "recipes.cuisine", 
+        "fields": {
+            "description": "", 
+            "slug": "grecheskaya-kuhnya", 
+            "title": "\u0413\u0440\u0435\u0447\u0435\u0441\u043a\u0430\u044f"
+        }
+    }, 
+    {
+        "pk": 15, 
+        "model": "recipes.cuisine", 
+        "fields": {
+            "description": "", 
+            "slug": "datskaya-kuhnya", 
+            "title": "\u0414\u0430\u0442\u0441\u043a\u0430\u044f"
+        }
+    }, 
+    {
+        "pk": 16, 
+        "model": "recipes.cuisine", 
+        "fields": {
+            "description": "", 
+            "slug": "ispanskaya-kuhnya", 
+            "title": "\u0418\u0441\u043f\u0430\u043d\u0441\u043a\u0430\u044f"
+        }
+    }, 
+    {
+        "pk": 17, 
+        "model": "recipes.cuisine", 
+        "fields": {
+            "description": "", 
+            "slug": "irlandskaya-kuhnya", 
+            "title": "\u0418\u0440\u043b\u0430\u043d\u0434\u0441\u043a\u0430\u044f"
+        }
+    }, 
+    {
+        "pk": 18, 
+        "model": "recipes.cuisine", 
+        "fields": {
+            "description": "", 
+            "slug": "polskaya-kuhnya", 
+            "title": "\u041f\u043e\u043b\u044c\u0441\u043a\u0430\u044f"
+        }
+    }, 
+    {
+        "pk": 19, 
+        "model": "recipes.cuisine", 
+        "fields": {
+            "description": "", 
+            "slug": "portugalskaya-kuhnya", 
+            "title": "\u041f\u043e\u0440\u0442\u0443\u0433\u0430\u043b\u044c\u0441\u043a\u0430\u044f"
+        }
+    }, 
+    {
+        "pk": 20, 
+        "model": "recipes.cuisine", 
+        "fields": {
+            "description": "", 
+            "slug": "rumynskaya-kuhnya", 
+            "title": "\u0420\u0443\u043c\u044b\u043d\u0441\u043a\u0430\u044f"
+        }
+    }, 
+    {
+        "pk": 21, 
+        "model": "recipes.cuisine", 
+        "fields": {
+            "description": "", 
+            "slug": "finskaya-kuhnya", 
+            "title": "\u0424\u0438\u043d\u0441\u043a\u0430\u044f"
+        }
+    }, 
+    {
+        "pk": 22, 
+        "model": "recipes.cuisine", 
+        "fields": {
+            "description": "", 
+            "slug": "francuzskaya-kuhnya", 
+            "title": "\u0424\u0440\u0430\u043d\u0446\u0443\u0437\u0441\u043a\u0430\u044f"
+        }
+    }, 
+    {
+        "pk": 23, 
+        "model": "recipes.cuisine", 
+        "fields": {
+            "description": "", 
+            "slug": "cheshskaya-kuhnya", 
+            "title": "\u0427\u0435\u0448\u0441\u043a\u0430\u044f"
+        }
+    }, 
+    {
+        "pk": 24, 
+        "model": "recipes.cuisine", 
+        "fields": {
+            "description": "", 
+            "slug": "shvejcarskaya-kuhnya", 
+            "title": "\u0428\u0432\u0435\u0439\u0446\u0430\u0440\u0441\u043a\u0430\u044f"
+        }
+    }, 
+    {
+        "pk": 25, 
+        "model": "recipes.cuisine", 
+        "fields": {
+            "description": "", 
+            "slug": "shvedskaya-kuhnya", 
+            "title": "\u0428\u0432\u0435\u0434\u0441\u043a\u0430\u044f"
+        }
+    }, 
+    {
+        "pk": 26, 
+        "model": "recipes.cuisine", 
+        "fields": {
+            "description": "", 
+            "slug": "shotlandskaya-kuhnya", 
+            "title": "\u0428\u043e\u0442\u043b\u0430\u043d\u0434\u0441\u043a\u0430\u044f"
+        }
+    }, 
+    {
+        "pk": 27, 
+        "model": "recipes.cuisine", 
+        "fields": {
+            "description": "", 
+            "slug": "norvezhskaya-kuhnya", 
+            "title": "\u041d\u043e\u0440\u0432\u0435\u0436\u0441\u043a\u0430\u044f"
+        }
+    }, 
+    {
+        "pk": 28, 
+        "model": "recipes.cuisine", 
+        "fields": {
+            "description": "", 
+            "slug": "kitajskaya-kuhnya", 
+            "title": "\u041a\u0438\u0442\u0430\u0439\u0441\u043a\u0430\u044f"
+        }
+    }, 
+    {
+        "pk": 29, 
+        "model": "recipes.cuisine", 
+        "fields": {
+            "description": "", 
+            "slug": "yaponskaya-kuhnya", 
+            "title": "\u042f\u043f\u043e\u043d\u0441\u043a\u0430\u044f"
+        }
+    }, 
+    {
+        "pk": 30, 
+        "model": "recipes.cuisine", 
+        "fields": {
+            "description": "", 
+            "slug": "indijskaya-kuhnya", 
+            "title": "\u0418\u043d\u0434\u0438\u0439\u0441\u043a\u0430\u044f"
+        }
+    }, 
+    {
+        "pk": 31, 
+        "model": "recipes.cuisine", 
+        "fields": {
+            "description": "", 
+            "slug": "korejskaya-kuhnya", 
+            "title": "\u041a\u043e\u0440\u0435\u0439\u0441\u043a\u0430\u044f"
+        }
+    }, 
+    {
+        "pk": 32, 
+        "model": "recipes.cuisine", 
+        "fields": {
+            "description": "", 
+            "slug": "malazijskaya-kuhnya", 
+            "title": "\u041c\u0430\u043b\u0430\u0437\u0438\u0439\u0441\u043a\u0430\u044f"
+        }
+    }, 
+    {
+        "pk": 33, 
+        "model": "recipes.cuisine", 
+        "fields": {
+            "description": "", 
+            "slug": "mongolskaya-kuhnya", 
+            "title": "\u041c\u043e\u043d\u0433\u043e\u043b\u044c\u0441\u043a\u0430\u044f"
+        }
+    }, 
+    {
+        "pk": 34, 
+        "model": "recipes.cuisine", 
+        "fields": {
+            "description": "", 
+            "slug": "tajskaya-kuhnya", 
+            "title": "\u0422\u0430\u0439\u0441\u043a\u0430\u044f"
+        }
+    }, 
+    {
+        "pk": 35, 
+        "model": "recipes.cuisine", 
+        "fields": {
+            "description": "", 
+            "slug": "tureckaya-kuhnya", 
+            "title": "\u0422\u0443\u0440\u0435\u0446\u043a\u0430\u044f"
+        }
+    }, 
+    {
+        "pk": 36, 
+        "model": "recipes.cuisine", 
+        "fields": {
+            "description": "", 
+            "slug": "vetnamskaya-kuhnya", 
+            "title": "\u0412\u044c\u0435\u0442\u043d\u0430\u043c\u0441\u043a\u0430\u044f"
+        }
+    }, 
+    {
+        "pk": 37, 
+        "model": "recipes.cuisine", 
+        "fields": {
+            "description": "", 
+            "slug": "egipetskaya-kuhnya", 
+            "title": "\u0415\u0433\u0438\u043f\u0435\u0442\u0441\u043a\u0430\u044f"
+        }
+    }, 
+    {
+        "pk": 38, 
+        "model": "recipes.cuisine", 
+        "fields": {
+            "description": "", 
+            "slug": "livijskaya-kuhnya", 
+            "title": "\u041b\u0438\u0432\u0438\u0439\u0441\u043a\u0430\u044f"
+        }
+    }, 
+    {
+        "pk": 39, 
+        "model": "recipes.cuisine", 
+        "fields": {
+            "description": "", 
+            "slug": "marokkanskaya-kuhnya", 
+            "title": "\u041c\u0430\u0440\u043e\u043a\u043a\u0430\u043d\u0441\u043a\u0430\u044f"
+        }
+    }, 
+    {
+        "pk": 40, 
+        "model": "recipes.cuisine", 
+        "fields": {
+            "description": "", 
+            "slug": "armyanskaya-kuhnya", 
+            "title": "\u0410\u0440\u043c\u044f\u043d\u0441\u043a\u0430\u044f"
+        }
+    }, 
+    {
+        "pk": 41, 
+        "model": "recipes.cuisine", 
+        "fields": {
+            "description": "", 
+            "slug": "azerbajdzhanskaya-kuhnya", 
+            "title": "\u0410\u0437\u0435\u0440\u0431\u0430\u0439\u0434\u0436\u0430\u043d\u0441\u043a\u0430\u044f"
+        }
+    }, 
+    {
+        "pk": 42, 
+        "model": "recipes.cuisine", 
+        "fields": {
+            "description": "", 
+            "slug": "abhazskaya-kuhnya", 
+            "title": "\u0410\u0431\u0445\u0430\u0437\u0441\u043a\u0430\u044f"
+        }
+    }, 
+    {
+        "pk": 43, 
+        "model": "recipes.cuisine", 
+        "fields": {
+            "description": "", 
+            "slug": "belorusskaya-kuhnya", 
+            "title": "\u0411\u0435\u043b\u043e\u0440\u0443\u0441\u0441\u043a\u0430\u044f"
+        }
+    }, 
+    {
+        "pk": 44, 
+        "model": "recipes.cuisine", 
+        "fields": {
+            "description": "", 
+            "slug": "gruzinskaya-kuhnya", 
+            "title": "\u0413\u0440\u0443\u0437\u0438\u043d\u0441\u043a\u0430\u044f"
+        }
+    }, 
+    {
+        "pk": 45, 
+        "model": "recipes.cuisine", 
+        "fields": {
+            "description": "", 
+            "slug": "kavkazskaya-kuhnya", 
+            "title": "\u041a\u0430\u0432\u043a\u0430\u0437\u0441\u043a\u0430\u044f"
+        }
+    }, 
+    {
+        "pk": 46, 
+        "model": "recipes.cuisine", 
+        "fields": {
+            "description": "", 
+            "slug": "kazahskaya-kuhnya", 
+            "title": "\u041a\u0430\u0437\u0430\u0445\u0441\u043a\u0430\u044f"
+        }
+    }, 
+    {
+        "pk": 47, 
+        "model": "recipes.cuisine", 
+        "fields": {
+            "description": "", 
+            "slug": "kirgizskaya-kuhnya", 
+            "title": "\u041a\u0438\u0440\u0433\u0438\u0437\u0441\u043a\u0430\u044f-kuhnya"
+        }
+    }, 
+    {
+        "pk": 48, 
+        "model": "recipes.cuisine", 
+        "fields": {
+            "description": "", 
+            "slug": "moldavskaya-kuhnya", 
+            "title": "\u041c\u043e\u043b\u0434\u0430\u0432\u0441\u043a\u0430\u044f"
+        }
+    }, 
+    {
+        "pk": 49, 
+        "model": "recipes.cuisine", 
+        "fields": {
+            "description": "", 
+            "slug": "tadzhkskaya-kuhnya", 
+            "title": "\u0422\u0430\u0434\u0436\u043a\u0441\u043a\u0430\u044f"
+        }
+    }, 
+    {
+        "pk": 50, 
+        "model": "recipes.cuisine", 
+        "fields": {
+            "description": "", 
+            "slug": "litovskaya-kuhnya", 
+            "title": "\u041b\u0438\u0442\u043e\u0432\u0441\u043a\u0430\u044f"
+        }
+    }, 
+    {
+        "pk": 51, 
+        "model": "recipes.cuisine", 
+        "fields": {
+            "description": "", 
+            "slug": "latyshskaya-kuhnya", 
+            "title": "\u041b\u0430\u0442\u044b\u0448\u0441\u043a\u0430\u044f"
+        }
+    }, 
+    {
+        "pk": 52, 
+        "model": "recipes.cuisine", 
+        "fields": {
+            "description": "", 
+            "slug": "ukrainskaya-kuhnya", 
+            "title": "\u0423\u043a\u0440\u0430\u0438\u043d\u0441\u043a\u0430\u044f"
+        }
+    }, 
+    {
+        "pk": 53, 
+        "model": "recipes.cuisine", 
+        "fields": {
+            "description": "", 
+            "slug": "estonskaya-kuhnya", 
+            "title": "\u042d\u0441\u0442\u043e\u043d\u0441\u043a\u0430\u044f"
+        }
+    }, 
+    {
+        "pk": 54, 
+        "model": "recipes.cuisine", 
+        "fields": {
+            "description": "", 
+            "slug": "osetinskaya-kuhnya", 
+            "title": "\u041e\u0441\u0435\u0442\u0438\u043d\u0441\u043a\u0430\u044f"
+        }
+    }, 
+    {
+        "pk": 55, 
+        "model": "recipes.cuisine", 
+        "fields": {
+            "description": "", 
+            "slug": "tatarskaya-kuhnya", 
+            "title": "\u0422\u0430\u0442\u0430\u0440\u0441\u043a\u0430\u044f"
+        }
+    }, 
+    {
+        "pk": 56, 
+        "model": "recipes.cuisine", 
+        "fields": {
+            "description": "", 
+            "slug": "amerikanskaya-kuhnya", 
+            "title": "\u0410\u043c\u0435\u0440\u0438\u043a\u0430\u043d\u0441\u043a\u0430\u044f"
+        }
+    }, 
+    {
+        "pk": 57, 
+        "model": "recipes.cuisine", 
+        "fields": {
+            "description": "", 
+            "slug": "meksikanskaya-kuhnya", 
+            "title": "\u041c\u0435\u043a\u0441\u0438\u043a\u0430\u043d\u0441\u043a\u0430\u044f"
+        }
+    }, 
+    {
+        "pk": 58, 
+        "model": "recipes.cuisine", 
+        "fields": {
+            "description": "", 
+            "slug": "argentinskaya-kuhnya", 
+            "title": "\u0410\u0440\u0433\u0435\u043d\u0442\u0438\u043d\u0441\u043a\u0430\u044f"
+        }
+    }, 
+    {
+        "pk": 59, 
+        "model": "recipes.cuisine", 
+        "fields": {
+            "description": "", 
+            "slug": "brazilskaya-kuhnya", 
+            "title": "\u0411\u0440\u0430\u0437\u0438\u043b\u044c\u0441\u043a\u0430\u044f"
+        }
+    }, 
+    {
+        "pk": 2, 
+        "model": "recipes.cuisine", 
+        "fields": {
+            "description": "", 
+            "slug": "russkaya-kuhnya", 
+            "title": "\u0420\u0443\u0441\u0441\u043a\u0430\u044f"
+        }
+    }
+]

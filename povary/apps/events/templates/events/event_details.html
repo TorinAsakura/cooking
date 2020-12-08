@@ -1,0 +1,8 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+	<h1>{{ event.category.title }} > {{ event.title }}</h1>
+	<p>{{ event.description }}</p>
+	<h3>{{ event.start_date|date:"H:i, j M Y" }} - {{ event.end_date|date:"H:i, j M Y" }}</h3>
+{% endblock content %}

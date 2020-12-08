@@ -1,0 +1,91 @@
+{% extends 'base.html' %}
+{% load thumbnail profile_tags %}
+
+{% block content %}
+	<p>
+		{% if user.first_name and user.last_name %} 
+			<p>{{ user.first_name }} {{ user.last_name }}</p>
+		{% else %}
+			<p>{{ user.username }}</p>
+		{% endif %}
+		<p>Присоеденился: {{ user.date_joined }}</p>
+		<p>Последний вход: {{ user.last_login }}</p>
+		{% if user.profile.birthday %}
+			<p>День рожденья: {{ user.profile.birthday|date:"d F" }}</p>
+		{% endif %}
+		{% if user.profile.country and user.profile.city %}
+			<p>Откуда: {{ user.profile.country }}/{{ user.profile.city }}</p>
+		{% elif user.profile.country %}
+			<p>Откуда: {{ user.profile.country }}</p>
+		{% elif user.profile.city %}
+			<p>Откуда: {{ user.profile.city }}</p>
+		{% endif %}
+
+		{% thumbnail user.profile.avatar "400x400" crop="center" as im %}
+		    <img src="{{ im.url }}" width="{{ im.width }}" height="{{ im.height }}">
+		{% endthumbnail %}<br/>
+		{% if user.profile.status %}
+			Статус: {{ user.profile.status }}<br/>
+		{% endif %}
+		{% if user.profile.about %}
+			О себе: {{ user.profile.about }}<br/>
+		{% endif %}
+		{% if user.profile.cookery_in_life %}
+			Кулинария в моей жизни: {{ user.profile.cookery_in_life }}
+		{% endif %}
+	</p>
+	{% if user.profile.twitter_link or user.profile.vk_link or user.profile.fb_link %}
+		<p>
+			Социальные сети:
+			<ul>
+				{% if user.profile.twitter_link %}
+					<li>
+						Twitter: <a href="{{ user.profile.twitter_link }}">
+						{{ user.profile.twitter_link|get_twi_username }}</a>
+					</li>
+				{% endif %}
+				{% if user.profile.vk_link %}
+					<li>
+						ВКонтакте: <a href="{{ user.profile.vk_link }}">
+						{{ user.profile.vk_link|get_vk_username }}</a>
+					</li>
+				{% endif %}
+				{% if user.profile.fb_link %}
+					<li>
+						Facebook: <a href="{{ user.profile.fb_link }}">
+						{{ user.profile.fb_link|get_fb_username }}</a>
+					</li>
+				{% endif %}
+			</ul>
+		</p>
+	{% endif %}
+	{% if user.profile.books %}
+		<p>Любимые книги:</p>
+		<ul>
+			{% for book in user.profile.books|parse_books %}
+			<li>{{ book }}</li>
+			{% endfor %}
+		</ul>
+	{% endif %}
+	{% if user_recipes %}
+		<p>Рецепты которые добавил {{ user }}:</p>
+		<ul>
+			{% for recipe in user_recipes %}
+			<li>
+				{% thumbnail recipe.cover_image "50x50" crop="center" as im %}
+			    	<img src="{{ im.url }}" width="{{ im.width }}" height="{{ im.height }}">
+				{% endthumbnail %}<br/>
+				<a href="{% url 'recipe_details' recipe.slug %}">
+					{{ recipe.title }}
+				</a>
+			</li>
+			{% endfor %}
+		</ul>
+	{% endif %}
+	{% if recipe_boxes %}
+		<p>Коробки рецептов пользователя:</p>
+		{% for box in recipe_boxes %}
+			<a href="">{{ box.title }}</a>
+		{% endfor %}
+	{% endif %}
+{% endblock content %}

@@ -1,0 +1,116 @@
+{% load thumbnail static vote_tags core_tags pytils_numeral %}
+
+<div class="big-search big-search2">
+    <form action="" method="get">
+        <input type="text" class="search-inp" name="query" placeholder="Поиск по рецептам"/>
+        <input type="submit" class="search-inp-submit" value=""/>
+    </form>
+    <a class="choose">Выберите категорию <img src="{% static 'images/icons/arrow2.png' %}" alt=""/></a>
+    <div class="cats">
+        {% for category in categories %}
+            <a {% if not chosen_category and chosen_category.id == category.id %}class="active"{% endif %} href="?category={{ category.id }}">{{ category }}</a>
+        {% endfor %}
+    </div>
+    <a class="close"></a>
+</div>
+<div class="search-filter">
+    <div class="views">
+        <a href="#" class="block-view" title="Блоки"></a>
+        <a href="#" class="list-view" title="Список"></a>
+    </div>
+    <div class="sorting-left">
+        <p>Отсортировать по : <a id='recipes_sort' href="{{ request.get_full_path|cut:"&sort=created&order=down"|cut:"&sort=created&order=up"|cut:"?sort=created&order=down"|cut:"?sort=created&order=up" }}{% if not request.GET or request.GET.sort and request.GET|length == 2 %}?{% else %}&{% endif %}sort=created&order={% if order == 'down'%}up{% else %}down{% endif %}" class="{% if order == 'down'%}up{% else %}down{% endif %}">Дате > {% if order == 'down'%}Старые{% else %}Новые{% endif %}</a></p>
+    </div>
+    {% if chosen_category %}
+        <p>В выбраной категории — <b>{{ chosen_category }}</b>
+    {% else %}
+        <p>Всего
+    {% endif %}
+        найдено <b>{{ recipe_list|length }}</b> {{ recipe_list|length|add:"0"|choose_plural:"рецепт,рецепта,рецептов" }}.  </p>
+    <div class="clear"></div>
+</div>
+<div class="selected-filters">
+    Включеные фильры:
+    {% for filter in filters %}
+        <a href="#" type="{{ filter.0 }}" data-value="{{ filter.1 }}">{{ filter.2 }} <img class="close_filter" src="{% static 'images/icons/close4.png' %}" alt=""/></a>
+    {% endfor %}
+</div>
+<div class="search-results">
+    <div class="s-blocks" class="js-masonry" data-masonry-options='{ "columnWidth": 185, "itemSelector": ".block" }'>
+        {% for recipe in recipe_list %}
+            <div class="block">
+            {% if recipe.main_image %}
+                <a href="{{ recipe.get_absolute_url }}">
+                    <img src="{% thumbnail recipe.main_image "168x200" crop="center" as image %} {{ image.url }} {% endthumbnail %}" alt="{{ recipe.title }}" title="{{ recipe.title }}" class="block-img"/>
+                </a>
+            {% endif %}
+            <p class="aut">Автор: <a href="{{ recipe.author.get_absolute_url }}">{{ recipe.author.username }}</a></p>
+            <div class="block-text">
+                <a href="{{ recipe.get_absolute_url }}" class="block-title">{{ recipe.title }}</a>
+                <p>{{ recipe.description|truncatechars:150}}</p>
+            </div>
+            <div class="block-bot">
+                <a href="#" class="s-like {% if recipe|user_ranked:user %}act{% endif %}"><img src="{% if recipe|user_ranked:user %}{% static 'images/icons/ico13.png' %}{% else %}{% static 'images/icons/ico12.png' %}{% endif %}" alt=""/> {{recipe|get_votes|length}}</a>
+                <span><a href="#" class="s-com"><img src="{% static 'images/icons/ico7.png' %}" alt=""/> {{ recipe.num_comments }}</a></span>
+                <span><a href="#" class="s-fr"><img src="{% static 'images/icons/ico11.png' %}" alt=""/> {{ recipe.recipesbox_set.count }}</a></span>
+            </div>
+        </div>
+        {% endfor %}
+
+    </div>
+    <div class="s-rows">
+        {% for recipe in recipe_list %}
+            <div class="div-row">
+                {% if recipe.main_image %}
+                    <div class="block-img">
+                    <a href="{{ recipe.get_absolute_url }}"><img src="{% thumbnail recipe.main_image "250x175" crop="center" as image %} {{ image.url }} {% endthumbnail %}" alt="{{ recipe.title }}" title="{{ recipe.title }}" /></a>
+                    </div>
+                {% endif %}
+                <div class="div-text">
+                    <div class="right-icos">
+                        {% if recipe.prepare_time_from and recipe.prepare_time_to %}
+                        <p>{{ recipe.prepare_time_from }} - {{ recipe.prepare_time_to }} мин. <img src="{% static 'images/icons/ico16.jpg' %}" alt=""/></p>
+                        {% endif %}
+                        <p>{{ recipe.complexity }} <img src="{% static 'images/icons/ico17.jpg' %}" alt=""/></p>
+                        {% if recipe.preparation_method %}
+                        <p>{{ recipe.preparation_method }} <img src="{% static 'images/icons/ico18.jpg' %}" alt=""/></p>
+                        {% endif %}
+                    </div>
+                    <h2><a href="{{ recipe.get_absolute_url }}">{{ recipe.title }}</a></h2>
+                    <p class="aut">Автор: <a href="{{ recipe.author.get_absolute_url }}">{{ recipe.author.username }}</a></p>
+                    <p class="aut">Категория:
+                        {% for category in recipe.category.all %}
+                            <a href="{{ category.get_absolute_url }}">{{ category }}</a>
+                        {% endfor %}
+                    </p>
+                    <div class="table">
+                        <table>
+                            <tr class="gray">
+                                <td align="left">Время употребления:</td><td align="right"><b>{{ recipe.eating_time }}</b></td>
+                            </tr>
+                            {% if recipe.cuisine.all %}
+                            <tr>
+                                <td align="left">Национальнасть блюда:</td><td align="right"><b>{%  for cuisine in recipe.cuisine.all %}{{ cuisine }}{% endfor %}</b></td>
+                            </tr>
+                            {% endif %}
+                            {% if recipe.get_food_energy.0 %}
+                            <tr class="gray">
+                                <td align="left">Каллорий на блюдо:</td><td align="right"><b>{{ recipe.get_food_energy.0 }}</b></td>
+                            </tr>
+                            {% endif %}
+                            <tr>
+                                <td align="left">Диета:</td><td align="right"><b>{% for diet in recipe.diet|split:',' %}{{ diet }}{% endfor %}</b></td>
+                            </tr>
+                        </table>
+                    </div>
+                    <a href="#" class="more-link"><img src="{% static 'images/icons/plus-ico.png' %}" alt=""/> В коробку</a>
+                    <span class="num-like">{{recipe|get_votes|length}}</span>
+                    <span class="num-comm">{{ recipe.num_comments }}</span>
+                </div>
+                <div class="clear"></div>
+            </div>
+        {% endfor %}
+
+        {% include "page_pagination.html" with part_list=part_list object_list=recipe_list prev_base_page=prev_base_page next_base_page=next_base_page objects_per_page=per_page %}
+    </div>
+</div>

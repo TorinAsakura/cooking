@@ -1,0 +1,441 @@
+{% extends 'base.html' %}
+{% load thumbnail pymorphy_tags stopword_tags static vote_tags ingredients_tags core_tags pytils_numeral %}
+
+{% block extra_header %}
+	{{ comment_form.media }}
+	<script type="text/javascript" src="{{ STATIC_URL}}js/jquery.timers-1.2.js"></script>
+	<script type="text/javascript" src="{{ STATIC_URL}}js/jquery.easing.1.3.js"></script>
+	<script type="text/javascript" src="{{ STATIC_URL }}js/jquery.galleryview-3.0-dev.js"></script>
+    <script type="text/javascript" src="{{ STATIC_URL }}js/ranking/ranking.js"></script>
+	<link type="text/css" rel="stylesheet" href="{{ STATIC_URL }}css/jquery.galleryview-3.0-dev.css" />
+
+	<link type="text/css" rel="stylesheet" href="/static/tiny_mce/plugins/spellchecker/css/content.css" />
+{% endblock extra_header %}
+
+{% block breadcrumbs %}
+    <a href="/"><img src="{% static 'images/home.png' %}" alt=""/></a> →
+    <a href="{% url 'recipe_list' %}">Рецепты</a> →
+    <span>{{ recipe.title }}</span>
+{% endblock breadcrumbs %}
+
+{% block content %}
+
+    <br/>
+
+<div class="center-div center-div2">
+    <div class="recipe-product">
+        <h1>{{ recipe.title|r_stopwords|escape }}</h1>
+        <div class="description-product">
+            <div class="product-foto">
+                <div class="img">
+                    {% if recipe.main_image %}
+                     <a class="img-fancybox" onclick="return false" href="/media{{ recipe.main_image }}">
+                        <img src="{% thumbnail recipe.main_image "246x170" crop="center" as image %} {{ image.url }} {% endthumbnail %}" alt="{{ recipe.title }}" title="{{ recipe.title }}" />
+                    </a>
+                    {% endif %}
+                    {% if recipe.gallery.images.all %}
+                        <div class="allimg"><a id="photo" href="#recipe_gallery_container">смотреть все фото <span>{{ recipe.gallery.images.count }}</span></a></div>
+                    {% endif %}
+                </div>
+                <a href="{% url 'recipe_gallery_upload' recipe.slug %}" class="add-foto">Добавить фото</a>
+            </div>
+            <div class="product-cont">
+                <div class="distribution">
+                    <div class="ask-question">
+                        <a id="send-message" href="#pop-up1" >Задать вопрос</a>
+                    </div>
+                    <div class="distribution-com">
+                        <a href="#comments">Комментарии</a>
+                    </div>
+                    <div class="distribution-right">
+                        <!-- AddThis Button BEGIN -->
+                            <div class="addthis_toolbox addthis_default_style addthis_16x16_style" >
+                            <a class="addthis_button_twitter"></a>
+                            <a class="addthis_button_facebook"></a>
+                            <a class="addthis_button_vk"></a>
+                            <a class="addthis_button_google_plusone_share"></a>
+                            </div>
+                            <script type="text/javascript">var addthis_config = {"data_track_addressbar":true};</script>
+                            <script type="text/javascript" src="//s7.addthis.com/js/300/addthis_widget.js#pubid=ra-52a0c46563ed4fbb"></script>
+                        <!-- AddThis Button END -->
+                        <div class="print_and_send" style="margin-left: 64px;">
+                            <a href="#" class="send"><img src="{% static 'images/icons/send.jpg' %}" alt=""/></a>
+                            <a href="#" class="send"><img src="{% static 'images/icons/send2.jpg' %}" alt=""/></a>
+                        </div>
+                    </div>
+                </div>
+                <div class="product-cont-in">
+                    <div class="block-left">
+                        <a href="{% url 'add_vote' recipe.get_contenttype_id recipe.id %}" class="alikes {% if recipe|user_ranked:user %}num-liked{%else%}num-like{%endif%}" style="padding: 0; width: 75px">
+                            нравится?
+                            <span>{{recipe|get_votes|length}}</span>
+                        </a>
+                        <div class="elements">
+                            <table>
+{#                                <a id="add_to_box" href="{% url 'add_recipe_to_box' recipe.slug %}">Добавить рецепт в коробку</a>#}
+                                <tr>
+                                    <td><a href="{% url 'wish' recipe %}" class="el1 wish"></a></td>
+                                    <td><a href="{% url 'add_recipe_to_box' recipe.slug %}" class="el2"></a></td>
+                                </tr>
+{#                                <tr>#}
+{#                                    <td><a href="#" class="el3"></a></td>#}
+{#                                    <td><a href="#" class="el4"></a></td>#}
+{#                                </tr>#}
+                            </table>
+                        </div>
+                    </div>
+                    <div class="block-right">
+                        <h4>Описание рецепта</h4>
+                        <p>{{ recipe.description }}</p>
+                        {% if recipe.prepare_time_from and recipe.prepare_time_to %}
+                            <div class="time">Время приготовления<span>
+                                {{ recipe.prepare_time_from }} - {{ recipe.prepare_time_to }}
+                            </span>мин.</div>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="ingredients-block">
+        <div class="ingredients-block-title">
+            <div class="servings">
+                <div class="servings-block numb">
+                    <span class="minus">-</span>
+                        <form id='porion_form' action="{% url 'set_portion' recipe %}" method="post" style="display: inline">
+                            <input type="text" name="portion" value="{% if recipe.portion_num %}{{ recipe.portion_num }}{% else %}0{% endif %}" class="num"/>
+                        </form>
+                    <span class="plus">+</span>
+                </div>
+                Количество порций:
+            </div>
+            <h2>Ингридиенты</h2>
+        </div>
+        <div class="ingredients-block-table">
+            {% grouped_ingredients ingredients.items as ing_groups %}
+
+            {% for items in ing_groups %}
+
+                <div class="ingredients-block-row">
+                    {% for group, ing_list in items %}
+
+                            <div class="{% if forloop.counter|divisibleby:"2" %}ingredients-block-right{% else %}ingredients-block-left{% endif %}">
+                                <h5>{{ group }}</h5>
+                                <ul class="nosort">
+                                    {% for ing in ing_list %}
+                                        <li class="sort-item {% if forloop.counter|divisibleby:"2" %}gr{% endif %}"><span class="f-right">
+                                        {{ ing.value|floatformat }} {{ ing.get_measure_display|plural:ing.value }}
+                                        </span><a href="/recipes/?include_ing={{ ing.ingredient_info.name_rus }}">{{ ing.ingredient_info.name_rus }}</a>{% if ing.addit_info %}<small> ({{ ing.addit_info}})</small>{% endif %}</li>
+                                    {% endfor %}
+                                </ul>
+                            </div>
+
+                    {% endfor %}
+                </div>
+            {% endfor %}
+        </div>
+        <div class="energy-value">
+            <div class="energy-value-right">
+                <a class="down" href="#">Таблица</a>
+                Енергетическая ценность: {{ recipe.get_food_energy.0 }} ккал / {{ recipe.get_food_energy.1 }} кДж
+            </div>
+            <div class="energy-value-left">
+                Питательная ценность: Углеводы: <b>{{ recipe.get_food_elements.carbohydrt }} г</b> | Жиры: <b>{{ recipe.get_food_elements.lipid_total }} г</b> | Белки: <b>{{ recipe.get_food_elements.protein }} г</b>
+            </div>
+        </div>
+        <div class="name-block">
+
+                {% if recipe.category.all %}
+                <div class="name-block-in"><b>Назначения:</b>
+                    {% for category in recipe.category.all %}
+                        <a href="{{ category.get_absolute_url }}">{{ category }}</a>
+                    {% endfor %}
+                </div>
+                {% endif %}
+
+                {% if recipe.diet %}
+                <div class="name-block-in"><b>Диета:</b>
+                    {% for diet in recipe.diet|split:',' %}
+                        <a href="/recipes/?diet_{{ diet_id }}">{{ diet }}</a>
+                    {% endfor %}
+                </div>
+                {% endif %}
+
+                {% if recipe.cuisine.all %}
+                <div class="name-block-in"><b>Национальность кухни:</b>
+                    {%  for cuisine in recipe.cuisine.all %}
+                        <a href="/recipes/?cuisine_{{ cuisine.id }}">{{ cuisine }}</a>
+                    {% endfor %}
+                </div>
+                {% endif %}
+
+        </div>
+    </div>
+
+    <div class="rec-steps">
+        <div class="steps-title">
+            <h2>Приготовление: </h2>
+            <div class="step-info">{{ step_list|length|add:"0"|get_plural:"шаг,шага,шагов"}}</div>
+        </div>
+        {% for step in step_list %}
+            <div class="rec-step">
+            <div class="step-foto">
+                {%  if step.image  %}
+                    <img src="{% thumbnail step.image "214x143" crop="center" as image %} {{ image.url }} {% endthumbnail %}" alt="{{ recipe.title }}" title="{{ recipe.title }}"/>
+                    <a href="{{ step.image.url }}" class="review"></a>
+                {% endif %}
+            </div>
+            <div class="step-text">
+                <div class="title">Шаг {{ step.number_of_step }}:</div>
+                <p>{{ step.description|r_stopwords|safe }}</p>
+            </div>
+        </div>
+        {% endfor %}
+
+</div>
+    <div id="comments_container">
+        {% include 'comments/comments_in_detail_pages.html' %}
+    </div>
+</div>
+<div class="h-col-right side-col-right">
+    <div class="athor-block">
+        <div class="title">
+            <h4>Автор рецепта:</h4>
+        </div>
+        <div class="winner">
+            <div class="athor-block-foto">
+                <div class="winner-img">
+                    {% if recipe.author.profile.avatar %}
+                        <a href="{% url 'public_userpage' recipe.author.username %}"><img src="{{ recipe.author.profile.avatar.url }}" alt=""/></a>
+                    {% endif %}
+                </div>
+                <a class="more-btn" href="#"><img src="{% static 'images/plus3.png' %}" alt=""/>следовать</a>
+            </div>
+            <div class="winner-text">
+                <div class="athor-line">
+                    <span>Ник:</span>
+                    <a href="{% url 'public_userpage' recipe.author.username %}" class="aname">{{ recipe.author }}</a>
+                </div>
+                <div class="athor-line">
+                    <span>Добавил: </span>
+                    <a href="#">{{ recipe.author.recipe_set.count|add:"0"|get_plural:"рецепт,рецепта,рецептов"}}</a>
+                </div>
+                <div class="athor-line">
+                    <span>Статус:</span>
+                    <a href="#">{{ recipe.author.profile.status }}</a>
+                </div>
+                <div class="athor-line">
+                    <span>Рейтинг:</span>
+                    <small>{{ recipe.author.profile.rating }}</small>
+                </div>
+            </div>
+        </div>
+        <div class="others-recipes">
+            <div class="others-recipes-title">
+                <h4>Другие рецепты автора:</h4>
+            </div>
+            <div class="pane-slider exp">
+                <div class="scrollable" id="scrollable">
+                    <div class="items">
+                        {% for r in recipe.author.recipe_set.all %}
+                        <div class="item">
+                            <ul class="recipts">
+                                <li>
+                                    {% if r.main_image %}
+                                        <a href="{{ r.get_absolute_url }}" class="rec-img"><img src="{% thumbnail r.main_image "51x51" crop="center" as image %} {{ image.url }} {% endthumbnail %}" alt="{{ recipe.title }}" title="{{ recipe.title }}"/></a>
+                                    {% endif %}
+                                    <div class="rec-inf">
+                                        <p>{{ r.title }}</p>
+                                    </div>
+                                    <div class="link-block">
+                                        <span class="num-like">
+                                            <big>{{ r.num_votes }}</big>
+                                        </span>
+                                        <span class="num-comm">
+                                            <big>{{ r.num_comments}}</big>
+                                        </span>
+                                    </div>
+                                </li>
+{#                                <li>#}
+{#                                    <a href="#" class="rec-img"><img src="images/img2.jpg" alt=""/></a>#}
+{#                                    <div class="rec-inf">#}
+{#                                        <p>Запеченные#}
+{#                                            грибы#}
+{#                                            с прорезями</p>#}
+{#                                    </div>#}
+{#                                    <div class="link-block">#}
+{#                                        <span class="num-like">#}
+{#                                            <big>12</big>#}
+{#                                        </span>#}
+{#                                        <span class="num-comm">#}
+{#                                            <big>18</big>#}
+{#                                        </span>#}
+{#                                    </div>#}
+{#                                </li>#}
+
+                            </ul>
+                        </div>
+                        {% endfor %}
+                    </div>
+                </div>
+                <a href="javascript:void(0)" class="browse left prev" id="prev1"></a>
+                <a href="javascript:void(0)" class="browse right next" id="next1"></a>
+                <a class="more" href="#">все рецепты ({{ recipe.author.recipe_set.count }})</a>
+            </div>
+            <div class="expand-div">
+                <a id="animate">свернуть</a>
+            </div>
+            <div class="clear"></div>
+        </div>
+    </div>
+    <div class="side-block">
+        <div class="title">
+            <h4>Похожие рецепты:</h4>
+        </div>
+        {% for sr in similar_recipies %}
+        <div class="myrec">
+            {% if sr.main_image  %}
+                <a href="{{ sr.get_absolute_url }}" class="rec-img"><img src="{{ sr.main_image.url }}" alt=""/></a>
+            {% endif %}
+            <div class="rec-title">
+                <a href="{{ sr.get_absolute_url}}">{{ sr.title }}</a>
+                <div class="athor"><small>Автор:</small> <a href="{% url 'public_userpage' sr.author.username %}">{{ sr.author }}</a></div>
+                <span class="num-like"><big>{{ sr.num_votes }}</big></span>
+                <span class="num-comm"><big>{{ sr.num_comments }}</big></span>
+                <span class="num-plus"><big>{{ sr.recipesbox_set.count }}</big></span>
+                <span class="num-ok"><big>{{ sr }}</big></span>
+            </div>
+        </div>
+        {% endfor %}
+
+    </div>
+    <div class="pink-block">
+        <div class="pink-block-in">
+            <div class="pink1">
+                <div class="p">
+                <div class="num">{{ recipe.visits_num }}</div>
+                <div class="text-pink">{{ recipe.visits_num|choose_plural:"просмотр,просмотра,просмотров" }}</div>
+                </div>
+                <div class="p">
+                <div class="num">{{ recipe.wished_set.count }}</div>
+                <div class="text-pink">поварят хотят приготовить</div>
+                </div>
+            </div>
+            <a href="{% url 'wish' recipe %}" class="green pink-link wish" >И я !</a>
+        </div>
+        <div class="pink-block-in">
+            <div class="pink2">
+                <div class="num">{{ recipe.recipesbox_set.count }}</div>
+                <div class="text-pink">человек добавили к
+                себе в коробку </div>
+            </div>
+            <a href="{% url 'add_recipe_to_box' recipe.slug %}" class="green pink-link" >Добавить</a>
+        </div>
+    </div>
+    <div class="section comments">
+            <div class="title"><h4>Советы и рекомендации</h4></div>
+            <h5>Как хранить плов  в холодильнике под кустом выползня?</h5>
+            <div class="comment">
+                <div class="comment-author">
+                    <div class="author">
+                        <a href="#"><img src="{% static 'images/autor5.jpg' %}" alt=""/></a>
+                    </div>
+                    <a href="#" class="name-author">CroftMiledy</a>
+                    <span class="num-like"><big>12</big></span>
+                </div>
+                <div class="comment-author-text">
+                    <blockquote>
+                        <p>Плов необходимо
+                            поместить
+                            в моразилку с закрытой
+                            крышкой в черном
+                            целафановом пакете</p>
+                    </blockquote>
+                    <a class="more" href="#">все советы</a>
+                </div>
+            </div>
+    </div>
+</div>
+<div class="clear"></div>
+
+{#    <p>#}
+{#		{% if request.user.is_authenticated %}#}
+{#			<a id="add_to_box" href="{% url 'add_recipe_to_box' recipe.slug %}">Добавить рецепт в коробку</a>#}
+{#			<a href="{% url 'recipe_gallery_upload' recipe.slug %}">Добавить изображения в галлерею</a>#}
+{#		{% endif %}#}
+		<div style="display:none" id="recipe_to_box"></div>
+{#	</p>#}
+{##}
+{#	<h3>Комментарии</h3>#}
+{#	#}
+{#	{% include "comments/comments.html" %}#}
+{##}
+{#	{% if recipe.gallery.images.all %}#}
+{#		<ul id="recipe_gallery">#}
+{#			{% for image in gallery_images %}#}
+{#				<li>#}
+{#					<img src="{{ image.image.url }}" alt="{{ image.title }}"/>#}
+{#				</li>#}
+{#			{% endfor %}#}
+{#		</ul>#}
+{#	{% endif %}#}
+
+<div style="display:none;">
+    {% include 'question_form.html' with author_name=request.user recipient_id=recipe.author.id %}
+
+    <div id="recipe_gallery_container">
+        <ul id="recipe_gallery" >
+            {% for image in gallery_images %}
+                <li>
+                    <img src="{{ image.image.url }}" alt="{{ image.title }}"/>
+                </li>
+            {% endfor %}
+        </ul>
+    </div>
+
+</div>
+
+{% endblock %}
+
+{% block extra_js %}
+<script type="text/javascript">
+$(function(){
+	if( $('#recipe_gallery').find('li').length > 0) {
+		$('#recipe_gallery').galleryView({
+			autoplay: true,
+		});
+	}
+	$("#add_to_box").live('click', function(evnt){
+		evnt.preventDefault();
+		$("#recipe_to_box")
+		.load('{% url 'add_recipe_to_box' recipe.slug %}')
+		.dialog({
+			modal: true,
+			height: '500',
+			width: '700',
+			buttons: [
+				{
+					text: "Готово",
+					click: function(){
+						if ($("select[name=box_to_add]").val() == null){
+							alert("Выберите коробку из предложенных");
+							return
+						}
+						var data = $("#list_box_form").serialize();
+						var url = $("#list_box_form").attr('action');
+						$.post(url, data, function(data){
+						});
+						$(this).dialog("close");
+						alert("Рецепт успешно добавлен в выбранные коробки");
+					}
+				},
+				{
+					text: "Отмена",
+					click: function(){ $(this).dialog("close");}
+				}
+			],
+		});
+	});
+});
+</script>
+{% endblock extra_js %}

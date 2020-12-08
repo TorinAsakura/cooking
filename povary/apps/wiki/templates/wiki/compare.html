@@ -1,0 +1,37 @@
+{% extends 'base.html' %}
+
+{% block extra_header %}
+	<style type="text/css">
+	    /* minimal style for the diffs */
+	    del, ins {
+	        color: #000;
+	        text-decoration: none;
+	    }
+	    del { background-color: #ffe6e6; }
+	    ins { background-color: #e6ffe6; }
+	    sup.follow { color: #5555ff; }
+	</style>
+{% endblock extra_header %}
+
+{% block content %}
+	<div>
+		<h3>Сравниваются:</h3>
+		<ul>
+			<li>Версия {{ item1.revision }}</li>
+			<li>Версия {{ item2.revision }}</li>
+		</ul>
+		<p>Документа "{{ wikipage.title }}"</p>
+	</div>
+	<h3>Заголовок</h3>
+	<div>{{ title_diff|safe }}</div>
+	<h3>URL</h3>
+	<div>{{ slug_diff|safe }}</div>
+	<h3>Изображение</h3>
+	<div>{{ image_diff }}</div>
+	<h3>Текст</h3>
+	<div>{{ body_diff }}</div>
+	<h3>Предупреждения</h3>
+	<div>{{ warnings_diff|safe }}</div>
+	<h3>Ссылки на первоисточники</h3>
+	<div>{{ prooflinks_diff|safe }}</div>
+{% endblock content %}

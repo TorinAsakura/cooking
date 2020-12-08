@@ -1,0 +1,58 @@
+{% extends "base.html" %}
+
+{% block title %}Обратная связь - Повары.ру{% endblock %}
+
+{% block content %}
+<div class="feedback-mess">
+                        <br/>
+                        <h1>Обратная связь</h1>
+                        <div class="application">
+                            <div class="recipe-block">
+                            {% if is_submited %}
+                                <div class="application-in">
+                                    <div class="application-title">Ваше сообщение отправлено</div>
+                                    <p>Ваше сообщение доставлено в службу поддержки, через несколько минут вы получите подтверждение на ваш е-мейл адрес.</p>
+                                </div>
+                                </br>
+                                <div align="center">
+                                    <h4>Полезные ссылки:</h4>
+                                    <div>Назад на <strong><a href="{% url 'home' %}">главную страницу</a></strong></div>
+                                </div>
+                            {% else %}
+                                <form method="POST">
+                                {% csrf_token %}
+                                    <div class="form-row">
+                                        <label>Тема<span>*</span></label>
+                                        <div class="block-select block-select5">
+                                            {% include "core/includes/field.html" with field=form.sub  %}
+                                        </div>
+                                        <div class="ok"></div>
+                                        <div class="clear"></div>
+                                    </div>
+                                    <div class="form-row">
+                                        <label>Ваше имя<span>*</span></label>
+                                        {% include "core/includes/field.html" with field=form.name class="input-text" %}
+                                        <div class="ok"></div>
+                                        <div class="clear"></div>
+                                    </div>
+                                    <div class="form-row">
+                                        <label>Ваш e-mail<span>*</span></label>
+                                        {% include "core/includes/field.html" with field=form.email class="input-text" %}
+                                        <div class="ok"></div>
+                                        <div class="clear"></div>
+                                    </div>
+                                    <div class="form-row">
+                                        <label>Ваше сообщение<span>*</span></label>
+                                        {% include "core/includes/field.html" with field=form.text class="textarea" %}
+                                        <div class="ok"></div>
+                                        <div class="clear"></div>
+                                    </div>
+                                    <input type="submit" class="submit" value="Отправить"/>
+                                 </form>
+                                {% endif %}
+                            </div>
+                        </div>
+                    </div>
+
+{% endblock content %}
+

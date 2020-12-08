@@ -1,0 +1,21 @@
+{% extends 'categories/category_details.html' %}
+{% load thumbnail %}
+
+{% block breadcrumbs %}
+	{{ block.super }} >> <a href="{% url 'subcategory_details' category.slug subcategory.slug %}">{{ subcategory.title }}</a>
+{% endblock breadcrumbs %}
+
+{% block content %}
+	<h1>{{ subcategory.title }}</h1>
+	<h3>Рецепты</h3>
+	{% for recipe in recipe_list %}
+		<div>
+			<p><a href="{% url 'recipe_details' recipe.slug %}">{{ recipe.title }}</a></p>
+			{% thumbnail recipe.cover_image "100x100" crop="center" as im %}
+				<img src="{{ im.url }}" width="{{ im.width }}" height="{{ im.height }}"/>
+			{% endthumbnail %}
+		</div>
+	{% empty %}
+		<p>В данной подкатегории рецепты пока не добавлены</p>
+	{% endfor %}
+{% endblock content %}

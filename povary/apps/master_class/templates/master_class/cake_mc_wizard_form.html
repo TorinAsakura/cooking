@@ -1,0 +1,822 @@
+{% extends "cake_base.html" %}
+{% load i18n widget_tweaks %}
+
+{% block extra_header %}
+
+<link type="text/css" rel="stylesheet" href="{{ STATIC_URL }}js/chosen/chosen.css" />
+<link href="{{STATIC_URL}}cake/css/select2.css" rel="stylesheet"/>
+
+<script src="{{STATIC_URL}}cake/js/jquery-ui-1.10.1.custom.min.js" type="text/javascript"></script>
+<script src="{{STATIC_URL}}cake/js/jquery.ui.slider.js" type="text/javascript"></script>
+<!--
+<script src="{{STATIC_URL}}cake/js/textext.plugin.autocomplete.js" type="text/javascript"></script>
+<script src="{{STATIC_URL}}cake/js/textext.plugin.tags.js" type="text/javascript"></script>
+-->
+<script src="{{STATIC_URL}}cake/js/jquery.ui.sortable.js" type="text/javascript"></script>
+<script type="text/javascript" src="{{ STATIC_URL }}js/jquery.formset.js"></script>
+<script type="text/javascript" src="{{ STATIC_URL }}js/chosen/chosen.jquery.min.js"></script>
+<script type="text/javascript" src="{{ STATIC_URL }}js/ajax-chosen.js"></script>
+<script src="{{STATIC_URL}}cake/js/select2.js"></script>
+		<script type="text/javascript" src="{{STATIC_URL}}cake/js/custom.js"></script>
+<script src="{{STATIC_URL}}js/form-master/jquery.form.js" type="text/javascript"></script>
+
+<script type="text/javascript">
+
+var currentStep = 1;
+
+var getGroups = function(){
+	        	var groups_list = [];
+				var el_groups = $('#id_1-groups');
+				$.each(el_groups.val().split("|"), function(i,val){
+					if( val.length>0)
+						groups_list.push({id:i,text:val});
+				});
+	        	return groups_list;
+	        }
+
+var add_select2 = function(el){
+	        	el.select2({
+				    createSearchChoice:function(term, data) {
+				    	 if ($(data).filter(function() { return this.text.localeCompare(term)===0; }).length===0) {
+				    	 	return {id:term, text:term};}
+				    	 },
+					multiple: false,
+					data: function() { return { text:'tag', results: getGroups() }; },
+					placeholder: "Select ingredient group",
+					allowClear: false,
+				});
+		    }
+
+var add_ajax_chosen = function (el){
+		$(el).ajaxChosen(
+			{
+				method: 'GET',
+				url: "/ingredients/autocomplete/",
+				dataType: 'json'
+			},
+			function (data) {
+				var terms = {};
+				$.each(data, function (i, val) {
+					terms[val.id] = val.value
+				});
+				console.log(this);
+				return terms;
+			}
+
+		);
+
+
+	};
+
+	$(".goto_step").live("click", function(evnt){
+		evnt.preventDefault();
+		var goto_step = $(this).attr('value');
+		$("#next_form").attr('value', goto_step);
+		$("#wizard").trigger('submit');
+	});
+
+afterload = function() {	//dont work on 1st load of 1st form!!!
+		var emptyOption = "---------";
+		var errorClass = "errors";
+
+		handleFileSelect = function(evt) {
+	    	console.log("file changed");
+		  	var self = $(this);
+		    var files = evt.target.files; // FileList object
+		    if( files.length > 0 ){
+		    	var reader = new FileReader();
+				reader.onload = function (e) {
+				    self.parent().parent()
+				        .css('background-image', "url("+e.target.result+")")
+				        .css('background-size', "cover")
+				        .css('background-repeat', "no-repeat");
+
+				};
+				reader.readAsDataURL(files[0]);
+		    }
+	  	}
+	  	$("#id_0-image").live('change', handleFileSelect);
+	    $.each($("input.download-foto-link"), function( key, value ) {
+	  		$(this).live('change', handleFileSelect);
+	    });
+ 		if(currentStep==1){
+
+				jQuery( ".list" ).sortable({
+						handle: ".ingrid-line-block"
+				}).disableSelection();
+			updateSlider = function(){
+				jQuery("#slider").slider({
+					min: 1,
+					max: 200,
+					values: [jQuery("input.minCost").val(),jQuery("input.maxCost").val()],
+					range: true,
+					stop: function(event, ui) {
+						jQuery("input.minCost").val(jQuery("#slider").slider("values",0));
+						jQuery("input.maxCost").val(jQuery("#slider").slider("values",1));
+					},
+					slide: function(event, ui){
+						jQuery("input.minCost").val(jQuery("#slider").slider("values",0));
+						jQuery("input.maxCost").val(jQuery("#slider").slider("values",1));
+					}
+				});
+			}
+			updateSlider();
+
+				firstStepImage = function(){
+					return $('input[type=file]');
+				}
+				firstStepName = function(){
+					return $('input#id_0-title');
+				}
+				firstStepCategory = function(){
+					return $('select#id_0-cats');
+				}
+				firstStepSubcategory = function(){
+					return $('select#id_0-subcat');
+				}
+				firstStepSubcategoryLabel = function(){
+					return firstStepSubcategory().parent().parent().find("label");
+				}
+
+				loadSubcategories = function(cat_name){
+					var url = "{% url 'get_mcsubcategories' 'cat_title' %}".replace("cat_title",cat_name);
+					console.log(url);
+					$.get( url, function( data ) {
+						var subc_list = $.parseJSON(data).subcategories;
+						console.log(subc_list);
+						var el_subc = $(firstStepSubcategory());
+						// remove old options
+						el_subc.empty();
+						$.each(subc_list, function(i, val) {
+						  el_subc.append($("<option></option>")
+						     .attr("value", val.slug).text(val.title));
+						});
+						//show subcategories
+						var prevSel = $("#prevSelSubCat_slug").val();
+						firstStepSubcategory().val(prevSel);
+						validateAndShowSubCategory();
+					});
+				}
+
+				var sel = $("#prevSelCat_slug").val();
+				if(sel=="None"){
+					sel = firstStepCategory().find(":selected").val();
+				}
+				firstStepCategory().val(sel);
+				loadSubcategories(sel);
+
+				validateAndShowTitle = function(){
+					var el_name = firstStepName();
+					var valid = $.trim(el_name.val()).length != 0;
+					if(!valid){
+				 		$(el_name).addClass(errorClass);
+				 	}else{
+				 		$(el_name).removeClass(errorClass);
+				 	}
+					return valid;
+				}
+				validateAndShowImage = function(){
+					var el_image = firstStepImage();
+					var image_cached = el_image.parent().parent().attr('cached') == 'true';
+					var valid = ($.trim(el_image.val()).length > 0) || image_cached;
+					if(!valid){
+				 		$(el_image).parent().parent().addClass(errorClass);
+				 		$(el_image).parent().parent().css('background-image', '');
+				 	}else{
+				 		$(el_image).parent().parent().removeClass(errorClass);
+				 	}
+					return valid;
+				}
+				validateAndShowCategory = function(){
+					var el_cat = firstStepCategory().find(":selected");
+					var cat = el_cat.val();
+					var valid = (cat!="None") && ($.trim(cat).length > 0);
+				 	if(!valid){
+				 		$(el_cat).parent().parent().addClass(errorClass);
+				 	}else{
+				 		$(el_cat).parent().parent().removeClass(errorClass);
+				 	}
+					return valid;
+				}
+				validateAndShowSubCategory = function(){
+					var el_cat = firstStepSubcategory().find(":selected");
+					var cat = el_cat.text();
+					var valid = (cat!=null) && ($.trim(cat).length > 0) && (cat!=emptyOption);
+				 	if(!valid){
+				 		$(el_cat).parent().parent().addClass(errorClass);
+				 	}else{
+				 		$(el_cat).parent().parent().removeClass(errorClass);
+				 	}
+					return valid;
+				}
+				validateFirstStep = function(){
+					var valid = true;
+					valid = validateAndShowTitle() && valid;
+					valid = validateAndShowImage() && valid;
+					valid = validateAndShowCategory() && valid;
+					valid = validateAndShowSubCategory() && valid;
+					return valid;
+				}
+
+				$('input.minCost').live('change', function(evnt){
+						var val = parseInt($(this).val());
+						if(isNaN(val)||val<0)
+							val = 0;
+						var max = parseInt($('input.maxCost').val());
+						if(val>max)
+							val = max;
+						$(this).val(val);
+						updateSlider();
+				});
+				$('input.maxCost').live('change', function(evnt){
+						var val = parseInt($(this).val());
+						if(isNaN(val)||val>200)
+							val = 200;
+						var min = parseInt($('input.minCost').val());
+						if(val<min)
+							val = min;
+						$(this).val(val);
+						updateSlider();
+				});
+
+				var alltags = {% if tags %}"{{tags}}".split(','){%else%}[]{%endif%}
+				$("#id_0-mc_tags").select2({tags: alltags, tokenSeparators: [","]});
+				$.each($("input[type=file]"), function(i,val){
+		        	    $(val).live("change", function(evnt){
+		        			validateAndShowImage();
+		        			var el_image = firstStepImage();
+		        			el_image.parent().parent().attr('cached','false');
+		        		});
+		        });
+		        $('#id_0-title').live('change', function(evnt){
+		        	validateAndShowTitle();
+		        });
+		        $(firstStepCategory()).live('change', function(evnt){
+					//load subcategories
+					var sel_slug = $(this).find(":selected").attr("slug");
+					loadSubcategories(sel_slug);
+					validateAndShowCategory();
+				});
+
+				$(firstStepSubcategory()).live('change', function(evnt){
+					validateAndShowSubCategory();
+				});
+		}
+		if(currentStep==2){
+			var showIngId = null;
+			getIngId = function(pos){
+				if($("#ingredient_list").children().length==0) return null;
+				return $($("#ingredient_list").children()[pos]).attr('id');
+			}
+			getLastIngId = function(){
+				var pos = $("#ingredient_list").children().length;
+				if(pos==0) return null;
+				return $($("#ingredient_list").children()[pos-1]).attr('id');
+			}
+			getIngLink = function(id){
+				return $("li#"+id);
+			}
+			getIngForm = function(id){
+				return $("select#"+id).parent().parent().parent();
+			}
+			formName = function(form){
+				return form.find(".form-row .form-block1 select").children("option").filter(":selected");
+			}
+			formQuantity = function(form){
+				return form.find(".form-row .form-block2 input:nth-child(1)");
+			}
+			formMeasure = function(form){
+				var el_measure = form.find(".form-row  .form-block3 select");
+				return el_measure;
+			}
+			formGroup = function(form){
+				return $(form.find(".form-row  .form-block4 input")[1]);
+			}
+			showIng = function(form_id){
+				if(!form_id) return;
+        		if( showIngId==null ||
+        			((showIngId!=null) && (validateForm(showIngId)||formEmpty(showIngId) )) ){
+        				var ing_list = $("#ingredient_list").children();
+			        	$.each(ing_list, function(item, value){
+			        		var ing_id = $(value).attr("id");
+			        		var form = getIngForm(ing_id);
+			        		if(ing_id==form_id){
+			        			form.show();
+			        			$(value).addClass('active');
+			        		}else{
+			        			form.hide();
+			        			$(value).removeClass('active');
+			        		}
+		        		});
+		        		showIngId = form_id;
+        		}else{
+        			if(!formEmpty(showIngId))
+        				showValidationErrors(showIngId);
+        		}
+        	}
+        	addIngLink = function(id){
+				var form =  getIngForm(id);
+				var name = formName(form).text();
+				if(!name) name = '?';
+				var note = form.find(".form-row  textarea").val();
+				if(!note || note=="") note = '';
+				else note = " ("+note+")";
+				var q = formQuantity(form).val();
+				if(!q) q = '?';
+				var measure = formMeasure(form).val();
+				if(!measure) measure = '?';
+				measure = q+" "+measure;
+				$("#ingredient_list").append("<li id="+id+" class='ui-state-default'><a href='#top' class='close close-ing'></a><div class='ingrid-line-block'><b>"+measure+"</b><strong>"+name+"</strong><i>"+note+"</i></div></li>");
+			}
+			removeIng = function(id){
+				console.log("remove: "+id );
+				var link = getIngLink(id);
+				var form = getIngForm(id);
+				form.remove();
+				link.remove();
+				var totalInput = $("#id_ingredients-TOTAL_FORMS");
+	        	totalInput.val(parseInt(totalInput.val()-1));
+	        	if(showIngId==id){
+					var show_id = getIngId(0);
+					if(show_id){
+						showIng(show_id);
+					}else{
+						showIngId = null;
+						$('.add-row').click();
+					}
+				}
+			}
+			validateAndShowName = function(form_id){
+				var form = getIngForm(form_id);
+				var f_name = formName(form);
+				var valid = (f_name.val().length>0) && (f_name.val()!=emptyOption);
+				if(!valid){
+					$(('#'+form_id+"_chzn").replace(/-/g,'_')).addClass(errorClass);
+				}else{
+					$(('#'+form_id+"_chzn").replace(/-/g,'_')).removeClass(errorClass);
+				}
+				return valid;
+			}
+			validateAndShowQuantity = function(form_id){
+				var form = getIngForm(form_id);
+				var f_val = formQuantity(form);
+				var valid = f_val.val() &&  !isNaN(f_val.val()) ;
+				if(!valid){
+					$(f_val).addClass(errorClass);
+				}else{
+					$(f_val).removeClass(errorClass);
+				}
+				return valid;
+			}
+
+			validateAndShowMeasure = function(form_id){
+				var form = getIngForm(form_id);
+				var f_m = formMeasure(form);
+				var valid = (f_m.val().length>0) && (f_m.val()!=emptyOption);
+				if(!valid){
+					$(f_m).parent().parent().addClass(errorClass);
+				}else{
+					$(f_m).parent().parent().removeClass(errorClass);
+				}
+				return valid;
+			}
+
+
+			validateForm = function(id){
+				var valid = true;
+				valid = validateAndShowName(id) && valid;
+				valid = validateAndShowQuantity(id) && valid;
+				valid = validateAndShowMeasure(id) && valid;
+				return valid;
+			}
+			formEmpty = function(id){
+				var form = getIngForm(id);
+				var name = formName(form).val();
+				var q = formQuantity(form).val();
+				var m = formMeasure(form).val();
+				var group = formGroup(form).val();
+				return (!name || name==emptyOption) && !q && (!m || m==emptyOption) && !group;
+			}
+			showValidationErrors = function(id){
+				if(id==null) return;
+				validateAndShowName(id);
+				validateAndShowQuantity(id);
+				validateAndShowMeasure(id);
+			}
+			updateChosens = function(){
+				$('.chzn-container-single a.chzn-single').parent().width('200px');
+				$('.chzn-container-single a.chzn-single').width('190px');
+				$('.chzn-drop').width('198px');
+				$('.chzn-search input').width('164px');
+			}
+			updateChosens();
+			testFormValid = function(){
+				showValidationErrors(showIngId);
+			}
+			$.each( $('#ingredients_formset').children(),function(i,val){
+				add_ajax_chosen($(val).find('select')[0]);
+			});
+        	// Ingredient dynamic formset
+	        $('#id_empty_form').formset({
+	            formTemplate: '#id_empty_form',
+	            prefix: 'ingredients',
+	            added: function(data){
+					var new_form_id = data.find('div').eq(0).find('div').eq(0).find('select').attr('id');
+					addIngLink(new_form_id);
+					getIngLink(new_form_id).hide();
+					if(showIngId){
+						if(!(validateForm(showIngId)||formEmpty(showIngId) )){
+		            		removeIng(new_form_id);
+		            		console.log("form not valid!");
+		            		return;
+		            	}
+	            	}
+	            	var select = $("select#"+new_form_id);
+					add_ajax_chosen(select);
+					var group_select = $(getIngForm(new_form_id).find(".form-row  .form-block4 input"));
+					add_select2( group_select );
+	            	updateChosens();
+					showIng(new_form_id);
+	            },
+	            deleteText: "Delete ing",
+	        });
+	        // add links to the saved ings
+	     	$.each($("#ingredients_formset .ing-form div .form-block1 select"), function(i,val){
+	     		var id = $(this).attr('id');
+	     		addIngLink(id);
+	     	});
+	     	// show last ing (if user pressed next and ajax returned the same)
+			showIng(getLastIngId());
+			// hide last ing is it is empty
+			$.each( $("#ingredient_list").children(),function(i,val){
+	        	if(formEmpty($(val).attr('id'))){
+	        		$(val).hide();
+	        	}
+	        });
+	     	// create on empty ing on startup
+	     	if( $("#ingredient_list").children().length==0)
+	        	$('.add-row').click();
+	        else{
+	        	showIng(getIngId(0));
+	        }
+	        // set on remove ing action
+	        $(".close-ing").die('click').live("click", function(evnt){
+	        	console.log("onCloseAction");
+	        	var ing_id = $(this).parent().attr("id");
+	        	removeIng(ing_id);
+	        });
+
+	        $.each($(".ing-form .form-block1 "), function(i,val){
+	        	$(val).find("select").live("change", function(evnt){
+	        		var id = $(this).attr("id");
+	        	    $("li#"+id +" div strong").text($(this).children("option").filter(":selected").text());
+	        	    getIngLink(id).show();
+	        	    validateAndShowName(id);
+	        	});
+	        });
+
+	        $.each($(".ing-form .form-block2 input:nth-child(1)"), function(i,val){
+	        	    $(val).live("change", function(evnt){
+	        			var id = $(this).parent().parent().find(".form-block1 select").attr("id");
+	        			var sel = "li#"+id+" div b";
+	        			var q = $(this).val();
+	        			if(!q) q = '?';
+	        			var measure = $(this).parent().parent().find(".form-block3 select").val();
+	        			if(!measure) measure =  '?';
+	        	    	$(sel).text(q+" "+measure);
+	        	    	validateAndShowQuantity(id);
+	        		});
+	        });
+
+	        $.each($(".ing-form .form-block3 select"), function(i,val){
+	        	    $(val).live("change", function(evnt){
+	        			var id = $(this).parent().parent().parent().find(".form-block1 select").attr("id");
+	        			var sel = "li#"+id+" div b";
+	        			var q = $(this).parent().parent().parent().find('.form-block2 input:nth-child(1)').val();
+	        			if(!q) q = '?';
+	        			var measure = $(this).children("option").filter(":selected").text()
+	        			if(!measure) measure =  '?';
+	        	    	$(sel).text(q+" "+measure);
+	        	    	validateAndShowMeasure(id);
+	        		});
+	        });
+
+	        $(".ingrid-line-block").live("click", function(evnt){
+	        	evnt.preventDefault();
+	        	var form_id = $(this).parent().attr("id");
+	        	showIng(form_id);
+	        });
+
+	        $.each($(".ing-form textarea"), function(i,val){
+	        	    $(val).live("change", function(evnt){
+	        			var id = $(this).parent().parent().find(".form-block1 select").attr("id");
+	        			var sel = "li#"+id+" div i";
+	        	    	$(sel).text(' ( '+$(this).val()+' )');
+	        		});
+	        });
+
+	        validateAndShowGroup = function(){
+	        	var el_group = $("#id_ingredients-0-ingredient_group");
+	        	var group = el_group.val();
+	        	var valid = $.trim(group).length>0;
+	        	if(!valid){
+	        		el_group.addClass(errorClass);
+	        	}else{
+	        		el_group.removeClass(errorClass);
+	        	}
+	        	return valid;
+	        }
+
+	        createGroup = function(group){
+	        	var el_groups = $('#id_1-groups');
+	        	el_groups.val(el_groups.val()+"|"+group);
+	        }
+
+	        groupExists = function(group){
+	        	var exists = false;
+	        	var el_groups = $('#id_1-groups');
+				$.each(el_groups.val().split("|"), function(i,val){
+					if( val==group){
+						exists = true;
+					}
+				});
+	        	return exists;
+	        }
+
+
+	        var groupInput = $("#id_ingredients-0-ingredient_group");
+	        add_select2(groupInput);
+
+			groupInput.on("change", function(e) {
+				if(e.added){
+					var group = e.added.text;
+	        		var valid = validateAndShowGroup();
+	        		if(valid && !groupExists(group)){
+	        			createGroup(group);
+	        		}
+				}
+			})
+		}
+
+		$("#wizard_goto_step").live("click", function(evnt){
+			var goto_step = $(this).attr('value');
+			$("#next_form").attr('value', goto_step);
+		});
+
+		if(currentStep==3){
+			getStep = function(num){
+				var step = null;
+				$.each($("b#step_no"), function(i,val){
+					if($(this).text()==num)
+						step = $(this);
+				});
+				return step;
+			}
+			stepDesc = function(step){
+				return step.parent().parent().parent().find(".form-row-block1 textarea.block-textarea");
+			}
+			stepImage = function(step){
+				return step.parent().parent().find("input[type=file]");
+			}
+			validateAndShowStepImage = function(step){
+				var el_image = 	stepImage(step);
+				var image = el_image.val();
+				var image_cached = el_image.parent().parent().attr('cached')=='true';
+				var valid = (($.trim(image).length > 0)||image_cached);
+				if(!valid){
+					el_image.parent().parent().addClass(errorClass);
+					el_image.parent().parent().css('background-image', '');
+				}else{
+					el_image.parent().parent().removeClass(errorClass);
+				}
+				return valid;
+			}
+			// Step 3. Description for each image
+			validateAndShowStepDesc = function(step){
+				var el_desc = stepDesc(step);
+				var desc = el_desc.val();
+				var valid = true; // validation removed
+				if(!valid){
+					el_desc.addClass(errorClass);
+				}else{
+					el_desc.removeClass(errorClass);
+				}
+				return valid;
+			}
+			validateStep = function(step){
+				var valid = true;
+				valid = validateAndShowStepImage(step) && valid;
+				valid = validateAndShowStepDesc(step) && valid;
+				return valid;
+			}
+			emptyStep = function(step){
+				var desc = stepDesc(step).val();
+				var image = stepImage(step).val();
+				return ($.trim(desc).length == 0 ) && ($.trim(image).length == 0);
+			}
+			stepFormsValid = function(){
+				var valid = true;
+				var list = $('b#step_no')
+				$.each(list, function(i,val){
+					if($(val).text()!="?"){
+						var step = getStep($(val).text());
+						valid = valid && (validateStep(step)||emptyStep(step));
+					}
+				});
+				return valid;
+			}
+			removeStep = function(no){ //no = 1..n
+				var step = getStep(no);
+				$(step).parent().parent().parent().remove();
+				var totalInput = $("#id_steps-TOTAL_FORMS");
+	        	totalInput.val(parseInt(totalInput.val()-1));
+			}
+			updStepNum = function(){
+	        	var minus = false;
+				$.each($("b#step_no"), function(i, val){
+					var num = i;
+					if($(this).parent().parent().parent().hasClass("formset-custom-template")){
+						 minus = true;
+						 return;
+					}
+					if(!minus) num = num+1;
+					$(this).html(num);
+				});
+
+			};
+			// Recipe step dynamic formset
+	        $('#id_empty_stepform').formset({
+	            formTemplate: '#id_empty_stepform',
+	            addText: "Добавить шаг",
+	            added: function(data){
+	            	//chack if all steps are valid
+	            	var list = $('b#step_no');
+	            	$.each(list, function(i,val){
+	            		if($(val).text()!="?"){
+	            			var step = getStep($(val).text());
+	            			if(!validateStep(step)){
+	            				data.remove();
+	            				var totalInput = $("#id_steps-TOTAL_FORMS");
+	        					totalInput.val(parseInt(totalInput.val()-1));
+	            				var str1 = $('<div>').append($(val).clone()).html();
+	            				var str2 = $('<div>').append($(data).clone()).html();
+	            				return;
+	            			}
+	            		}
+	            	});
+	            	updStepNum();
+	            },
+	            prefix: 'steps',
+	            deleteText: "",
+	        });
+	        if($("#step_formset").children().length==0)
+	        	$('.add-row').click();
+	        updStepNum();
+	        $(".addnote").live("click", function(evnt){
+				evnt.preventDefault();
+				var self = $(this);
+				var child = self.parent().parent().find(".form-row")
+				if(child){
+					child.removeClass("hidden");
+				}
+			});
+			$.each($(".delete-row"), function(i, val){
+	    		$(val).live('click', function(evnt){
+	    			removeStep(i+1);
+	    			updStepNum();
+	    			if($('.delete-row').length==1)
+	    				$('.add-row').click();
+	    		});
+	    	});
+	    	$.each($('input[type=file]'), function(i,val){
+			    $(val).live('change', function(evnt){
+			        var step_no = $(this).parent().parent().parent().find("label").find("#step_no").text();
+			        var step = getStep(step_no);
+			        $(this).parent().parent().attr('cached','false');
+			        validateAndShowStepImage(step);
+			    });
+			});
+	    	$.each($('.form-row-block1 textarea'), function(i,val){
+			    $(val).live('change', function(evnt){
+			    	if($(this).hasClass("block-textarea2") ) return;
+			    	var step_no = $(this).parent().parent().find(".form-row-block2").find("label").find("#step_no").text();
+			        var step = getStep(step_no);
+			        validateAndShowStepDesc(step);
+			    });
+			});
+		}
+
+		fun = function(evnt){
+			//var step = parseInt($('#id_cake_mc_wizard-current_step').val());
+			console.log("current_step is "+currentStep);
+			if(currentStep==1){
+				evnt.preventDefault();
+				if(!validateFirstStep()){
+					return;
+				}
+			}
+			if(currentStep==2){
+				evnt.preventDefault();
+					if( (showIngId!=null) && (validateForm(showIngId) || formEmpty(showIngId)) ){
+					  //just prevent
+					}else{
+					  return;
+					}
+			}
+			if(currentStep==3){
+				if(!stepFormsValid()){ // do not reload AJAX when forms are not valid
+					evnt.preventDefault();
+					return;
+				}
+				if($("#next_form").attr('value')==-1){  // 'save'
+					if(!stepFormsValid()){
+						evnt.preventDefault();
+						return;
+					}
+					else{
+						return; // let the page reference to the MC details page
+					}
+				}else{ // goto_step
+					if(!stepFormsValid()){
+						evnt.preventDefault();
+						return;
+					}
+					else{
+						evnt.preventDefault();
+					}
+				}
+			}
+            var form = $("#wizard");
+            form.ajaxSubmit(function(data) {
+                if (data.status == 'error' || data.status == "validation_error"){
+                    alert(data.message);
+                }
+                else{
+                    $("#ajax_res").html(data);
+                    afterload();
+                    var divid = document.getElementById('top');
+    				divid.style.display = 'block';
+    				divid.scrollIntoView(true);
+                }
+            });
+
+        };
+
+    	$("#wizard").submit(fun);
+
+    };
+
+
+	startupAJAX = function(){
+			var form_url = "{% url 'validate_form' %}";
+			$.get(form_url, function(data){
+                if (data.status == 'error' || data.status == "validation_error"){
+                    alert(data.message);
+                }
+                else{
+                    $("#ajax_res").html(data);
+                    afterload();
+                }
+            });
+	}
+
+$(function(){
+ 	startupAJAX();
+})
+
+</script>
+
+<style type="text/css">
+	div.file-container{
+		position: relative;
+	}
+	div.show, div.show:hover{
+		position: absolute;
+		z-index: 1;
+		margin-top: -16px;
+	}
+	input.file{
+		position: absolute;
+		-moz-opacity:0 ;
+		filter:alpha(opacity: 0);
+		opacity: 0;
+		z-index: 2;
+		margin-top: -15px;
+	}
+	.errors{
+		border: 1px solid red;
+		border-radius: 2px;
+	}
+</style>
+
+{% endblock extra_header %}
+
+{% block content %}
+
+<div class="cont-in">
+	<div id="ajax_res">
+		<!---->
+	</div>
+</div>
+
+{% endblock %}

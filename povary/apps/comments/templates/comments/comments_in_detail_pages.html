@@ -1,0 +1,127 @@
+{% load thumbnail stopword_tags comment_tags static pytils_numeral %}
+
+<div class="counter-comment" xmlns="http://www.w3.org/1999/html">
+    <div class="coucomtitle">{{ item_obj|get_comments|length|add:"0"|get_plural:"комментарий,комментария,комментариев"}}:
+        <div class="counter">
+        <!-- AddThis Button BEGIN -->
+            <div class="addthis_toolbox addthis_default_style addthis_16x16_style" style="width: 100px; margin: 0;">
+            <a class="addthis_button_twitter"></a>
+            <a class="addthis_button_facebook"></a>
+            <a class="addthis_button_vk"></a>
+            <a class="addthis_button_google_plusone_share"></a>
+            </div>
+            <script type="text/javascript">var addthis_config = {"data_track_addressbar":true};</script>
+            <script type="text/javascript" src="//s7.addthis.com/js/300/addthis_widget.js#pubid=ra-52a0c46563ed4fbb"></script>
+        <!-- AddThis Button END -->
+        </div>
+    </div>
+    <div class="registr">
+        {% if not request.user.is_authenticated %}
+            <div class="registr-left">
+                <div class="form-row">
+                    <label>Авторизуйтесь</label>
+                    <a href="#"><img src="{% static 'images/icons/social-links3.jpg' %}" alt=""/></a>
+                    <a href="#"><img src="{% static 'images/icons/social-links4.jpg' %}" alt=""/></a>
+                    <a href="#"><img src="{% static 'images/icons/social-links5.jpg' %}" alt=""/></a>
+                    <a href="#"><img src="{% static 'images/icons/social-links6.jpg' %}" alt=""/></a>
+                    <a href="#"><img src="{% static 'images/icons/social-links7.jpg' %}" alt=""/></a>
+                </div>
+            </div>
+            <div class="registr-right">
+                <div class="form-row">
+                    <label>или пройдите быструю регистрацию</label>
+                    <input type="text" class="inp-text" placeholder="Allort"/>
+                    <div class="clear"></div>
+                </div>
+                <div class="form-row">
+                    <label>&nbsp;</label>
+                    <input type="text" class="inp-text" placeholder="aaaaaa@gmail.com"/>
+                    <div class="clear"></div>
+                </div>
+            </div>
+            <div class="clear"></div>
+        {% endif %}
+        <script>
+            $(document).ready(function(){
+                $('.registr').css({'background': 'url()'});
+            });
+        </script>
+        <div class="registr-center">
+            <div class="r-img">
+                {% thumbnail comment.author.profile.avatar "30x30" as im %}
+                    <img src="{{ im.url }}" width="{{ im.width }}" height="{{ im.height }}" alt=""/>
+                {% endthumbnail %}
+            </div>
+            <form id="add_comment_form" method="post" enctype="multipart/form-data" action="." data-url="{% url 'add_comment' item_obj.get_contenttype_id item_obj.id %}">
+	            {% csrf_token %}
+                <input type="hidden" name="is_detail_page" value="True">
+                <div class="msg_block"> </div>
+                <div class="r-block">
+                    <textarea name="body"></textarea>
+{#                    <input type="file" name="image" >#}
+                    <div class="imag" style="overflow: hidden;width:70px;">изображение
+                        <input type="file" name="image" id="file" size="1" style="margin-top:-20px;margin-left:-20px;-moz-opacity: 0; filter: alpha(opacity=0); opacity: 0; font-size: 150px; height: 20px;"/>
+                    </div>
+                </div>
+                <input type="submit" class="submit2" value="Отправить"/>
+            </form>
+        </div>
+        <div class="registr-center2">
+            <a href="#" class="more-com">Комментарии</a>
+            <div class="comment" id="comments">
+            {% if item_obj|get_comments|length == 0 %}
+                <center><i>К сожаление этот рецепт пока не содержит комментариев, вы можете быть первыми!</i></center>
+            {% endif %}
+                {% for comment in item_obj|get_comments %}
+                    <article class="article_comment" data-id="{{ comment.id }}">
+                        <a name="comment_{{ comment.id }}"></a>
+
+                        <div class="r-img" style="background-color:rgb(229, 229, 229);">
+                            {% thumbnail comment.author.profile.avatar "30x30" as im %}
+                                <img src="{{ im.url }}" width="{{ im.width }}" height="{{ im.height }}" alt="{{ comment.author.username }}" />
+                            {% endthumbnail %}
+                        </div>
+
+                        <div class="comment-in">
+                            <a href="{% url 'public_userpage' comment.author.username %}" class="name">{{ comment.author.username }}</a>
+                            <span class="date">{{ comment.created|timesince }}</span>
+                            <p>{{ comment.body|r_stopwords|safe }}</p>
+                            {% if comment.image %}
+                                <p><img src="{{ comment.image.url }}"></p>
+                            {% endif %}
+                            <div class="rating">
+                                <span class="plus">0</span>
+                                <span class="minus"></span> &nbsp; &middot;
+                                <form class='answer_form' method="post" action="{% url 'add_commentanswer' item_obj.get_contenttype_id item_obj.id comment.id %}" style="display:none;">
+                                    {% csrf_token %}
+                                    <textarea name="body"></textarea>
+                                    <input type="submit" value="Отправить">
+                                </form>
+                                <a id="answer_form_submit" class="reply commentanswer_link">Ответить</a>
+
+                                <ul class="comment_answers">
+                                    {% for answer in comment.answers.all %}
+                                        <li>
+                                            <p>{{ answer.body|r_stopwords|safe }}</p>
+                                        </li>
+                                    {% endfor %}
+                                </ul>
+
+                            </div>
+                            <div class="share">
+                                <a href="#">поделиться ></a>
+                                <a href="#"><img src="{% static 'images/icons/soc4.jpg' %}" alt=""/></a>
+                                <a href="#"><img src="{% static 'images/icons/soc5.jpg' %}" alt=""/></a>
+                                <a href="#"><img src="{% static 'images/icons/soc6.jpg' %}" alt=""/></a>
+                            </div>
+                        </div>
+                        <div class="clear"></div>
+                    </article>
+                {% endfor %}
+            </div>
+        </div>
+
+    </div>
+</div>
+<script type="text/javascript" src="{{ STATIC_URL }}/js/comments/comments2.js"></script>
+<script type="text/javascript" src="{{ STATIC_URL }}/js/comments/comments3.js"></script>

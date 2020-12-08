@@ -1,0 +1,234 @@
+{% extends 'cake_base.html' %}
+{% load core_tags pymorphy_tags comment_tags vote_tags tags_tags %}
+{% load thumbnail %}
+{% block title %}{{ master_class.title }}{% endblock %}
+{% block content %}
+
+<div class="cont-in">
+<div class="title"><span class="element-one"></span><h1>{{master_class.title}}</h1><span class="element-two"></span></div>
+<div class="center">
+	<div class="white">
+		<div class="div-center-big">
+			<img src="{% thumbnail master_class.image "730x427" crop="center" as image %} {{ image.url }} {% endthumbnail %}" alt="{{ master_class.title }}" class="b-img" />
+			<div class="center-big-bottom">
+				<div class="social-links2 addthis_toolbox addthis_default_style">
+                    <a class="addthis_button_tweet"></a>
+                    <a class="addthis_button_google_plusone" g:plusone:size="medium"></a>
+                    <script type="text/javascript">var addthis_config = {"data_track_addressbar":true};</script>
+                    <script type="text/javascript" src="//s7.addthis.com/js/300/addthis_widget.js#pubid=ra-52a0c46563ed4fbb"></script>
+                </div>
+                <div class="social-links1 addthis_toolbox addthis_default_style">
+                    <a class="addthis_counter_vk"></a>
+                    <a class="addthis_button_facebook_like" fb:like:layout="button_count"></a>
+                    <script type="text/javascript">var addthis_config = {"data_track_addressbar":true};</script>
+                    <script type="text/javascript" src="//s7.addthis.com/js/300/addthis_widget.js#pubid=ra-52a0c46563ed4fbb"></script>
+                </div>
+
+				<div class="round-block" style="margin-right: 0px; margin-left: 235px;">
+					<a href="{% url 'add_vote' master_class.get_contenttype_id master_class.id %}"
+						class={%if master_class|user_ranked:user %}"liked"{%else%}"like"{%endif%} style="text-align:center">{{master_class|get_votes|length}}</a>
+					<div class="loked2">{{master_class.visits_num}}</div>
+					<div class="com num_comments" id="num_comments">{{master_class.get_comments_num}}</div>
+				</div>
+			</div>
+		</div>
+		<div class="em">{{master_class.description|safe}}</div>
+		{% if master_class.get_ingredients %}
+		<div class="ingridient">
+			<div class="title"><span class="left"></span><h2>ИНГРЕДИЕНТЫ</h2><span class="right"></span></div>
+			<div class="ingrid-block">
+				{% for ing in master_class.get_ingredients %}
+					{% if forloop.counter0 < master_class.get_ingredients|length|div:2 or forloop.counter0 = master_class.get_ingredients|length|div:2 %}
+						<div class="ingrid-line-block"><b>{{ing.value}} {{ing.measure}}</b>
+							<a href="{% url 'cake_mc_filter' %}?ing={{ing.ingredient_info.name_rus}}">{{ing.ingredient_info.name_rus}} <em>({{ing.addit_info}}) [{{ing.ingredient_group}}]</em></a>
+						</div>
+					{% endif %}
+				{% endfor %}
+			</div>
+			<div class="ingrid-block">
+				{% for ing in master_class.get_ingredients %}
+					{% if forloop.counter0 > master_class.get_ingredients|length|div:2 %}
+						<div class="ingrid-line-block"><b>{{ing.value}} {{ing.measure}}</b>
+							<a href="{% url 'cake_mc_filter' %}?ing={{ing.ingredient_info.name_rus}}">{{ing.ingredient_info.name_rus}} <em>({{ing.addit_info}}) [{{ing.ingredient_group}}]</em>
+							</a>
+						</div>
+					{% endif %}
+				{% endfor %}
+			</div>
+		</div>
+		{% endif %}
+		<div class="hidden-ingr"><div class="cont-in">
+			<div class="ing-top">
+				<a href="#" class="go-top"><img src="{{STATIC_URL}}images/top.png" alt=""/></a>
+				<h3>ИНГЕРДИЕНТЫ</h3>
+					<span class="step_desc">Шаги</span>
+					<div class="steps pagination" id="step_id">
+					{% for step in master_class.get_steps %}
+						<a href="#section{{forloop.counter}}" class="scroll">{{forloop.counter}}</a>
+					{% endfor %}
+				</div>
+			</div>
+			<div class="ingridient">
+				<div class="ingrid-block">
+					{% for ing in master_class.get_ingredients %}
+						{% if forloop.counter0 < master_class.get_ingredients|length|div:2 or forloop.counter0 = master_class.get_ingredients|length|div:2 %}
+							<div class="ingrid-line-block"><b>{{ing.value}} {{ing.measure}}</b><a href="{% url 'cake_mc_filter' %}?ing={{ing.ingredient_info.name_rus}}">{{ing.ingredient_info.name_rus}} <em>({{ing.addit_info}}) [{{ing.ingredient_group}}]</em></a></div>
+						{% endif %}
+					{% endfor %}
+				</div>
+				<div class="ingrid-block">
+					{% for ing in master_class.get_ingredients %}
+						{% if forloop.counter0 > master_class.get_ingredients|length|div:2 %}
+							<div class="ingrid-line-block"><b>{{ing.value}} {{ing.measure}}</b><a href="{% url 'cake_mc_filter' %}?ing={{ing.ingredient_info.name_rus}}">{{ing.ingredient_info.name_rus}} <em>({{ing.addit_info}}) [{{ing.ingredient_group}}]</em></a></div>
+						{% endif %}
+					{% endfor %}
+				</div>
+				<a href="javascript:void(0);" class="close-arrow"></a>
+			</div>
+		</div></div>
+		<div class="post">
+			{% for step in master_class.get_steps %}
+			<section id="section{{forloop.counter}}" class="section">
+				<div class="title"><span class="left"></span><div class="number">{{forloop.counter}}</div><span class="right"></span></div>
+				<img src="{% thumbnail step.image "730x360" crop="center" as image %} {{ image.url }} {% endthumbnail %}" alt="" class="post-img" />
+				<div class="posit-in">
+					{{step.description}}
+					{% if step.note %}
+					<blockquote>
+						<span>Заметка автора</span>
+						<em>{{step.note|safe}}</em>
+					</blockquote>
+					{% endif %}
+				</div>
+			</section>
+			{% endfor %}
+			</div>
+		<div class="social-block-links">
+			<div class="block-links-title">Приятного апетита</div>
+			<div class="center-big-bottom">
+				<div class="social-links2 addthis_toolbox addthis_default_style">
+                    <a class="addthis_button_tweet"></a>
+                    <a class="addthis_button_google_plusone" g:plusone:size="medium"></a>
+                    <script type="text/javascript">var addthis_config = {"data_track_addressbar":true};</script>
+                    <script type="text/javascript" src="//s7.addthis.com/js/300/addthis_widget.js#pubid=ra-52a0c46563ed4fbb"></script>
+                </div>
+                <div class="social-links1 addthis_toolbox addthis_default_style">
+                    <a class="addthis_counter_vk"></a>
+                    <a class="addthis_button_facebook_like" fb:like:layout="button_count"></a>
+                    <script type="text/javascript">var addthis_config = {"data_track_addressbar":true};</script>
+                    <script type="text/javascript" src="//s7.addthis.com/js/300/addthis_widget.js#pubid=ra-52a0c46563ed4fbb"></script>
+                </div>
+
+				<div class="center-link" >
+					<div class="loked2">{{master_class.visits_num}}</div>
+					<div class="com num_comments">{{master_class.get_comments_num}}</div>
+				</div>
+			</div>
+		</div>
+		<div class="tegs">
+			<div class="tags-title"><span>Теги</span></div>
+			<ul>
+				{% for tag in master_class|get_tags %}
+					<li><a href="#">{{tag.title}}</a>{%if forloop.counter == master_class|get_tags|length%}{%else%},{%endif%}</li>
+				{% endfor %}
+			</ul>
+		</div>
+	</div>
+	<div class="title title-sm"><span class="element-one"></span><h3>ЛУЧШИЕ ШОКОЛАДНЫЕ МАСТЕР КЛАССЫ</h3><span class="element-two"></span></div>
+		<div class="boxes">
+			{% for mc in masterclass_list %}
+			<div class="box">
+				<a class="box-img" href="{% url 'cake_mc_details' mc.slug %}">
+					<img src="{% thumbnail mc.image "230x168" crop="center" as image %} {{ image.url }} {% endthumbnail %}" alt="{{ mc.title }}" />
+					<span class="box-title"><span class="box-pad">{{mc.title}}</span></span>
+					<b class="fade"></b>
+				</a>
+				<div class="box-bot">
+					<a href="{% url 'add_vote' mc.get_contenttype_id mc.id %}"
+						class={%if mc|user_ranked:user %}"num-liked"{%else%}"num-like"{%endif%}>{{mc|get_votes|length}}</a>
+					<a href="{% url 'cake_mc_details' mc.slug %}#all-com" class="num-comm">{{mc.get_comments_num}}</a>
+					<a href="{% url 'public_userpage' mc.author.username %}" class="autor"><img src="{% if mc.author.profile.avatar %} {{MEDIA_URL}}{{mc.author.profile.avatar}}{% else %}{{ STATIC_URL }}cake/images/ico10.png{% endif %}" alt="" class="a-img"/><span class="a-name">{{mc.author.username}}</span></a>
+				</div>
+			</div>
+			{% endfor %}
+		</div>
+		<a href="#" id="all-com"></a>
+		<div class="title title-sm">
+		<span class="element-one"></span>
+		<h3>
+			<b class="num_comments">{{master_class.get_comments_num}}</b> <b id='comm-title'>{{"комментарий"|plural:master_class.get_comments_num}}</b>
+		</h3>
+		<span class="element-two"></span>
+            <a href="javascript:void(0)" class="add-commen" activated="False">Добавить комментарий</a>
+        </div>
+
+		{% include "comments/cake_comments.html" %}
+</div>
+<div class="sidebar">
+	<div class="athor">
+		<div class="title">
+			<span class="left"></span>
+			<h3>АВТОР</h3>
+			<span class="right"></span>
+		</div>
+		<div class="athor-block">
+			<div class="athor-foto">
+				 <a href="{% url 'public_userpage' master_class.author.username %}"> <img src="{% if master_class.author.profile.avatar %} {{MEDIA_URL}}{{master_class.author.profile.avatar}}{% else %}{{ STATIC_URL }}cake/images/nophoto.jpg{% endif %}" alt=""/></a>
+			</div>
+			<div class="name-athor">{{master_class.author.username}}</div>
+			<div class="info-athor">
+				<em>{{master_class.author.profile.get_cake_recipes_num}} {{ "рецепт"|plural:master_class.author.profile.get_cake_recipes_num }}</em>
+				<em>{{master_class.author.profile.get_cake_mcs_num}} мастер {{ "класс"|plural:master_class.author.profile.get_cake_mcs_num}}</em>
+			</div>
+			<a href="#" class="link">Следовать</a>
+			<a href="#" class="link">НАПИСАТЬ</a>
+		</div>
+		<div class="comathor">
+			<div class="comathor-title">ЕЩЕ ОТ АВТОРА</div>
+			{% for mc in author_mc_list %}
+				<p><a href="{% url 'cake_mc_details' mc.slug %}">{{mc.title}}</a></p>
+			{% endfor %}
+		</div>
+	</div>
+	<div class="mk">
+		<div class="mk-title">Похожие МК</div>
+		{% for mc in similar_mc_list %}
+		<div class="box">
+			<a class="box-img" href="{% url 'cake_mc_details' mc.slug %}">
+				<img src="{% thumbnail mc.image "230x168" crop="center" as image %} {{ image.url }} {% endthumbnail %}" alt="{{ mc.title }}" />
+				<span class="box-title"><span class="box-pad">{{mc.title}}</span></span>
+				<b class="fade"></b>
+			</a>
+			<div class="box-bot">
+				<a href="{% url 'add_vote' mc.get_contenttype_id mc.id %}"
+					class={%if mc|user_ranked:user %}"num-liked"{%else%}"num-like"{%endif%}>{{mc|get_votes|length}}</a>
+				<a href="{% url 'cake_mc_details' mc.slug %}#all-com" class="num-comm">{{mc.get_comments_num}}</a>
+				<a href="{% url 'public_userpage' mc.author.username %}" class="autor"><img src="{% if mc.author.profile.avatar %} {{MEDIA_URL}}{{mc.author.profile.avatar}}{% else %}{{ STATIC_URL }}cake/images/ico10.png{% endif %}" alt="" class="a-img"/><span class="a-name">{{mc.author.username}}</span></a>
+			</div>
+		</div>
+		{% endfor %}
+	</div>
+</div>
+<div class="clear"></div>
+</div>
+
+<script>
+$('#step_id').pagination({
+        pages: {{ master_class.get_steps|length }},
+        displayedPages: 8,
+        prevText: false,
+        nextText: false,
+});
+</script>
+
+<script type="text/javascript" src="{{ STATIC_URL }}js/ranking/ranking.js"></script>
+
+<script type="text/javascript" >
+function pl_call(i){
+alert("{{'комментарий'|plural:"+i+"}}");
+}
+
+</script>
+
+{% endblock %}
+

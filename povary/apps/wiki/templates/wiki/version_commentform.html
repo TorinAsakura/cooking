@@ -1,0 +1,5 @@
+<form method="post" action="{% url 'comment_wikiversion' version_id %}">
+	{% csrf_token %}
+	{{ discussion_form.as_p }}
+	<p><input type="submit" value="Отправить"></p>
+</form>

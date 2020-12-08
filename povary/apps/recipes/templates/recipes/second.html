@@ -1,0 +1,203 @@
+{% extends "base.html" %}
+{% load i18n static core_tags widget_tweaks%}
+
+{% block extra_header %}
+    <script type="text/javascript">
+        jQuery(document).ready(function(){
+            jQuery( "ul.sort" ).sortable();
+        });
+    </script>
+
+
+    {% include 'autocomplete_light/static.html' %}
+
+
+{% endblock extra_header %}
+
+{% block breadcrumbs %}
+    <a href="/"><img src="{% static 'images/home.png' %}" alt=""/></a> →
+    <a href="{% url 'recipe-add' %}">Добавление рецепта</a>
+{% endblock breadcrumbs %}
+
+{% block subheader %}
+
+<div class="search-div">
+	<p>Поиск по рецептам</p>
+	<div class="search">
+			<form method="get" action="{% url 'haystack_search' %}">
+			  <span class="s-bg"></span>
+	                {{ search_form.q|attr:"class:search-text" }}
+	                <input type="submit" class="search-btn" value=""/>
+			</form>
+	</div>
+	 <a href="{% url 'haystack_search' %}">Расширеный поиск</a>
+</div>
+{% endblock subheader %}
+
+{% block content %}
+<form action="." method="post" enctype="multipart/form-data">{% csrf_token %}
+
+    {{ wizard.management_form }}
+
+    {{ form.management_form }}
+
+    {% for error in form.errors %}
+        {{ error }}
+    {% endfor %}
+
+
+    <div class="recept-page">
+    <h1>Добавление рецепта </h1>
+        <div class="steps">
+            <div class="step"><div class="step-img"><img src="{% static 'images/icons/step1_1.jpg' %}" alt=""/></div><b>1</b><span>Оcновные данные</span><div class="corn"></div></div>
+            <div class="lineimg"><span style="width:60%;"></span></div>
+            <div class="step active"><div class="step-img"><img src="{% static 'images/icons/step2.jpg' %}" alt=""/></div><b>2</b><span>Ингридиенты</span><div class="corn"></div></div>
+            <div class="lineimg"><span style="width:0%;"></span></div>
+            <div class="step"><div class="step-img"><img src="{% static 'images/icons/step3.jpg' %}" alt=""/></div><b>3</b><span>Приготовление</span><div class="corn"></div></div>
+        </div>
+        <div class="application">
+            <div class="recipe-block">
+                <div class="half-left">
+                    <div class="desc">
+                        <p>Чтобы приготовить что-то вкусненькое, нужно запастись продуктами. Укажите какие ингредиенты, продукты и в каком количестве,  используются для приготовления.</p>
+                    </div>
+
+                <div id="current">
+                    {% for f in form%}
+                        <div class="form-row" {% if wizard.form.data %}style="display: none"{% endif %}>
+                        <div class="form-col">
+                            <label>Название ингридиента<span>*</span></label>
+
+                            {{ f.ingredient_info }}
+
+                            {% if f.ingredient_info.errors %}
+                                {{ f.ingredient_info.errors }}
+                            {% endif %}
+
+                        </div>
+                        <div class="form-col">
+                            <label><small>количество</small></label>{{ f.value }}
+                        </div>
+                        <div class="form-col">
+                            <label><small>тип измерения</small></label><div class="block-select block-select4">{{ f.measure }}</div>
+                        </div>
+
+                        {% if not wizard.form.data %}
+                            <div id='tooltip2' class="info-div" style="display: none;">Добавьте хотя бы один ингридиент</div>
+                        {% endif %}
+
+                        <div class="clear"></div>
+                        </div>
+
+                        <div class="form-row">
+                            <label>Дополнительное описание ингридиента</label>
+                            {{ f.addit_info }}
+                        </div>
+                        <div class="form-row">
+                            <label>Группа ингридиентов</label>
+                            <div class="form-col">
+                                <div class="block-select block-select3">{{ f.ingredient_group }}</div>
+                            </div>
+                            <div class="form-col">
+                                <div class="new-gr" style="display: none;"><input type="text" class="input-text new_group" placeholder=""/><a href="#" class="remove"></a></div>
+                            </div>
+                            <div class="clear"></div>
+                        </div>
+
+                    {% endfor %}
+
+                </div>
+
+
+                <div id="extra-row" data-value="{{ wizard.form.total_form_count }}">
+
+                        <div id='extra-row-id'>
+
+                        {% with form.empty_form as form %}
+
+                            <div class="form-row">
+
+
+
+                                    <div class="form-col">
+                                        <label>Название ингридиента<span>*</span></label>
+
+                                        {{ form.ingredient_info }}
+
+                                        {% if form.ingredient_info.errors %}
+                                            {{ form.ingredient_info.errors }}
+                                        {% endif %}
+
+                                    </div>
+                                    <div class="form-col">
+                                        <label><small>количество</small></label>{{ form.value}}
+                                    </div>
+                                    <div class="form-col">
+                                        <label><small>тип измерения</small></label><div class="block-select block-select4">{{ form.measure }}</div>
+                                    </div>
+
+                                    <div class="clear"></div>
+                            </div>
+
+                            <div class="form-row">
+                                <label>Дополнительное описание ингридиента</label>
+                                {{ form.addit_info }}
+                            </div>
+
+                            <div class="form-row">
+
+                                <label>Группа ингридиентов</label>
+                                <div class="form-col">
+                                    <div class="block-select block-select3">{{ form.ingredient_group }}</div>
+                                </div>
+                                <div class="form-col">
+                                    <div class="new-gr" style="display: none;"><input type="text" class="input-text"/><a href="#" class="remove"></a></div>
+                                </div>
+                                <div class="clear"></div>
+                            </div>
+
+
+                        {% endwith %}
+
+                        </div>
+
+                    </div>
+
+
+                    <a id="add-ingredient" class="submit">Добавить в список</a>
+                    <div class="small">Если все заполнено нажимайте ДОБАВИТЬ В СИПСОК и ваш ингридиент появиться справа в списке.</div>
+                </div>
+                <div class="half-right {% if wizard.form.data %}return{% endif %}">
+                    <div class="desc">
+                        <p>Добавленые ингридиенты</p>
+                    </div>
+
+                    {% if wizard.form.data %}
+                        {% for f in form %}
+
+                            <li class="sort-item">
+                                <span class="f-right">{{ f.value.value}} {{ f.measure.value }}</span>{{ f.ingredient_info.value }}
+                                <span class="group" style="display: none"> {{ f.ingredient_group.value }} </span>
+                            </li>
+
+                        {% endfor %}
+
+                    {% endif %}
+
+                </div>
+                <div class="clear"></div>
+            </div>
+        </div>
+        <div class="pagenavi2">
+            <button class="grey-btn" name="wizard_goto_step" type="submit" value="{{ wizard.steps.prev }}">{% trans "Назад" %}</button>
+            <input id='next_step' type="submit" class="submit prevented" value="Далее"/>
+        </div>
+    </div>
+
+
+
+
+
+</form>
+
+{% endblock %}

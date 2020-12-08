@@ -1,0 +1,9 @@
+{% load vote_tags comment_tags widget_tweaks %}
+
+<label>Выберите подкатегорию<span>*</span></label>
+								<select id='id_0-subcategory' class="styled">
+									<option>Выберите подкатегорию со списка</option>
+									{% for subcateg in subcategorymc_list %}
+										<option subcat_id='{{subcateg.id}}'>{{subcateg.title}}</option>
+									{% endfor %}
+								</select>

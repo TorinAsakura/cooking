@@ -1,0 +1,181 @@
+{% load widget_tweaks seo_tags %}
+
+<!DOCTYPE html>
+<html>
+<head>
+{% if seo_obj %}
+    {% seo_html description for seo_obj as description %}
+    {% seo_html keywords for seo_obj as keywords %}
+    {% seo title for seo_obj as title %}
+{% endif %}
+{% if not description %} {% seo_html description as description %} {% endif %}
+{% if not keywords %} {% seo_html keywords as keywords %} {% endif %}
+{% if not title %} {% seo title as title %} {% endif %}
+
+        <title>{% if title %}{{ title }}{% else %}{% block title %}Тортоделы{% endblock %}{% endif %}</title>
+	{{ description }}
+	{{ keywords }}
+        <meta http-equiv="content-type" content="text/html; charset=UTF-8" >
+	{% block css %}
+		<link rel="stylesheet" type="text/css" href="{{STATIC_URL}}cake/css/jquery.fancybox-thumbs.css?v=1.0.7" />
+		<link rel="stylesheet" type="text/css" href="{{STATIC_URL}}cake/css/dd.css" />
+		<link rel="stylesheet" href="{{STATIC_URL}}cake/css/main.css" type="text/css"/>
+      <link rel="stylesheet" href="{{STATIC_URL}}cake/css/scrollable-horizontal.css" type="text/css"/>
+      <link href='http://fonts.googleapis.com/css?family=PT+Sans:400,700,400italic,700italic&subset=latin,latin-ext,cyrillic' rel='stylesheet' type='text/css'/>
+		<link href='http://fonts.googleapis.com/css?family=PT+Sans+Narrow:400,700&subset=latin,latin-ext,cyrillic' rel='stylesheet' type='text/css'/>
+      <link href='http://fonts.googleapis.com/css?family=Lobster&subset=latin,cyrillic-ext,latin-ext,cyrillic' rel='stylesheet' type='text/css'>
+	{% endblock css %}
+	{% block javascript %}
+		<script type="text/javascript" src="{{STATIC_URL}}cake/js/jquery-1.8.2.js"></script>
+		<!--[if lt IE 9]><script src="{{STATIC_URL}}cake/js/css3-mediaqueries.js"></script><![endif]-->
+		<!--[if IE]><script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script><![endif]-->
+		<script type="text/javascript" src="http://cdn.jquerytools.org/1.2.7/all/jquery.tools.min.js"></script>
+		<script type="text/javascript" src="{{STATIC_URL}}cake/js/jquery.dd.js"></script>
+		<script type="text/javascript" src="{{STATIC_URL}}cake/js/jquery.fancybox.js"></script>
+		<script type="text/javascript" src="{{STATIC_URL}}cake/js/jquery.fancybox-thumbs.js?v=1.0.7"></script>
+		<script type="text/javascript" src="{{STATIC_URL}}cake/js/custom.js"></script>
+		<script type="text/javascript" src="{{ STATIC_URL }}js/ranking/ranking.js"></script>
+		<script type="text/javascript" src="{{ STATIC_URL }}cake/js/moment.min.js"></script>
+        <script type="text/javascript" src="{{ STATIC_URL }}cake/js/jquery.simplePagination.js"></script>
+	{% endblock javascript %}
+	{% block extra_header %}
+	{% endblock extra_header %}
+</head>
+<body>
+	<div id="container">
+		<header id="header">
+		{% block header %}
+			<div class="cont-in">
+				<div class="top-search">
+                    <form method="get" action="/search/">
+                        <a href="#" class="ful-s">Расширенный поиск</a>
+                        <input type="submit" value="НАЙТИ" class="s-btn"/>
+                        <input type="text" id="id_q" class="s-text" name="q"/>
+                    </form>
+				</div>
+				<div class="top">
+					<span class="povar">Тортоделы</span>
+					<a class="tortod" href="{% url 'home' %}">Повары</a>
+					<ul class="tul-right">
+						{% if user.is_authenticated %}
+							<!--Вы вошли под именем--> <li class="regis"><a href="{% url 'profile' %}" >{{ user.username }}</a></li>
+							<li class="vhod"><a href="{% url 'django.contrib.auth.views.logout' %}">Выйти</a></li>
+						{% else %}
+							<li class="vhod"><a href="{% url 'django.contrib.auth.views.login' %}" >Войти</a></li>
+							<li class="regis"><a href="{% url 'registration_register' %}">Зарегистироватся</a></li>
+						{% endif %}
+					</ul>
+					<ul class="tul-left">
+						<li class="add"><a href="#">Добавить</a>
+							<ul>
+								<li><a href="{% url 'recipe-add' %}">Рецепт</a></li>
+								<li><a href="{% url 'cake_mc-add' %}">Мастер класс</a></li>
+								<li><a href="{% url 'cakeimage-add' %}">Фото</a></li>
+							</ul>
+						</li>
+					</ul>
+					<a href="javascript:void(0)" class="search-link">Поиск</a>
+				</div>
+				{% block user_info %}
+				<!---->
+				{% endblock user_info %}
+				<a href="{% url 'cake_home' %}" id="logo"></a>
+				<nav class="nav">
+					<ul class="right">
+						<li><a href="#">ЭНЦИКЛОПЕДИЯ</a></li>
+						<li><a href="{% url 'competition_list' %}">Конкурсы</a></li>
+						<li><a href="{% url 'cakeimage_gallery_search' %}">Фотогалерея</a></li>
+						<li><a href="#">Форум</a></li>
+					</ul>
+					<ul class="left">
+						<li><a href="{% url 'cake_recipe_list' %}">Рецепты</a></li>
+						<li class="parent">
+							<a href="{% url 'cake_mc_filter' %}">Мастер класcы</a>
+							<ul>
+								{% for mc in masterclass_list %}
+								{% if forloop.counter0 < 3 %}
+								<li><a href="{% url 'cake_mc_details' mc.slug %}">{{mc.title|slice:":15"}}{%if mc.title|length > 15 %}...{%endif%}</a></li>
+								{%endif%}
+								{%endfor%}
+							</ul>
+						</li>
+						<li><a href="{% url 'cake_event_list' %}">События</a></li>
+						<li><a href="{% url 'profile_list' %}">Мастера</a></li>
+					</ul>
+				</nav>
+			</div>
+		{% endblock header %}
+		</header>
+		<div id="wrapper">
+			<div class="content">
+							{% block content %}
+							{% endblock %}
+			</div>
+		</div>
+	<footer id="footer" >
+	{% block footer %}
+	<div id="footer-in">
+		<div class="cont-in">
+			<div class="bottom">
+				<a href="{% url 'recipe-add' %}" class="add-rec"><i>Добавьте свой</i><big>Собственный рецепт</big></a>
+				<div class="f-left">
+					<nav class="foot-nav">
+						<ul>
+							<li><a href="{% url 'cake_recipe_list' %}">Рецепты</a></li>
+							<li><a href="{% url 'cake_mc_filter' %}">Мастер классы</a></li>
+							<li><a href="{% url 'cakeimage_gallery_search' %}">Фотогалерея</a></li>
+							<li><a href="{% url 'competition_list' %}">Конкурсы</a></li>
+							<li><a href="{% url 'cake_event_list' %}">События</a></li>
+							<li><a href="{% url 'profile_list' %}">Мастера</a></li>
+							<li><a href="#">Форум</a></li>
+						</ul>
+					</nav>
+					<div class="soc-icons">
+{#						<a href="#"><img src="{{STATIC_URL}}cake/images/ico5.png" alt=""/></a>#}
+{#						<a href="#"><img src="{{STATIC_URL}}cake/images/ico6.png" alt=""/></a>#}
+{#						<a href="#"><img src="{{STATIC_URL}}cake/images/ico7.png" alt=""/></a>#}
+                        <!-- AddThis Follow BEGIN -->
+                        <div class="addthis_toolbox addthis_default_style">
+                            <a class="addthis_button_facebook_follow" addthis:userid="YOUR-USERNAME">
+                                <img src="{{STATIC_URL}}cake/images/ico5.png" alt=""/>
+                            </a>
+                            <a class="addthis_button_twitter_follow" addthis:userid="YOUR-USERNAME">
+                                <img src="{{STATIC_URL}}cake/images/ico6.png" alt=""/>
+                            </a>
+                            <a class="addthis_button_google_follow" addthis:userid="YOUR-USERNAME">
+                                <img src="{{STATIC_URL}}cake/images/ico7.png" alt=""/>
+                            </a>
+                        </div>
+                        <script type="text/javascript" src="//s7.addthis.com/js/300/addthis_widget.js#pubid=ra-52a0c46563ed4fbb"></script>
+                        <!-- AddThis Follow END -->
+
+					</div>
+{#					<img src="{{STATIC_URL}}cake/images/soc.jpg" alt=""/>#}
+                    <!-- AddThis Button BEGIN -->
+                        <div class="addthis_toolbox addthis_default_style">
+                            <a class="addthis_button_tweet"></a>
+                            <a class="addthis_button_facebook_like" fb:like:layout="button_count"></a>
+                            <a class="addthis_button_google_plusone" g:plusone:size="medium"></a>
+                            <a class="addthis_counter_vk"></a>
+                        </div>
+                        <script type="text/javascript">var addthis_config = {"data_track_addressbar":true};</script>
+                        <script type="text/javascript" src="//s7.addthis.com/js/300/addthis_widget.js#pubid=ra-52a0c46563ed4fbb"></script>
+                    <!-- AddThis Button END -->
+				</div>
+			</div>
+			<ul class="foot-links">
+				<li><a href="#">Карта сайта</a></li>
+				<li><a href="#">Реклама</a></li>
+				<li><a href="{% url 'core-contact' %}">Обратная</a></li>
+			</ul>
+			<p>©2003-2014 Кулинарный портал «ПОВАРЫ.ru». Все права сохранены.   </p>
+		</div>
+	</div>
+	{% endblock footer%}
+	</footer>
+	</div>
+
+	{% block extra_js %}
+   {% endblock extra_js %}
+</body>
+</html>

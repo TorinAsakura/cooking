@@ -1,0 +1,83 @@
+{% load vote_tags comment_tags widget_tweaks thumbnail %}
+
+
+<div class="sorting">
+		<ul class="sorting-list">
+			<li {%if afilter == 'new' or afilter == None %}class="active"{%endif%}><a class="cake_mc_filter" href="{% url 'get_cake_mc' q cat ing 'new' page.number%}">Новые сверху </a></li>
+			<li {%if afilter == 'top'%}class="active"{%endif%}><a class="cake_mc_filter" href="{% url 'get_cake_mc' q cat ing 'top' page.number%}">Лучшие сверху </a></li>
+			<li {%if afilter == 'comm'%}class="active"{%endif%}><a class="cake_mc_filter" href="{% url 'get_cake_mc' q cat ing 'comm' page.number%}">По коментариям </a></li>
+		</ul>
+		<a href="{% url 'cake_mc-add' %}" class="addfoto"><i>Добавить</i> <big>Мастер класс</big></a>
+	</div>
+
+	<div class="boxes">
+		{% if page %}
+			{% for res in page.object_list %}
+				<div class="box">
+					<a class="box-img" href="{% url 'cake_mc_details' res.object.slug %}">
+						<img src="{% thumbnail res.object.image "230x186" crop="center" as image %} {{ image.url }} {% endthumbnail %}" alt="{{ res.object.title }}" title="{{ res.object.title }}"/><b class="fade"></b>
+					</a>
+					<div class="box-bot">
+						<a href="{% url 'add_vote' res.object.get_contenttype_id res.object.id %}"
+							class={%if res.object|user_ranked:user %}"num-liked"{%else%}"num-like"{%endif%}>{{res.object|get_votes|length}}</a>
+						<a href="{% url 'cake_mc_details' res.object.slug %}#all-com" class="num-comm">{{res.object.get_comments_num}}</a>
+<a href="{% url 'public_userpage' res.object.author.username %}" class="autor"><img src="{% if res.object.author.profile.avatar %} {{MEDIA_URL}}{{res.object.author.profile.avatar}}{% else %}{{ STATIC_URL }}cake/images/ico10.png{% endif %}" alt="" class="a-img"/><span class="a-name">{{res.object.author.username}}</span></a>
+					</div>
+				</div>
+			{% endfor %}
+		{% else %}
+			<h3>По Вашему запросу мастер классы не найдены</h3>
+			<!--
+			{%comment%}
+			{% for mc in cake_mc_list %}
+				<div class="box">
+					<a class="box-img" href="{% url 'cake_mc_details' mc.slug %}">
+						<img src="{{MEDIA_URL}}{{mc.image}}" alt=""/><b class="fade"></b>
+					</a>
+					<div class="box-bot">
+						<a href="{% url 'add_vote' mc.get_contenttype_id mc.id %}"
+							class={%if mc|user_ranked:user %}"num-liked"{%else%}"num-like"{%endif%}>{{mc|get_votes|length}}</a>
+						<a href="{% url 'cake_mc_details' mc.slug %}#all-com" class="num-comm">{{mc.get_comments_num}}</a>
+						 <a href="{% url 'public_userpage' mc.author.username %}" class="autor"><img src="{% if mc.author.profile.avatar %} 1 {{MEDIA_URL}}{{mc.author.profile.avatar}}{% else %}{{ STATIC_URL }}cake/images/ico10.png{% endif %}" alt="" class="a-img"/><span class="a-name">{{mc.author.username}}</span></a>
+					</div>
+				</div>
+			{% endfor %}
+			{%endcomment%}
+			-->
+		{% endif %}
+		
+	</div>
+
+	{% if paginator.num_pages > 1 %}
+		<div class="pagenavi">
+		{% if page.has_previous %}
+			<a href="{% url 'get_cake_mc' q cat ing afilter page.previous_page_number%}" class="prev cake_mc_filter">Предыдущие</a>
+		{% endif %}
+		{%if page.number > 3 %}
+			<a class="cake_mc_filter" href="{% url 'get_cake_mc' q cat ing afilter 1%}">{{1}}</a>
+			<span>...</span>
+		{%endif%}
+		{% for page_no in paginator.page_range %}			
+			{% if page_no == page.number %}
+			        <span class="current">{{page.number}}</span>
+			{% else %}
+				{% if page_no > page.number|add:"-3" and page_no < page.number|add:"3" %}
+				<a class="cake_mc_filter" href="{% url 'get_cake_mc' q cat ing afilter page_no%}">{{page_no}}</a>
+				{% endif  %}
+			{% endif %}
+		{% endfor %}
+		{%if page.number < paginator.num_pages|add:'-2' %}
+			<span>...</span>
+			<a class="cake_mc_filter" href="{% url 'get_cake_mc' q cat ing afilter paginator.num_pages%}">{{paginator.num_pages}}</a>
+		{%endif%}
+		{% if page.has_next %}
+			<a  href="{% url 'get_cake_mc' q cat ing afilter page.next_page_number%}" class="next cake_mc_filter">Следующие</a>
+		{% endif %}			
+	</div>
+	{% endif %}
+
+	<script type="text/javascript">
+	var cat = "{{cat}}";
+	var ing = "{{ing}}";
+	</script>
+	<script type="text/javascript" src="{{ STATIC_URL }}js/search/search.js"></script>

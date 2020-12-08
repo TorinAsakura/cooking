@@ -1,0 +1,19 @@
+{% extends 'profiles/profile.html' %}
+
+{% block breadcrumbs %}
+	{{ block.super }} >> <a href="{% url 'profile_notices' %}">Уведомления</a> {% if newnotice_num %}({{ newnotice_num }}){% endif %}
+{% endblock breadcrumbs %}
+
+{% block content %}
+	{% for notice in notice_list %}
+		<div>
+			{% if notice.is_new %}
+				<h3><a href="{% url 'notice_details' notice.id %}">{{ notice.title }}</a></h3>
+			{% else %}
+				<p><a href="{% url 'notice_details' notice.id %}">{{ notice.title }}</a></p>
+			{% endif %}
+			<p style="display:none;">{{ notice.body }}</p>
+			<p>Отправитель: {{ notice.from_name }}</p>
+		</div>
+	{% endfor %}
+{% endblock content %}

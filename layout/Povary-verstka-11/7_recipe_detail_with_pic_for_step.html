@@ -1,0 +1,587 @@
+﻿<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+    <head>
+        <title>Повара</title>
+        <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+       
+        <link href='http://fonts.googleapis.com/css?family=PT+Sans:400,700,400italic,700italic&subset=latin,latin-ext,cyrillic' rel='stylesheet' type='text/css'/>
+		<link href='http://fonts.googleapis.com/css?family=Lobster&subset=latin,cyrillic-ext,latin-ext,cyrillic' rel='stylesheet' type='text/css'>
+		<link href='http://fonts.googleapis.com/css?family=Marck+Script&subset=latin,latin-ext,cyrillic' rel='stylesheet' type='text/css'>
+		<link href='http://fonts.googleapis.com/css?family=Cuprum:400,700,700italic&subset=latin,latin-ext,cyrillic' rel='stylesheet' type='text/css'>
+		<link rel="stylesheet" href="./css/main.css" type="text/css"/>
+        <link rel="stylesheet" href="./css/scrollable-horizontal.css" type="text/css"/>		
+		<link rel="stylesheet" type="text/css" href="css/fancyfields.css" media="screen" />
+		<link rel="stylesheet" type="text/css" href="css/jquery.fancybox-thumbs.css?v=1.0.7" />
+		<link rel="stylesheet" type="text/css" href="css/jquery.fancybox.css" />
+		<script type="text/javascript" src="js/jquery-1.8.2.js"></script>
+		<script type="text/javascript" src="js/jquery-ui-1.10.1.custom.min.js"></script>
+		<!--[if lt IE 9]><script src="js/css3-mediaqueries.js"></script><![endif]-->
+		<!--[if IE]><script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script><![endif]-->
+		<script type="text/javascript" src="http://cdn.jquerytools.org/1.2.7/all/jquery.tools.min.js"></script>
+	
+		<script type="text/javascript" src="js/fancyfields-1.2.js"></script>		
+		<script type="text/javascript" src="js/jquery.fancybox.js"></script>		
+		<script type="text/javascript" src="js/jquery.fancybox-thumbs.js?v=1.0.7"></script>
+		<script type="text/javascript" src="js/slider.js"></script>
+		<script type="text/javascript" src="js/jQuery.dPassword.js"></script>
+		<script type="text/javascript" src="js/jquery.jcarousel.js"></script>
+		<script src="js/jquery.ui.sortable.js" type="text/javascript"></script>	
+		<script src="js/jquery.ui.slider.js" type="text/javascript"></script>		
+		<script type="text/javascript" src="js/custom.js"></script>
+    </head>
+    <body>
+		<div id="container">
+			<header id="header">				
+				<div class="top-search">
+					<a href="#" class="ful-s">Расширенный поиск</a>
+					<input type="text" class="s-text"/>
+					<input type="submit" value="НАЙТИ" class="s-btn"/>
+				</div>
+				<div class="top">
+					<a href="#" class="tortod">Тортоделы</a>
+					<a class="povar" href="#">Повары</a>
+					<ul class="tul-right">
+						<li class="vhod"><a href="#" >Войти</a></li>
+						<li class="regis"><a href="#">Зарегистироватся</a></li>
+					</ul>
+					<ul class="tul-left">
+						<li class="add"><a href="#">Добавить</a>
+							<ul>
+								<li><a href="#">Рецепт</a></li>
+								<li><a href="#">Мастер класс</a></li>
+								<li><a href="#">Фото</a></li>
+							</ul>
+						</li>
+					</ul>
+					<a href="javascript:void(0)" class="search-link">Поиск</a>
+				</div>
+				<a href="#" id="logo"></a>
+				<nav class="nav">
+					<ul class="right">
+						<li class="parent">
+							<a href="#">Тортоделы</a>
+							<ul>
+								<li><a href="#">Пункт 1</a></li>
+								<li><a href="#">Пункт 2</a></li>
+								<li><a href="#">Пункт 3</a></li>
+							</ul>
+						</li>
+						<li><a href="#">Группы</a></li>
+						<li><a href="#">Статьи</a></li>
+						<li><a href="#">Форум</a></li>
+					</ul>
+					<ul class="left">
+						<li><a href="#">Рецепты</a></li>							
+						<li><a href="#">Конкурсы</a></li>
+						<li class="parent">
+							<a href="#">Пользователи</a>
+							<ul>
+								<li><a href="#">Пункт 1</a></li>
+								<li><a href="#">Пункт 2</a></li>
+								<li><a href="#">Пункт 3</a></li>
+							</ul>
+						</li>
+					</ul>
+				</nav>
+				<div class="links">
+					<a href="#"><img src="images/home.png" alt=""/></a> → 
+					<a href="#">Рецепты</a> → 
+					<a href="#">Каги из крупы</a> → 
+					<a href="#">Каши из крупы</a> → 
+					<span>Кулиш</span>
+				</div>
+				<div class="search-div">
+					<p>Поиск по рецептам</p>
+					<div class="search"><form><span class="s-bg"></span><input type="text" class="search-text"/><input type="submit" class="search-btn" value=""/></form></div>
+					<a href="#">Расширеный поиск</a>
+				</div>	
+			</header>
+			<div id="wrapper">
+				<div class="content">
+					<br/>
+					
+					<div class="center-div center-div2">
+						<div class="recipe-product">
+							<h1>Венгерское овощное рагу с крабовыми палочками</h1>
+							<div class="description-product">
+								<div class="product-foto">
+									<div class="img">
+										<img src="images/img29.jpg" alt=""/>
+										<div class="allimg"><a href="#">смотреть все фото <span>52</span></a></div>
+									</div>
+									<a href="#" class="add-foto">Добавить фото</a>
+								</div>
+								<div class="product-cont">
+									<div class="distribution">
+										<div class="ask-question">
+											<a href="#">Задать вопрос</a>
+										</div>
+										<div class="distribution-com">
+											<a href="#comments">Комментарии</a>
+										</div>
+										<div class="distribution-right">
+											<div class="counter"><img src="images/counter.jpg" alt=""/></div>
+											<a href="#" class="send"><img src="images/icons/send.jpg" alt=""/></a>
+											<a href="#" class="send"><img src="images/icons/send2.jpg" alt=""/></a>
+										</div>
+									</div>
+									<div class="product-cont-in">
+										<div class="block-left">
+											<a href="#" class="alikes">нравится?<span>222</span></a>
+											<div class="elements">
+												<table>
+													<tr>
+														<td><a href="#" class="el1"></a></td>
+														<td><a href="#" class="el2"></a></td>
+													</tr>
+													<tr>
+														<td><a href="#" class="el3"></a></td>
+														<td><a href="#" class="el4"></a></td>
+													</tr>
+												</table>
+											</div>
+										</div>
+										<div class="block-right">
+											<h4>Описание рецепта</h4>
+											<p>Ассоцианизм релевантно аннигилирует социометрический комплекс, что вызвало развитие функционализма и сравнительно-психологических исследований поведения. Здесь автор сталкивает два таких достаточно далёких друг </p>
+											<div class="time">Время приготовления<span>30</span>мин.</div>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+						<div class="ingredients-block">
+							<div class="ingredients-block-title">								
+								<div class="servings">									
+									<div class="servings-block numb">
+										<span class="minus">-</span><input type="text" value="1" class="num"/><span class="plus">+</span>
+									</div>
+									Количество порций:
+								</div>
+								<h2>Ингридиенты</h2>
+							</div>
+							<div class="ingredients-block-table">
+								<div class="ingredients-block-right">
+									<h5>Офощи</h5>
+									<ul class="nosort">
+										<li class="sort-item"><span class="f-right">10 шт</span><a href="#">Зеленый помидор</a></li>
+										<li class="sort-item gr"><span class="f-right">2 пучка</span><a href="#">Кинза свежая</a></li>
+										<li class="sort-item"><span class="f-right">пучка</span><a href="#">Черный перец <small>(молотый)</small></a></li>
+										
+									</ul>
+								</div>
+								<div class="ingredients-block-left">
+									<h5>Фрукты</h5>
+									<ul class="nosort">
+										<li class="sort-item"><span class="f-right">10 шт</span><a href="#">Зеленый помидор</a></li>
+										<li class="sort-item gr"><span class="f-right">2 пучка</span><a href="#">Кинза свежая</a></li>
+										<li class="sort-item"><span class="f-right">пучка</span><a href="#">Черный перец <small>(молотый)</small></a></li>
+										<li class="sort-item gr"><span class="f-right">на вкус</span><a href="#">Картошка <small>(молодая)</small></a></li>
+										<li class="sort-item"><span class="f-right">200 г</span><a href="#">Перловая крупа</a></li>
+									</ul>
+								</div>
+							</div>
+							<div class="energy-value">								
+								<div class="energy-value-right">
+									<a class="down" href="#">Таблица</a>
+									Енергетическая ценность: 225 ккал / 2804 кДж 
+								</div>
+								<div class="energy-value-left">
+									Питательная ценность: Углеводы: <b>1г</b> | Жиры: <b>0,9 г</b> | Белки: <b>0,5 г</b> 
+								</div>
+							</div>
+							<div class="name-block">							
+									<div class="name-block-in"><b>Назначения:</b><a href="#">На конкурс</a><a href="#">На завтрак</a></div>
+									<div class="name-block-in"><b>Диета:</b><a href="#">Вегинская</a></div>
+									<div class="name-block-in"><b>Национальность кухни:</b><a href="#">Японская</a></div>
+							</div>
+						</div>
+						<div class="rec-steps">
+							<div class="steps-title">
+								<h2>Приготовление: </h2>
+								<div class="step-info">3 шага</div>
+							</div>
+							<div class="rec-step">
+								<div class="step-foto">
+									<img src="images/img30.jpg" alt=""/>
+									<a href="images/img30.jpg" class="review"></a>
+								</div>
+								<div class="step-text">
+									<div class="title">Шаг 1:</div>
+									<p>Давно выяснено, что при оценке дизайна и<br/> композиции читаемый текст мешает<br/> сосредоточиться. Lorem Ipsum используют потому,<br/> что тот обеспечивает более или менее стандартное</p>
+								</div>
+							</div>
+							<div class="rec-step">
+								<div class="step-foto">
+									<img src="images/img31.jpg" alt=""/>
+									<a href="images/img31.jpg" class="review"></a>
+								</div>
+								<div class="step-text">
+									<div class="title">Шаг 2:</div>
+									<p>Необходимо ошпарить лук кипятком после чего<br/> очистить от пленки, помыть под холодной водой и<br/> посалаить. </p>
+								</div>
+							</div>
+							<div class="rec-step">
+								<div class="step-foto">
+									<img src="images/img32.jpg" alt=""/>
+									<a href="images/img32.jpg" class="review"></a>
+								</div>
+								<div class="step-text">
+									<div class="title">Шаг 3:</div>
+									<p>Жарим лук на сковороде 15 минут, на малом огне, с<br/> накрытой крышкой </p>
+								</div>
+							</div>
+						</div>
+						<div id="comments">
+							<div class="counter-comment">
+								<div class="coucomtitle">2 комментария: <div class="counter"><img src="images/counter.jpg" alt=""/></div></div>
+								<div class="registr">
+									<form>
+									<div class="registr-left">
+										<div class="form-row">
+											<label>Авторизуйтесь</label>
+											<a href="#"><img src="images/icons/social-links3.jpg" alt=""/></a>
+											<a href="#"><img src="images/icons/social-links4.jpg" alt=""/></a>
+											<a href="#"><img src="images/icons/social-links5.jpg" alt=""/></a>
+											<a href="#"><img src="images/icons/social-links6.jpg" alt=""/></a>
+											<a href="#"><img src="images/icons/social-links7.jpg" alt=""/></a>
+										</div>
+									</div>
+									<div class="registr-right">
+										<div class="form-row">
+											<label>или пройдите быструю регистрацию</label>
+											<input type="text" class="inp-text" placeholder="Allort"/>
+											<div class="clear"></div>
+										</div>
+										<div class="form-row">
+											<label>&nbsp;</label>
+											<input type="text" class="inp-text" placeholder="Ustinovdm@gmail.com"/>
+											<div class="clear"></div>
+										</div>
+									</div>
+									<div class="clear"></div>
+									<div class="registr-center">
+										<div class="r-img">
+											<img src="images/r-img.jpg" alt=""/>
+										</div>
+										<div class="r-block">
+											<textarea>Очень вкусный пирог и картошка!</textarea>
+											<a href="#" class="imag">изображение</a>
+										</div>
+										<input type="submit" class="submit2" value="Отправить"/>
+									</div>
+									<div class="registr-center2">
+										<a href="#" class="more-com">Комментарии</a>
+										<div class="comment">
+											<div class="r-img">
+												<img src="images/r-img.jpg" alt=""/>
+											</div>
+											<div class="comment-in">
+												<a href="#" class="name">Алиса Супер</a>
+												<span class="date">4 месяца назад</span>
+												<p>Это чудеснейший рецепт который я когда либо ела!</p>
+												<div class="rating">
+													<span class="plus">0</span>
+													<span class="minus"></span> &nbsp; &middot;
+													<a href="#" class="reply">Ответить</a>
+												</div>
+												<div class="share">
+													<a href="#">поделиться ></a>
+													<a href="#"><img src="images/icons/soc4.jpg" alt=""/></a>
+													<a href="#"><img src="images/icons/soc5.jpg" alt=""/></a>
+													<a href="#"><img src="images/icons/soc6.jpg" alt=""/></a>
+												</div>
+											</div>
+										</div>
+									</div>
+									</form>
+								</div>	
+							</div>
+						</div>
+					</div>
+					<div class="h-col-right side-col-right">
+						<div class="athor-block">
+							<div class="title">
+								<h4>Автор рецепта:</h4>
+							</div>
+							<div class="winner">
+								<div class="athor-block-foto">
+									<div class="winner-img">
+										<a href="#"><img src="images/autor5.jpg" alt=""/></a>
+									</div>
+									<a class="more-btn" href="#"><img src="images/plus3.png" alt=""/>следовать</a>
+								</div>
+								<div class="winner-text">
+									<div class="athor-line">
+										<span>Ник:</span>
+										<a href="#" class="aname">Iren_Angel</a>
+									</div>
+									<div class="athor-line">
+										<span>Добавил: </span>
+										<a href="#">390 рецептов</a>
+									</div>
+									<div class="athor-line">
+										<span>Статус:</span>
+										<a href="#">Повар</a>
+									</div>
+									<div class="athor-line">
+										<span>Рейтинг:</span>
+										<small>500</small>
+									</div>
+								</div>
+							</div>
+							<div class="others-recipes">
+								<div class="others-recipes-title">
+									<h4>Другие рецепты автора:</h4>
+								</div>
+								<div class="pane-slider">
+									<div class="scrollable" id="scrollable">
+										<div class="items">
+											<div class="item">
+												<ul class="recipts">
+													<li>
+														<a href="#" class="rec-img"><img src="images/img2.jpg" alt=""/></a>
+														<div class="rec-inf">
+															<p>Запеченные 
+																грибы
+																с прорезями</p>
+														</div>
+														<div class="link-block">
+															<span class="num-like">
+																<big>12</big>
+															</span>
+															<span class="num-comm">
+																<big>18</big>
+															</span>
+														</div>
+													</li>
+													<li>
+														<a href="#" class="rec-img"><img src="images/img2.jpg" alt=""/></a>
+														<div class="rec-inf">
+															<p>Запеченные 
+																грибы
+																с прорезями</p>
+														</div>
+														<div class="link-block">
+															<span class="num-like">
+																<big>12</big>
+															</span>
+															<span class="num-comm">
+																<big>18</big>
+															</span>
+														</div>
+													</li>
+													
+												</ul>
+											</div>
+											<div class="item">
+												<ul class="recipts">
+													<li>
+														<a href="#" class="rec-img"><img src="images/img2.jpg" alt=""/></a>
+														<div class="rec-inf">
+															<p>Запеченные 
+																грибы
+																с прорезями</p>
+														</div>
+														<div class="link-block">
+															<span class="num-like">
+																<big>12</big>
+															</span>
+															<span class="num-comm">
+																<big>18</big>
+															</span>
+														</div>
+													</li>
+													<li>
+														<a href="#" class="rec-img"><img src="images/img2.jpg" alt=""/></a>
+														<div class="rec-inf">
+															<p>Запеченные 
+																грибы
+																с прорезями</p>
+														</div>
+														<div class="link-block">
+															<span class="num-like">
+																<big>12</big>
+															</span>
+															<span class="num-comm">
+																<big>18</big>
+															</span>
+														</div>
+													</li>
+												</ul>
+											</div>
+											<div class="item">
+												<ul class="recipts">
+													<li>
+														<a href="#" class="rec-img"><img src="images/img2.jpg" alt=""/></a>
+														<div class="rec-inf">
+															<p>Запеченные 
+																грибы
+																с прорезями</p>
+														</div>
+														<div class="link-block">
+															<span class="num-like">
+																<big>12</big>
+															</span>
+															<span class="num-comm">
+																<big>18</big>
+															</span>
+														</div>
+													</li>
+													<li>
+														<a href="#" class="rec-img"><img src="images/img2.jpg" alt=""/></a>
+														<div class="rec-inf">
+															<p>Запеченные 
+																грибы
+																с прорезями</p>
+														</div>
+														<div class="link-block">
+															<span class="num-like">
+																<big>12</big>
+															</span>
+															<span class="num-comm">
+																<big>18</big>
+															</span>
+														</div>
+													</li>
+												</ul>
+											</div>
+										</div>											
+									</div>
+									<a href="javascript:void(0)" class="browse left prev" id="prev1"></a>
+									<a href="javascript:void(0)" class="browse right next" id="next1"></a>
+								</div>
+								<a class="more" href="#">все рецепты (52)</a>
+								<div class="expand-div">
+									<a href="#">развернуть</a>
+								</div>
+								<div class="clear"></div>
+							</div>
+						</div>
+						<div class="side-block">
+							<div class="title">
+								<h4>Похожие рецепты:</h4>
+							</div>
+							<div class="myrec">
+								<a href="#" class="rec-img"><img src="images/img1.jpg" alt=""/></a>
+								<div class="rec-title">
+									<a href="#">Запеченные грибы с прорезями</a>
+									<div class="athor"><small>Автор:</small> <a href="#">Николай</a></div>
+									<span class="num-like"><big>12</big></span>
+									<span class="num-comm"><big>18</big></span>
+									<span class="num-plus"><big>18</big></span>
+									<span class="num-ok"><big>18</big></span>
+								</div>
+							</div>
+							<div class="myrec">
+								<a href="#" class="rec-img"><img src="images/img1.jpg" alt=""/></a>
+								<div class="rec-title">
+									<a href="#">Запеченные грибы с прорезями</a>
+									<div class="athor"><small>Автор:</small> <a href="#">Николай</a></div>
+									<span class="num-like"><big>12</big></span>
+									<span class="num-comm"><big>18</big></span>
+									<span class="num-plus"><big>18</big></span>
+									<span class="num-ok"><big>18</big></span>
+								</div>
+							</div>
+							<div class="myrec">
+								<a href="#" class="rec-img"><img src="images/img1.jpg" alt=""/></a>
+								<div class="rec-title">
+									<a href="#">Запеченные грибы с прорезями</a>
+									<div class="athor"><small>Автор:</small> <a href="#">Николай</a></div>
+									<span class="num-like"><big>12</big></span>
+									<span class="num-comm"><big>18</big></span>
+									<span class="num-plus"><big>18</big></span>
+									<span class="num-ok"><big>18</big></span>
+								</div>
+							</div>
+						</div>
+						<div class="pink-block">
+							<div class="pink-block-in">
+								<div class="pink1">
+									<div class="p">
+									<div class="num">448</div>
+									<div class="text-pink">просмотров</div>
+									</div>
+									<div class="p">
+									<div class="num">48</div>
+									<div class="text-pink">поварят хотят 									приготовить</div>
+									</div>
+								</div>
+								<a href="#" class="green pink-link" >И я !</a>
+							</div>
+							<div class="pink-block-in">
+								<div class="pink2">
+									<div class="num">14</div>
+									<div class="text-pink">человек добавили к 
+									сеье в коробку </div>
+								</div>
+								<a href="#" class="green pink-link" >Добавить</a>
+							</div>
+						</div>
+						<div class="section comments">
+								<div class="title"><h4>Советы и рекомендации</h4></div>
+								<h5>Как хранить плов  в холодильнике под кустом выползня?</h5>
+								<div class="comment">
+									<div class="comment-author">
+										<div class="author">
+											<a href="#"><img src="images/autor5.jpg" alt=""/></a>										
+										</div>										
+										<a href="#" class="name-author">CroftMiledy</a>
+										<span class="num-like"><big>12</big></span>
+									</div>
+									<div class="comment-author-text">
+										<blockquote>
+											<p>Плов необходимо 
+												поместить 
+												в моразилку с закрытой
+												крышкой в черном 
+												целафановом пакете</p>
+										</blockquote>
+										<a class="more" href="#">все советы</a>
+									</div>
+								</div>
+							</div>
+					</div>
+					<div class="clear"></div>
+				</div>
+			</div>			
+		</div>
+		<footer id="footer">
+				<div id="footer-in">
+					<div class="cont-in">
+						<div class="bottom">
+							<a href="#" class="add-rec"><i>Добавте свой</i><big>Собственый рецепт</big></a>
+							<div class="f-left">
+								<nav class="foot-nav">
+									<ul>
+										<li><a href="#">Рецепты</a></li>
+										<li><a href="#">Конкурсы</a></li>
+										<li><a href="#">Пользователи</a></li>
+										<li><a href="#">Тортоделы</a></li>
+										<li><a href="#">Статьи</a></li>
+										<li><a href="#">Группы</a></li>
+										<li><a href="#">Форум</a></li>
+									</ul>
+								</nav>
+								<div class="soc-icons">
+									<a href="#" class="s1"></a>
+									<a href="#" class="s2"></a>
+									<a href="#" class="s3"></a>
+								</div>
+								<img src="images/soc.jpg" alt=""/>
+							</div>
+						</div>
+						<ul class="foot-links">
+							<li><a href="#">Карта сайта</a></li>
+							<li><a href="#">Реклама</a></li>
+							<li><a href="#">Обратная</a></li>
+						</ul>
+						<p>©2003-2013 Кулинарный портал «ПОВАРЫ.ru». Все права сохранены.   </p>
+					</div>
+				</div>
+			</footer>
+    </body>
+</html>
+
+

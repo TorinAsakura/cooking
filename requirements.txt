@@ -1,0 +1,41 @@
+# Django
+django == 1.5.1
+django-extensions
+
+# Databases
+MySQL-python
+psycopg2
+south
+pymongo
+python-cdb
+
+# Images
+pil
+sorl-thumbnail
+
+# Fulltext search
+-e git+https://github.com/toastdriven/django-haystack.git@master#egg=django-haystack
+-e git+git://github.com/notanumber/xapian-haystack.git#egg=xapian-haystack
+
+# Text
+pymorphy
+markdown
+django-markitup
+django-tinymce
+pytils
+django-autocomplete-light
+
+#
+xlrd
+flup
+pytz
+fabric
+PyEnchant
+django-setman
+django-celery
+django-uuslug == 0.6
+django-registration==1.0
+django-reversion-compare
+django-widget-tweaks
+django-file-resubmit
+django-filebrowser

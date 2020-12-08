@@ -1,0 +1,24 @@
+{% extends 'base.html' %}
+
+
+{% block extra_header %}
+<script type="text/javascript" src="{{ STATIC_URL}}js/markitup/jquery.markitup.js"></script>
+<script type="text/javascript" src="{{ STATIC_URL}}js/markitup/sets/markdown/set.js"></script>
+<link rel="stylesheet" type="text/css" href="{{ STATIC_URL}}js/markitup/skins/markitup/style.css" />
+<link rel="stylesheet" type="text/css" href="{{ STATIC_URL}}js/markitup/sets/markdown/style.css" />
+
+
+<script language="javascript">
+$(document).ready(function()	{
+    $('textarea').markItUp(mySettings);
+});
+</script>
+{% endblock extra_header %}
+
+{% block content %}
+	<form method="post" action="">
+		{% csrf_token %}
+		{{ form.as_p }}
+		<p><input type="submit"></p>
+	</form>
+{% endblock content %}

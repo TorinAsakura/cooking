@@ -1,0 +1,51 @@
+{% extends 'cake_base.html' %}
+{% load thumbnail %}
+
+
+<div id="wrapper">
+{% block content %}
+
+<div class="cont-in">
+    <div class="title">
+        <div class="soc-icons">
+            <a href="#"><img alt="" src="images/ico5.png"></a>
+            <a href="#"><img alt="" src="images/ico6.png"></a>
+            <a href="#"><img alt="" src="images/ico7.png"></a>
+        </div>
+        <span class="element-one"></span>
+        <h1>СОБЫТИЯ</h1>
+        <span class="element-two"></span>
+    </div>
+
+    <div class="sorting">
+         <ul class="sorting-list">
+             <li class="active"><a href="#">Новые сверху </a></li>
+             <li><a href="#">Лучшие сверху </a></li>
+             <li><a href="#">По коментариям </a></li>
+         </ul>
+         <a class="addfoto" href="{% url 'add_cake_event' %}"><i>Добавить</i> <big>событие</big></a>
+     </div>
+
+    <div class="boxes boxes3">
+        {% for cake_event in cake_event_list %}
+        <div class="box">
+            <a href="{% url 'cake_event_details' cake_event.slug %}" class="box-img">
+                <img src="{% thumbnail cake_event.image "230x314" crop="center" as image %} {{ image.url }} {% endthumbnail %}" alt="{{ cake_event.title }}" title="{{ cake_event.title }}"/>
+                <span class="box-title">
+                    <b class="date"><big>{{ cake_event.start_date.day }}</big> {{ cake_event.start_date|date:"M" }}</b>
+                    <span class="box-pad">{{ cake_event.title }}</span>
+                </span>
+                <b class="fade"></b>
+            </a>
+            <div class="box-bot">
+                <a class="num-peop" href="#">20  идут</a>
+                <a class="join" href="#">Я пойду</a>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+        {# <h3>{{ event.start_date }} - {{ event.end_date }}</h3> #}
+
+</div>
+{% endblock content %}
+</div>

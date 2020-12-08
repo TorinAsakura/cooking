@@ -1,0 +1,81 @@
+{% extends 'base.html' %}
+{% load static thumbnail %}
+
+{% block title%}
+    Повара
+{% endblock %}
+
+{% block breadcrumbs %}
+    <a href="/"><img src="{% static 'images/home.png' %}" alt=""/></a> →
+    <a href="{% url 'article_list' %}">Статьи</a>
+{% endblock breadcrumbs %}
+
+{% block content %}
+        <br/>
+        <div class="center-block">
+            <div class="big-search">
+                <form action="" method="get">
+                    <input type="text" class="search-inp" name="query" placeholder="Поиск по статьям"/>
+                    <input type="submit" class="search-inp-submit" value=""/>
+                </form>
+            </div>
+            <div class="sorting">
+                <div class="sorting-right">
+                    <p>Показывать по :
+                        {% if articles_per_page == 5 %}
+                            <span>5</span>|<a href="?per_page=10">10</a>|<a href="?per_page=15">15</a>
+                        {% elif articles_per_page == 10 %}
+                            <a href="?per_page=5">5</a>|<span>10</span>|<a href="?per_page=15">15</a>
+                        {% else %}
+                            <a href="?per_page=5">5</a>|<a href="?per_page=10">10</a>|<span>15</span>
+                        {% endif %}
+                    </p>
+                </div>
+                <div class="sorting-left">
+                    <p>Отсориторвать по :
+                        {% if sort == 'pub_date' %}
+                            <a href="?sort=pub_date&order={% if order == 'down' %}up{% else %}down{% endif %}" class="{% if order == 'down' %}up{% else %}down{% endif %}">Дате</a>|<a href="?sort=visits_num&order=down" class="down">Рейтингу </a>|<a href="?sort=comments_num&order=down" class="down">Комментариям</a>
+                        {% elif sort == 'visits_num' %}
+                            <a href="?sort=pub_date&order=down" class="down">Дате</a>|<a href="?sort=visits_num&order={% if order == 'down' %}up{% else %}down{% endif %}" class="{% if order == 'down' %}up{% else %}down{% endif %}">Рейтингу </a>|<a href="?sort=comments_num&order=down" class="down">Комментариям</a>
+                        {% else %}
+                            <a href="?sort=pub_date&order=down" class="down">Дате</a>|<a href="?sort=visits_num&order=down" class="down">Рейтингу </a>|<a href="?sort=comments_num&order={% if order == 'down' %}up{% else %}down{% endif %}" class="{% if order == 'down' %}up{% else %}down{% endif %}">Комментариям</a>
+                        {% endif %}
+                    </p>
+                </div>
+            </div>
+            <div class="post">
+                {% for article in article_list %}
+                <div class="post-row">
+                        <div class="post-img f-{% if forloop.counter|divisibleby:"2" %}right{% else %}left{% endif %}">
+                        <a href="{{ article.get_absolute_url }}">
+                            <img src="{% if article.image %}{% thumbnail article.image "262x193" crop="center" as image %}{{ image.url }}{% endthumbnail %}{% else %}{{ STATIC_URL }}images/img26.jpg{% endif %}" alt="{{ article.title }}" title="{{ article.title }}"/>
+                        </a>
+                        </div>
+                    <div class="title">
+                        <h2><a href="{{ article.get_absolute_url }}">{{ article.title|safe }}</a></h2>
+                        <div class="date">{{ article.pub_date }}</div>
+                        <span class="num-comm">{{ article.comments_num }}</span>
+                    </div>
+                    <p>{% if article.description %}
+                            {{ article.description }}
+                        {% else %}
+                            {{ article.body|truncatewords_html:85 }}
+                        {% endif %}
+                        <a class="more-btn" href="{{ article.get_absolute_url }}">Читать дальше</a></p>
+                </div>
+
+                {% empty %}
+                    <h1>Статей нет</h1>
+                {% endfor %}
+
+            </div>
+            <br/>
+            {% include "page_pagination.html" with part_list=part_list object_list=article_list prev_base_page=prev_base_page next_base_page=next_base_page objects_per_page=articles_per_page %}
+        </div>
+        <div class="left-block">
+            {% include 'articles/articlecategory_list.html' %}
+            {% include 'articles/popular_articles.html' %}
+        </div>
+        <div class="clear"></div>
+
+{% endblock content %}

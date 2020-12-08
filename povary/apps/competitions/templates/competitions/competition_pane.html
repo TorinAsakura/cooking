@@ -1,0 +1,49 @@
+{% load thumbnail %}
+
+<div id='{% if open %}active_copm{% else %}ended_comp{% endif %}'>
+    {% for competition in object_list %}
+    <div class="div-row">
+        <div class="block-img">
+            <a href="{{ competition.get_absolute_url }}">
+            <img src="{% thumbnail competition.image "246x246" crop="center" as image %} {{ image.url }} {% endthumbnail %}" alt="competition.title" title="competition.title"/>
+            </a>
+            {% if open %}
+                <div class="date-block">{{ competition.end_date|timeuntil }}</div>
+            {% endif %}
+        </div>
+        <div class="div-text">
+            <h2><a href="{{ competition.get_absolute_url }}">{{ competition.title }}</a></h2>
+            <p>{{ competition.description }}</p>
+            <div class="table">
+                <table>
+                    <tr class="gray">
+                        <td align="left">Статус:</td><td align="right"><span class="{% if open %}green{% else %}red{% endif %}">{% if open %}Открыт сбор работ{% else %}Конкурс завершился{% endif %}</span></td>
+                    </tr>
+                    <tr>
+                        <td align="left">Дата начала:</td><td align="right">{{ competition.start_date|date:"DATE_FORMAT" }}</td>
+                    </tr>
+                    <tr class="gray">
+                        <td align="left">Дата окончания:</td><td align="right">{{ competition.end_date|date:"DATE_FORMAT" }}</td>
+                    </tr>
+                    <tr>
+                        <td align="left">Голосование:</td><td align="right">{{ competition.voting_start|date:"DATE_FORMAT" }}</td>
+                    </tr>
+                    <tr class="gray">
+                        <td align="left">Конец голосования:</td><td align="right">{{ competition.voting_end|date:"DATE_FORMAT" }}</td>
+                    </tr>
+                    <tr>
+                        <td align="left">Количество участников:</td><td align="right">{{ competition.competition_requests.count }}</td>
+                    </tr>
+                </table>
+            </div>
+            <a href="{{ competition.get_absolute_url }}" class="more-link">Подробнее</a>
+        </div>
+        <div class="clear"></div>
+    </div>
+        {% empty %}
+        <h1>Пока нет активных конкурсов. Ждите — будет интересно ;)</h1>
+    {% endfor %}
+
+{% include "page_pagination.html" with part_list=part_list object_list=competition_list prev_base_page=prev_base_page next_base_page=next_base_page objects_per_page=competitions_per_page %}
+
+</div>

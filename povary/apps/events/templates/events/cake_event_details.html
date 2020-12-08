@@ -1,0 +1,130 @@
+{% extends 'cake_base.html' %}
+{% load thumbnail %}
+
+<div id="wrapper">
+    {% block content %}
+    <div class="cont-in">
+        <div class="center">
+            <div class="title"><span class="element-one"></span><h1>{{ cake_event.title }}</h1><span class="element-two"></span></div>
+            <div class="white">
+            <center>
+                <img src="{% thumbnail cake_event.image "731x300" crop="center" as image %} {{ image.url }} {% endthumbnail %}" alt="{{ cake_event.title }}" title="{{ cake_event.title }}"/>
+                <br><br>
+                <h3>Начало: {{ cake_event.start_date|date:"H:i, j M Y" }}</h3>
+                <h3>Конец: {{ cake_event.end_date|date:"H:i, j M Y" }}</h3>
+                <br>
+            </center>
+
+            <div class="post">
+                 <section class="section" id="section1">
+                     <div class="posit-in">
+                         <p>{{ cake_event.description|linebreaksbr }}</p>
+                     </div>
+                 </section>
+            </div>
+            <br>
+
+            </div>
+
+<div class="title title-sm"><span class="element-one"></span><h3>4 Коментария</h3><span class="element-two"></span><a class="add-commen" href="#ad-com">Добавить коментарий</a></div>
+<div class="comment">
+                                    <div class="comm">
+                                        <a class="c-img" href="#"><img alt="" src="images/autor.jpg"></a>
+                                        <a class="comm-text" href="#">
+                                            <span class="c-title">Елена Руденко</span><span class="c-date">2 часа назад</span>
+                                            <span class="c-text">Помогите с коржами, никак не могу сделать их более мягкими...</span>
+                                        </a><a class="ansver" href="#">Ответить</a>
+                                            <b class="corn"></b>
+                                    </div>
+                                    <div class="comm">
+                                        <a class="c-img" href="#"><img alt="" src="images/autor.jpg"></a>
+                                        <a class="comm-text" href="#">
+                                            <span class="c-title">Елена Руденко</span><span class="c-date">2 часа назад</span>
+                                            <span class="c-text">Помогите с коржами, никак не могу сделать их более мягкими...</span>
+                                        </a><a class="ansver" href="#">Ответить</a>
+                                            <b class="corn"></b>
+                                    </div>
+                                    <div class="comm">
+                                        <a class="c-img" href="#"><img alt="" src="images/autor.jpg"></a>
+                                        <a class="comm-text" href="#">
+                                            <span class="c-title">Елена Руденко</span><span class="c-date">2 часа назад</span>
+                                            <span class="c-text">Помогите с коржами, никак не могу сделать их более мягкими...</span>
+                                        </a><a class="ansver" href="#">Ответить</a>
+                                            <b class="corn"></b>
+                                            <div class="comm">
+                                                <a class="c-img" href="#"><img alt="" src="images/autor.jpg"></a>
+                                                <a class="comm-text" href="#">
+                                                    <span class="c-title">Елена Руденко</span><span class="c-date">2 часа назад</span>
+                                                    <span class="c-text">Помогите с коржами, никак не могу сделать их более мягкими...</span>
+                                                </a><a class="ansver" href="#">Ответить</a>
+                                                    <b class="corn"></b>
+                                            </div>
+                                    </div>
+                                    <div class="comm">
+                                        <a class="c-img" href="#"><img alt="" src="images/autor.jpg"></a>
+                                        <a class="comm-text" href="#">
+                                            <span class="c-title">Елена Руденко</span><span class="c-date">2 часа назад</span>
+                                            <span class="c-text">Помогите с коржами, никак не могу сделать их более мягкими...</span>
+                                        </a>    <a class="ansver" href="#">Ответить</a>
+                                            <b class="corn"></b>
+                                    </div>
+                                </div>
+<div class="add-comment">
+                                    <a id="ad-com" href="#"></a>
+                                    <div class="add-comment-title">Добавте коментарий</div>
+                                    <a class="c-img" href="#"><img alt="" src="images/nophoto.jpg"></a>
+                                    <form>
+                                        <div class="add-comment-form">
+                                            <div class="form-row">
+                                                <div class="form-div">
+                                                    <input type="text" placeholder="Ваше имя" class="com-text1">
+                                                </div>
+                                                <div class="form-div">
+                                                    <input type="text" placeholder="Ваш email" class="com-text2">
+                                                </div>
+                                            </div>
+                                            <div class="form-row">
+                                                <textarea placeholder="Текст коментария" class="textarea-com"></textarea>
+                                            </div>
+                                        </div>
+                                        <input type="submit" value="Отправить" class="com-submit">
+                                    </form>
+                                    <b class="corn"></b>
+                                </div>
+
+
+
+
+
+        </div>
+
+                        <div class="sidebar">
+                            <div class="mk">
+                                <div class="mk-title">Другие События</div>
+                                <div class="box">
+                                    <a href="#" class="box-img">
+                                        <img alt="" src="images/img15.jpg">
+                                        <span class="box-title"><span class="box-pad">Шоколадный торт с журнавлиной</span></span>
+                                        <b class="fade"></b>
+                                    </a>
+                                    <div class="box-bot">
+                                        <a class="num-like" href="#">22</a>
+                                        <a class="num-comm" href="#">32</a>
+                                        <a class="autor" href="#"><img class="a-img" alt="" src="images/autor.jpg"><span class="a-name">Елена Руденко</span></a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+    </div>
+    {% endblock content %}
+</div>
+
+
+
+
+
+
+
+
+

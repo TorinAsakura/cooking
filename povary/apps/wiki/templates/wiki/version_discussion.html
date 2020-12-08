@@ -1,0 +1,28 @@
+<script type="text/javascript">
+	$("#version_discussion_form").live("submit", function(evnt){
+		evnt.preventDefault();
+		var _url = $(this).attr('action');
+		var _data = $(this).serialize();
+		$.post(_url, _data, function(data){
+			if (data.status == "ok"){
+				$("#comment_list").append("<li>"+data.body+"</li>");
+				$("#id_text").val("");
+			}
+			else{
+				alert(data.message);
+			}
+		});
+	});
+</script>
+
+<ul id="comment_list">
+	{% for comment in comment_list %}
+		<li>{{ comment }}</li>
+	{% endfor %}
+</ul>
+
+<form id="version_discussion_form" method="post" action="{% url 'ajaxcomment_wikiversion' version_id %}">
+	{% csrf_token %}
+	{{ discussion_form.as_p }}
+	<p><input type="submit" value="Отправить"></p>
+</form>

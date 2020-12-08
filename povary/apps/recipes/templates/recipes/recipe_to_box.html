@@ -1,0 +1,68 @@
+{% extends 'base.html' %}
+
+{% block content %}
+    {% if recipebox_list %}
+        <p>Доступные коробки для добавления</p>
+    {% else %}
+        <p class="no_box_text">У вас нет созданных коробок, это замечательный повод начать коллекционировать рецепты ;)</p>
+    {% endif %}
+
+    <form id="{% if recipebox_list %}list_box_form{% else %}add_box_form{% endif %}" method="post" action="{% url 'add_recipe_to_box' recipe.slug %}">
+        {% csrf_token %}
+        <p>
+
+            {% if recipebox_list %}
+                        <select multiple="True" name="box_to_add">
+                            {% for box in recipebox_list %}
+                                <option value="{{ box.id }}"
+                                {% if recipe in box.recipe_list.all %} selected{% endif %}>{{ box.title }}</option>
+                            {% endfor %}
+                        </select>
+            {% else %}
+                <select multiple="True" name="box_to_add">\
+                </select>
+                <div class="no_box_text">
+                    {{ create_box_form.as_p }}
+                </div>
+            {% endif %}
+            <input type="hidden" name='referer' value="{% if referer %}{{ referer }}{% else %}{{ request.META.HTTP_REFERER }}{% endif %}"/>
+            <input type="submit" value="Добавить коробку"/>
+        </p>
+    </form>
+
+
+
+
+	<script type="text/javascript">
+	$(function(){
+		$("#list_box_form").live('submit', function(evnt){
+			evnt.preventDefault();
+			var data = $(this).serialize();
+			var url = $(this).attr('action');
+			$.post(url, data, function(data){
+                window.location.replace(data.referer);
+			});
+			return false;
+		});
+		$("#add_box_form").live('submit',function(evnt){
+			evnt.preventDefault();
+			var data = $(this).serialize();
+			var url = $(this).attr('action');
+			$.post(url, data, function(data){
+				var created_option = $("<option></option>");
+				created_option.val(data.box_id);
+				created_option.text(data.box_title);
+				$('select[name=box_to_add]').prepend(created_option);
+				$('select[name=box_to_add]').show();
+				$(".no_box_text").remove();
+			});
+			$('#add_box_form').each(function(){
+    				this.reset();
+ 			});
+            $(this).attr('id', 'list_box_form');
+			return false;
+		});
+	});
+	</script>
+
+{% endblock %}
