@@ -1,0 +1,232 @@
+{% extends "cake_base.html" %}
+{% load i18n core_tags widget_tweaks %}
+
+{% block content %}
+<script src="{{STATIC_URL}}cake/js/select2.js"></script>
+<link href="{{STATIC_URL}}cake/css/select2.css" rel="stylesheet"/>
+		<script type="text/javascript" src="{{STATIC_URL}}cake/js/custom.js"></script>
+<style type="text/css">
+	div.file-container{
+		position: relative;
+	}
+	div.show, div.show:hover{
+		position: absolute;	
+		z-index: 1;	
+		margin-top: -16px;	
+	}
+	input.file{
+		position: absolute;	
+		-moz-opacity:0 ;
+		filter:alpha(opacity: 0);
+		opacity: 0;
+		z-index: 2;
+		margin-top: -15px;
+	}
+	.errors{
+		border: 1px solid red;		
+		border-radius: 2px;
+	}
+</style>
+
+<div class="cont-in">
+	<div class="addfoto-block">
+		{% if form.errors %}
+<div id="form-error">
+	<p>The operation could not be performed because one or more error(s) occurred.<br />Please resubmit the form after making the following changes:</p>
+	<ul>
+	{% for field in form %}
+	<li>{{ field.errors|striptags }}</li>
+	{% endfor %}
+	</ul>
+</div>
+{% endif %}
+	<form id="cakeimageform" action="{% if gallery %}{% url 'cakeimage-add' gallery.slug %}{% else %}{% url 'cakeimage-add'  %}{% endif %}" method="post" enctype="multipart/form-data" >{% csrf_token %}	   
+
+				<div class="addfoto-block-in first">
+					<div class="block-in-right">
+						<label>Фото<span>*</span></label>
+						
+						<div  class="download-foto-block" 
+							{% if form.image|get_cached_image %}
+								style="background-image: url({{form.image|get_cached_image}});
+								background-repeat: no-repeat;
+								background-size:cover;"
+
+								cached='true'
+							{% endif %}
+							>							
+							<div class="file-container download-foto-link ">		
+													
+								{{ form.image|attr:"class:file download-foto-link " }}
+								<div class="show download-foto-link ">ЗАГРУЗИТЬ</div>
+							</div>	
+						</div>											
+					</div>
+				
+					<div class="block-in-left">
+						
+						<div class="form-row first">
+							{% if gallery %}
+							<div class="form-block">
+								<label>Галерея<span>*</span></label>	
+									<select disabled>
+										<option>{{form.gallery}}</option>
+									</select>							    								    	
+							    </div>
+							{% else %}
+							<div class="form-block">
+								<label>Выберите категорию<span>*</span></label>								
+
+								<div class="styled-select">
+									<select id="id_cats" name="cats">
+									{%for cat in categorymc_list%}
+										<option value="{{cat.slug}}" slug="{{cat.slug}}">{{cat.title}}</option>
+									{% endfor%}
+									</select>
+								</div>
+								<input type="hidden" id="prevSelCat_slug" value="{{form.cats.value}}"/>								
+
+							</div>
+							<div id='ajax_subcat' class="form-block">	
+								<label>Выберите подкатегорию<span>*</span></label>
+								<div class="styled-select">
+									{{form.subcat}}		
+								</div>													
+							</div>
+							{% endif %}
+							<div class="clear"></div>
+						</div>
+						<div class="form-row second">
+							<label>Название фото<span>*</span></label>	
+							{% if form.title.errors %} <!--if such MK name already exists-->
+								<div class="errors">
+							{% endif %}					
+							{{ form.title|attr:"class:addfoto-block-input" }}
+							{% if form.title.errors %}
+								</div>
+							{% endif %}					
+							
+							<div class="clear"></div>
+						</div>
+						<div class="form-row third">
+							<label>Описание</label>
+							 				
+							{{ form.description|attr:"class:addfoto-block-textarea"|attr:"placeholder:Коротко опишите ваш мастер класс" }}
+							<div class="clear"></div>
+						</div>	
+						<div class="form-row second">
+							<label>Теги</label>
+							{{ form.mc_tags|attr:"class:select2-input"|attr:"style:width:100%" }}
+						</div>					
+					</div>	
+					</div>							
+					
+				<input id="form_submit" type="submit" class="cont addfoto-block-submit" value="Сохранить"/>								
+	</form>
+
+</div>
+</div>
+
+<script type="text/javascript">
+$(function(){
+	var alltags = {% if tags %}"{{tags}}".split(','){%else%}[]{%endif%}
+	$("#id_mc_tags").select2({tags: alltags, tokenSeparators: [","]});
+
+	formImage = function(){
+		return $('#id_image'); //input[type=file]
+	}
+	formTitle = function(){
+		return $('#id_title'); //input
+	}
+	formValid = function(){
+		return $(formImage()).val().length >0 && $.trim($(formTitle()).val()).length > 0;
+	}
+	showValidationErrors = function(){
+		var el_image = formImage();
+		var el_title = formTitle();
+		if($(el_image).val().length == 0){
+			$(el_image).parent().parent().addClass("errors");
+		}else{
+			$(el_image).parent().parent().removeClass("errors");
+		}
+		if($.trim($(el_title).val()).length == 0){
+			$(el_title).addClass("errors");
+		}else{
+			$(el_title).removeClass("errors");
+		}
+	}
+	testFormValid = function(evnt){
+		var valid = formValid();		
+		if(!valid){
+			evnt.preventDefault();
+			showValidationErrors();
+		}
+	}
+	$('#form_submit').click(testFormValid);
+
+		handleFileSelect = function(evt) {	
+	    	console.log("file changed");			
+		  	var self = $(this);
+		    var files = evt.target.files; // FileList object
+		    if( files.length > 0 ){								    	
+		    	var reader = new FileReader();
+				reader.onload = function (e) {
+				    self.parent().parent()
+				        .css('background-image', "url("+e.target.result+")")
+				        .css('background-size', "cover")
+				        .css('background-repeat', "no-repeat");				                    
+				};
+				reader.readAsDataURL(files[0]);								    
+		    }
+	  	}
+	  	$("#id_0-image").live('change', handleFileSelect);
+	    $.each($("input.download-foto-link"), function( key, value ) {								  		
+	  		$(this).live('change', handleFileSelect);
+	    });	 
+
+	    subcategoryElement = function(){
+	    	return $('select#id_subcat');
+	    }
+
+	    categoryElement = function(){
+	    	return $('select#id_cats');
+	    }
+
+	    	    loadSubcategories = function(cat_name){
+					var url = "{% url 'get_subcategories' 'cat_title' %}".replace("cat_title",cat_name);
+					console.log(url);
+					$.get( url, function( data ) {						
+						var subc_list = $.parseJSON(data).subcategories;	
+						console.log(subc_list);
+						var el_subc = $(subcategoryElement());
+						// remove old options
+						el_subc.empty(); 						
+						$.each(subc_list, function(i, val) {
+						  el_subc.append($("<option></option>")
+						     .attr("value", val.slug).text(val.title));
+						});						
+						//show subcategories
+						var prevSel = $("#prevSelSubCat_slug").val();	
+						$(subcategoryElement()).val(prevSel);
+						//validateAndShowSubCategory();										
+					});
+				}
+				
+				var sel = $("#prevSelCat_slug").val();								
+				if(sel=="None"){
+					sel = categoryElement().find(":selected").val();
+				}
+				$(categoryElement()).val(sel);
+				loadSubcategories(sel);	
+
+				$(categoryElement()).live('change', function(evnt){					
+					//load subcategories
+					var sel_slug = $(this).find(":selected").attr("slug");					
+					loadSubcategories(sel_slug);
+					//validateAndShowCategory();
+				});
+
+
+})
+</script>
+{% endblock %}

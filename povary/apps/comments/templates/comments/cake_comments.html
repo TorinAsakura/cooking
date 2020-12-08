@@ -1,0 +1,57 @@
+{% load thumbnail stopword_tags comment_tags %}
+{% load widget_tweaks %}
+{{ comment_form.media }}
+
+<div class="comment" id="comments">
+	{% for comment in master_class|get_comments %}
+	<div class="comm">
+		<a href="#" class="c-img"><img src="{% if comment.author.profile.avatar %} {{MEDIA_URL}}{{comment.author.profile.avatar}}{% else %}{{ STATIC_URL }}cake/images/nophoto.jpg{% endif %}" alt=""/></a>
+		<a href="#" class="comm-text">
+			<span class="c-title">{% if comment.is_anonymous %}Анноним{% else %}{{comment.author.username}}{% endif %}</span>
+			<span class="c-date">{{comment.created|timesince}} назад</span>
+			<span class="c-text">{{comment.body|r_stopwords|safe}}</span>
+		</a>
+		<a href="#ad-com-ans" class="ansver" comment_id="{{comment.id}}" activated="False">Ответить</a>	
+		<b class="corn"></b>
+		{% for answer in comment.get_answers %}
+		<div class="comm">
+			<a href="{% url 'public_userpage' answer.author.username %}" class="c-img"><img src="{% if answer.author.profile.avatar %} {{MEDIA_URL}}{{answer.author.profile.avatar}}{% else %}{{ STATIC_URL }}cake/images/nophoto.jpg{% endif %}" alt=""/></a>
+			<a href="#" class="comm-text">
+				<span class="c-title">{{answer.author.username}}</span>
+				<span class="c-date">{{answer.created|timesince}} назад</span>
+				<span class="c-text">{{answer.body|r_stopwords|safe}}</span>								
+			</a>
+			<b class="corn"></b>
+		</div>
+		{% endfor %}			
+	</div>			
+	{% endfor %}
+</div>
+
+{% if not no_add_comment %}
+    {% include "comments/cake_add_comment_form.html" %}
+{% endif %}
+
+<div id="add_answer" class="comm">
+<div class="add-comment" >
+	<a href="#" id="ad-com-ans"></a>
+	<div class="add-comment-title">Добавьте ответ</div>
+	<a href="#" class="c-img"><img src="{{STATIC_URL}}cake/images/nophoto.jpg" alt=""/></a>	
+	<form
+		id="add_answer_form" method="post" action="."
+		data-url-origin="{% url 'add_commentanswer' master_class.get_contenttype_id master_class.id 0%}" data-url="#"
+		comment-id="-1"		
+		>
+		{% csrf_token %}		
+		<div class="add-comment-form">
+			<div class="form-row">
+				{{ answer_form.body|attr:"class:textarea-ans" }}				
+			</div>
+		</div>	
+		<input type="submit" class="com-submit" value="Отправить"/>
+	</form>	
+	<b class="corn"></b>
+</div>
+</div>
+
+<script type="text/javascript" src="{{ STATIC_URL }}/js/comments/comments.js"></script>

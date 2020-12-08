@@ -1,0 +1,74 @@
+{% extends 'base.html' %}
+{% load widget_tweaks %}
+
+{% block css %}
+ 		<link href='http://fonts.googleapis.com/css?family=PT+Sans:400,700,400italic,700italic&subset=latin,latin-ext,cyrillic' rel='stylesheet' type='text/css'/>
+		<link href='http://fonts.googleapis.com/css?family=Lobster&subset=latin,cyrillic-ext,latin-ext,cyrillic' rel='stylesheet' type='text/css'>
+		<link href='http://fonts.googleapis.com/css?family=Marck+Script&subset=latin,latin-ext,cyrillic' rel='stylesheet' type='text/css'>
+		<link rel="stylesheet" href="{{ STATIC_URL }}css/main.css" type="text/css"/>
+      <link rel="stylesheet" href="{{ STATIC_URL }}css/scrollable-horizontal.css" type="text/css"/>
+		<link rel="stylesheet" type="text/css" href="{{ STATIC_URL }}css/fancyfields.css" media="screen" />
+		<link rel="stylesheet" type="text/css" href="{{ STATIC_URL }}css/jquery.fancybox-thumbs.css?v=1.0.7" />
+{% endblock css %}
+
+{% block extra_header %}
+<style>
+ 	div#container{
+ 		border: 0px;
+ 		background: none;
+ 		box-shadow: none;
+ 	}
+</style>
+{% endblock extra_header %}
+
+{% block header %}
+{% endblock header %}
+{% block content %}
+<div id="wrapper">
+			<div class="content">
+				<div class="register-block">
+						<div class="register-block-top"></div>
+						<a href="{% url 'home' %}" id="logo"></a>
+						<a href="{% url 'home' %}" class="prev-link">На главную</a>
+						<a href="{% url 'registration_register' %}" class="next-link">Регистрация</a>
+						<fieldset class="fieldseblock1">
+							<legend align="center">Вход на сайт</legend>
+							<div class="reg-form">
+									<form method='post' action='.'> {% csrf_token %}
+										<div class="form-row">
+											<label>Введите логин или e-mail</label>
+											{{ form.username|attr:"class:reg-input inp1" }}
+											<div class="ok"></div>
+											<div class="clear"></div>
+										</div>
+										<div class="form-row">
+											<label>Введите свой пароль</label>
+											{{ form.password|attr:"class:reg-input inp3"|attr:"placeholder:" }}
+											<div class="ok"></div>
+											<div class="clear"></div>
+										</div>
+										<div class="checkbox-block">
+											<input type="checkbox"/>
+											<label>Запомнить пароль</label>
+											<div class="clear"></div>
+										</div>
+										<input type="submit" class="submit" value="Войти"/>
+										<a href="{% url 'password_reset' %}" class="pass-save">Забыли свой пароль?</a>
+									</form>
+							</div>
+						</fieldset>
+						<fieldset class="fieldseblock2">
+							<legend align="center">Войти с помощью</legend>
+							<div class="social-links">
+								<a href="#" class="social-link1"></a>
+								<a href="#" class="social-link2"></a>
+								<a href="#" class="social-link3"></a>
+							</div>
+						</fieldset>
+						<div class="clear"></div>
+				</div>
+		</div>
+</div>
+{% endblock content %}
+{% block footer%}
+{% endblock footer%}

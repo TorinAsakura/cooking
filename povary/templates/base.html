@@ -1,0 +1,195 @@
+{% load widget_tweaks %}
+<!DOCTYPE html>
+<html>
+<head>
+	<title>{% block title%}{% endblock %}</title>
+        <meta http-equiv="content-type" content="text/html; charset=UTF-8" >
+	{% block css %}
+		<link type="text/css" href="{{ STATIC_URL }}css/ui-lightness/jquery-ui-1.8.20.custom.css" rel="stylesheet">
+
+        <link href='http://fonts.googleapis.com/css?family=PT+Sans:400,700,400italic,700italic&subset=latin,latin-ext,cyrillic' rel='stylesheet' type='text/css'/>
+		<link href='http://fonts.googleapis.com/css?family=Lobster&subset=latin,cyrillic-ext,latin-ext,cyrillic' rel='stylesheet' type='text/css'>
+		<link href='http://fonts.googleapis.com/css?family=Marck+Script&subset=latin,latin-ext,cyrillic' rel='stylesheet' type='text/css'>
+		<link href='http://fonts.googleapis.com/css?family=Cuprum:400,700,700italic&subset=latin,latin-ext,cyrillic' rel='stylesheet' type='text/css'>
+
+        <link rel="stylesheet" href="{{ STATIC_URL }}css/main_big.css" type="text/css"/>  
+{#		<link rel="stylesheet" href="{{ STATIC_URL }}css/main.css" type="text/css"/>#}
+        <link rel="stylesheet" href="{{ STATIC_URL }}css/scrollable-horizontal.css" type="text/css"/>
+		<link rel="stylesheet" type="text/css" href="{{ STATIC_URL }}css/fancyfields.css" media="screen" />
+        <link rel="stylesheet" type="text/css" href="{{ STATIC_URL }}js/fancybox/jquery.fancybox.css?v=2.1.5" media="screen" />
+<!--		<link rel="stylesheet" type="text/css" href="{{ STATIC_URL }}css/jquery.fancybox-thumbs.css?v=1.0.7" />
+		<link rel="stylesheet" type="text/css" href="{{ STATIC_URL }}css/jquery.fancybox.css?v=2.1.4" />  -->
+
+    {% endblock css %}
+	{% block javascript %}
+
+		<script type="text/javascript" src="{{ STATIC_URL }}js/jquery-1.8.2.js"></script>
+		<script type="text/javascript" src="{{ STATIC_URL }}js/jquery-ui-1.10.1.custom.min.js"></script>
+		<!--[if lt IE 9]><script src="{{ STATIC_URL }}js/css3-mediaqueries.js"></script><![endif]-->
+		<!--[if IE]><script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script><![endif]-->
+		<script type="text/javascript" src="http://cdn.jquerytools.org/1.2.7/all/jquery.tools.min.js"></script>
+
+		<script type="text/javascript" src="{{ STATIC_URL }}js/fancyfields-1.2.js"></script>
+        <script type="text/javascript" src="{{ STATIC_URL }}js/fancybox/jquery.fancybox.js?v=2.1.5"></script>
+	<!--	<script type="text/javascript" src="{{ STATIC_URL }}js/jquery.fancybox.js?v=2.1.4"></script> -->
+	<!--	<script type="text/javascript" src="{{ STATIC_URL }}js/jquery.fancybox-thumbs.js?v=1.0.7"></script> -->
+		<script type="text/javascript" src="{{ STATIC_URL }}js/slider.js"></script>
+		<script type="text/javascript" src="{{ STATIC_URL }}js/jQuery.dPassword.js"></script>
+		<script type="text/javascript" src="{{ STATIC_URL }}js/jquery.jcarousel.js"></script>
+		<script src="{{ STATIC_URL }}js/jquery.ui.sortable.js" type="text/javascript"></script>
+		<script src="{{ STATIC_URL }}js/jquery.ui.slider.js" type="text/javascript"></script>
+		<script type="text/javascript" src="{{ STATIC_URL }}js/custom.js"></script>
+
+	{% endblock javascript %}
+	{% block extra_header %}
+	{% endblock extra_header %}
+</head>
+<body {% if is_home %}id="home"{% endif %}>
+	<div id="container">
+		{% block header %}
+		<header id="header">
+			{% block user_info %}
+			<div class="top-search">
+					<a href="{% url 'haystack_search' %}" class="ful-s">Расширенный поиск</a>
+					<form method="get" action="{% url 'haystack_search' %}">
+						{{ search_form.q|attr:"class:s-text" }}
+						<input type="submit" value="НАЙТИ" class="s-btn"/>
+					</form>
+			</div>
+			<div class="top">
+				<a href="{% url 'cake_home' %}" class="povar">Тортоделы</a>
+				<a href="{% url 'home' %}" class="tortod">Повары</a>
+				<ul class="tul-right">
+					{% if user.is_authenticated %}
+						<!--Вы вошли под именем--> <li class="regis"><a href="{% url 'profile' %}" >{{ user.username }}</a></li>
+						<li class="vhod"><a href="{% url 'django.contrib.auth.views.logout' %}">Выйти</a></li>
+					{% else %}
+						<li class="vhod"><a href="{% url 'django.contrib.auth.views.login' %}" >Войти</a></li>
+						<li class="regis"><a href="{% url 'registration_register' %}">Зарегистироватся</a></li>
+					{% endif %}
+				</ul>
+				<ul class="tul-left">
+					<li class="add"><a href="#">Добавить</a>
+						<ul>
+							<li><a href="{% url 'recipe-add' %}">Рецепт</a></li>
+							<li><a href="{% url 'cake_mc-add' %}">Мастер класс</a></li>
+							<li><a href="{% url 'cakeimage-add' %}">Фото</a></li>
+						</ul>
+					</li>
+				</ul>
+				<a href="javascript:void(0)" class="search-link">Поиск</a>
+			</div>
+			<a href="{% url 'home' %}" id="logo"></a>
+			<nav class="nav">
+				<ul class="right">
+					<li class="parent">
+						<a href="{% url 'cake_home' %}">Тортоделы</a>
+						<ul>
+							{% for cakemaster in cakemaster_list %}
+							<li><a href="{% url 'public_userpage' cakemaster.username %}">{{cakemaster.user.username}}</a></li>
+							{% endfor%}
+						</ul>
+					</li>
+					<li><a href="#">Группы</a></li>
+					<li><a href="{% url 'article_list' %}">Статьи</a></li>
+					{% if user.is_authenticated %}
+						<li><a href="http://pilatus.biz/forum2/">Форум</a></li>
+					{%endif%}
+				</ul>
+				<ul class="left">
+					<li><a href="{% url 'recipe_list' %}">Рецепты</a></li>
+					<li><a href="{% url 'competition_list' %}">Конкурсы</a></li>
+					<li class="parent">
+						<a href="{% url 'profile_list' %}">Пользователи</a>
+						<ul>
+							{% for povar in povary_list %}
+							<li><a href="{% url 'public_userpage' povar.user.username %}">{{povar.user.username}}</a></li>
+							{% endfor%}
+						</ul>
+					</li>
+				</ul>
+			</nav>
+
+			{% endblock user_info %}
+			<div class="links">
+			   {% block breadcrumbs %}
+			   {% endblock breadcrumbs %}
+		   </div>
+		   {% block subheader %}
+		   {% endblock subheader %}
+		</header>
+		{% endblock header %}
+		{% block categories %}
+			<!--Categories-->
+		{% endblock categories %}
+		<div id="wrapper">
+			<div class="content">
+					{% block content %}
+					{% endblock %}
+			</div>
+		</div>
+	</div>
+	{% block footer %}
+	<footer id="footer">
+			<div id="footer-in">
+				<div class="cont-in">
+					<div class="bottom">
+						<a href="{% url 'recipe-add' %}" class="add-rec"><i>Добавьте свой</i><big>Собственый рецепт</big></a>
+						<div class="f-left">
+							<nav class="foot-nav">
+								<ul>
+									<li><a href="{% url 'recipe_list' %}">Рецепты</a></li>
+									<li><a href="{% url 'competition_list' %}">Конкурсы</a></li>
+									<li><a href="{% url 'profile_list' %}">Пользователи</a></li>
+									<li><a href="{% url 'cake_home' %}">Тортоделы</a></li>
+									<li><a href="{% url 'article_list' %}">Статьи</a></li>
+									<li><a href="#">Группы</a></li>
+									<li><a href="http://pilatus.biz/forum2/">Форум</a></li>
+								</ul>
+							</nav>
+							<div class="soc-icons">
+        {#						<a href="#"><img src="{{STATIC_URL}}cake/images/ico5.png" alt=""/></a>#}
+        {#						<a href="#"><img src="{{STATIC_URL}}cake/images/ico6.png" alt=""/></a>#}
+        {#						<a href="#"><img src="{{STATIC_URL}}cake/images/ico7.png" alt=""/></a>#}
+                                <!-- AddThis Follow BEGIN -->
+                                <div class="addthis_toolbox addthis_default_style">
+                                    <a class="addthis_button_facebook_follow" addthis:userid="YOUR-USERNAME">
+                                        <img src="{{STATIC_URL}}cake/images/ico5.png" alt=""/>
+                                    </a>
+                                    <a class="addthis_button_twitter_follow" addthis:userid="YOUR-USERNAME">
+                                        <img src="{{STATIC_URL}}cake/images/ico6.png" alt=""/>
+                                    </a>
+                                    <a class="addthis_button_google_follow" addthis:userid="YOUR-USERNAME">
+                                        <img src="{{STATIC_URL}}cake/images/ico7.png" alt=""/>
+                                    </a>
+                                </div>
+                                <script type="text/javascript" src="//s7.addthis.com/js/300/addthis_widget.js#pubid=ra-52a0c46563ed4fbb"></script>
+                                <!-- AddThis Follow END -->
+							</div>
+        {#					<img src="{{STATIC_URL}}cake/images/soc.jpg" alt=""/>#}
+                            <!-- AddThis Button BEGIN -->
+                                <div class="addthis_toolbox addthis_default_style">
+                                    <a class="addthis_button_tweet"></a>
+                                    <a class="addthis_button_facebook_like" fb:like:layout="button_count"></a>
+                                    <a class="addthis_button_google_plusone" g:plusone:size="medium"></a>
+                                    <a class="addthis_counter_vk"></a>
+                                </div>
+                                <script type="text/javascript">var addthis_config = {"data_track_addressbar":true};</script>
+                                <script type="text/javascript" src="//s7.addthis.com/js/300/addthis_widget.js#pubid=ra-52a0c46563ed4fbb"></script>
+                            <!-- AddThis Button END -->
+						</div>
+					</div>
+					<ul class="foot-links">
+						<li><a href="#">Карта сайта</a></li>
+						<li><a href="#">Реклама</a></li>
+						<li><a href="{% url 'core-contact' %}">Обратная</a></li>
+					</ul>
+					<p>©2003-2013 Кулинарный портал «ПОВАРЫ.ru». Все права сохранены.   </p>
+				</div>
+			</div>
+	</footer>
+	{% endblock footer%}
+	{% block extra_js %}
+   {% endblock extra_js %}
+</body>
+</html>

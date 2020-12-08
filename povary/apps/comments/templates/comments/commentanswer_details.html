@@ -1,0 +1,4 @@
+{% load stopword_tags %}
+<li>
+	<p>{{ answer.body|r_stopwords|safe }}</p>
+</li>

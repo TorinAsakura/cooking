@@ -1,0 +1,10 @@
+{% extends 'base.html' %}
+{% load thumbnail %}
+
+{% block content %}
+	<h1>{{ image.title }}</h1>
+	{% thumbnail image.image "400x600" as im %}
+    	<img src="{{ im.url }}" width="{{ im.width }}" height="{{ im.height }}">
+	{% endthumbnail %}
+
+{% endblock content %}

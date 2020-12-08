@@ -1,0 +1,60 @@
+{% extends 'profiles/recipebox_manage.html' %}
+{% load thumbnail %}
+
+{% block breadcrumbs %}
+    {{ block.super }} >> <a href="{% url 'recipebox_details' box.id %}">{{ box.title }}</a>
+{% endblock breadcrumbs %}
+
+{% block content %}
+	{# Top pagination #}
+    {% if recipe_list %}
+    	<div class="pagination">
+        	<span class="step-links">
+            	{% if recipe_list.has_previous %}
+    	            <a href="?page={{ recipe_list.previous_page_number }}">пред.</a>
+        	    {% endif %}
+
+            	<span class="current">
+                	Page {{ recipe_list.number }} of {{ recipe_list.paginator.num_pages }}
+            	</span>
+
+            	{% if recipe_list.has_next %}
+                	<a href="?page={{ recipe_list.next_page_number }}">след.</a>
+            	{% endif %}
+        	</span>
+    	</div>
+    {% endif %}
+
+	<ul>
+		{% for recipe in recipe_list %}
+			<li>
+				{% thumbnail recipe.cover_image "100x100" crop="center" as im %}
+					<img src="{{ im.url }}" width="{{ im.width }}" height="{{ im.height }}">
+				{% endthumbnail %}
+				<a href="{% url 'recipe_details' recipe.slug %}">{{ recipe.title }}</a>
+				<a href="{% url 'remove_recipe_from_box' recipe.slug box.id %}">Удалить из коробки</a>
+			</li>
+        {% empty %}
+            <p>Коробка пока не содержит рецептов</p>
+		{% endfor %}
+	</ul>
+
+	{# Bottom pagination #}
+    {% if recipe_list %}
+    	<div class="pagination">
+        	<span class="step-links">
+            	{% if recipe_list.has_previous %}
+    	            <a href="?page={{ recipe_list.previous_page_number }}">пред.</a>
+        	    {% endif %}
+
+            	<span class="current">
+                	Page {{ recipe_list.number }} of {{ recipe_list.paginator.num_pages }}
+            	</span>
+
+            	{% if recipe_list.has_next %}
+                	<a href="?page={{ recipe_list.next_page_number }}">след.</a>
+            	{% endif %}
+        	</span>
+    	</div>
+    {% endif %}
+{% endblock content %}

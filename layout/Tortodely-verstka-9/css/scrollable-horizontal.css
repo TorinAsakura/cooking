@@ -1,0 +1,113 @@
+.scrollable {
+	position:relative;
+	overflow:hidden;
+	width:900px;
+	height:180px;
+	margin:0 auto;
+}
+
+.items {width:20000em;   position:absolute;}
+.item {width:900px; 	height:180px; float:left;}
+
+
+.scrollable div.scrollableArea img
+{
+	position: relative;
+	float: left;
+
+	-webkit-user-select: none;
+	-khtml-user-select: none;
+	-moz-user-select: none;
+	-o-user-select: none;
+	user-select: none;
+}
+
+div.scrollingHotSpotLeft
+{
+
+	width: 39px;
+	height: 100%;
+	position: absolute;
+	z-index: 200;
+	left: 0;
+	/*  The first url is for Firefox and other browsers, the second is for Internet Explorer */
+	cursor: url(../images/cursor_arrow_left.png), url(../images/cursor_arrow_left.cur),w-resize;
+	background:url(../images/arrs.png) no-repeat -176px -252px #f4f2f3;
+}
+
+div.scrollingHotSpotLeftVisible
+{
+	background:url(../images/arrs.png) no-repeat -176px -252px #f4f2f3;
+	opacity: 1; /* Standard CSS3 opacity setting */
+	-moz-opacity: 1; /* Opacity for really old versions of Mozilla Firefox (0.9 or older) */
+	filter: alpha(opacity = 100); /* Opacity for Internet Explorer. */
+	zoom: 1; /* Trigger "hasLayout" in Internet Explorer 6 or older versions */
+}
+
+div.scrollingHotSpotRight
+{
+	width: 39px;
+	height: 100%;
+	
+	position: absolute;
+	z-index: 200;
+	right: 0;
+	cursor: url(../images/cursor_arrow_right.png), url(../images/cursor_arrow_right.cur),e-resize;
+	background:url(../images/arrs.png) no-repeat -82px -45px #f4f2f3;
+}
+
+/* Visible right hotspot */
+div.scrollingHotSpotRightVisible
+{
+	background:url(../images/arrs.png) no-repeat -82px -45px #f4f2f3;
+	opacity: 1; /* Standard CSS3 opacity setting */
+	-moz-opacity: 1; /* Opacity for really old versions of Mozilla Firefox (0.9 or older) */
+	filter: alpha(opacity = 100); /* Opacity for Internet Explorer. */
+	zoom: 1; /* Trigger "hasLayout" in Internet Explorer 6 or older versions */
+}
+
+div.scrollWrapper
+{
+	position: relative;
+	overflow: hidden;
+	width: 100%;
+	height: 100%;
+}
+
+div.scrollableArea
+{
+	position: relative;
+	width: auto;
+	height: 100%;
+}		
+		
+a.browse {
+    cursor: pointer;
+    display: block;
+    font-size: 1px;
+    height: 36px;
+    margin: -18px 0px 0;
+    width: 36px;
+	position:absolute; 
+	top: 50%;
+}
+
+a.right {  background: url("../images/wpnavi1.png") no-repeat scroll center;  float:right; right:-13px;}
+a.right:hover {    background: url("../images/wpnavi6.png") no-repeat scroll center;  }
+a.right:active {    background: url("../images/wpnavi8.png") no-repeat scroll center; }
+a.right.disabled {   opacity:0.4;}
+
+a.left {   background: url("../images/wpnavi2.png") no-repeat scroll center; float:left; left:-13px;}
+a.left:hover {    background: url("../images/wpnavi7.png") no-repeat scroll center; }
+a.left:active {    background: url("../images/wpnavi9.png") no-repeat scroll center; }
+a.left.disabled {  opacity:0.4;}		
+		
+
+.galleries {position:relative; margin-bottom: 40px;}
+.galleries .scrollable {width:980px; height:198px;}		
+.galleries .item {width:980px; height:198px; }
+.galleries .item img {margin:0 1px 1px 0; width:97px; height:98px; display:block; float:left;}		
+	
+		
+		
+		

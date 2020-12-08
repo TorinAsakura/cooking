@@ -1,0 +1,38 @@
+{% load thumbnail stopword_tags %}
+
+<article class="article_comment" data-id="{{ comment.id }}">
+	<h3>
+		<a name="comment_{{ comment.id }}"></a>
+		{{ comment.title|r_stopwords }}
+	</h3>
+	{% if comment.author.profile.avatar %}
+		{% thumbnail comment.author.profile.avatar "60x60" as im %}
+	    	<img src="{{ im.url }}" width="{{ im.width }}" height="{{ im.height }}">
+		{% endthumbnail %}
+	{% else %}
+		{% thumbnail anonymous_avatar "60x60" as im %}
+	    	<img src="{{ im.url }}" width="{{ im.width }}" height="{{ im.height }}">
+		{% endthumbnail %}
+	{% endif %}
+	<p>{{ comment.author.username }}</p>
+	<p>{{ comment.body|r_stopwords|safe }}</p>
+	{% if comment.answers.all %}
+		<a id="hide_answers" href="">Скрыть ответы</a>
+	{% endif %}
+	<a class="commentanswer_link" href="#">Ответить на комментарий</a>
+	<form class="answer_form"
+		method="post"
+		action="{% url 'add_commentanswer' item_obj.get_contenttype_id item_obj.id comment.id %}"
+		style="display:none;">
+		{% csrf_token %}
+		{{ commentanswer_form.as_p }}
+		<p><input type="submit" value="Ответить"/></p>
+	</form>
+	<ul class="comment_answers">
+		{% for answer in comment.answers.all %}
+			<li>
+				<p>{{ answer.body|r_stopwords|safe }}</p>
+			</li>
+		{% endfor %}
+	</ul>
+</article>

@@ -1,0 +1,159 @@
+{% load vote_tags comment_tags pymorphy_tags widget_tweaks thumbnail %}
+
+						<div class="sorting">
+							<ul class="sorting-list sorting-list-center">
+								<li {%if afilter == 'new' or afilter == None %}class="active"{%endif%}><a class="cake_mc_filter" href="{% url 'cakeimage_filter' gallery.slug 'new' page.number%}">Новые сверху </a></li>
+								<li {%if afilter == 'top'%}class="active"{%endif%}><a class="cake_mc_filter" href="{% url 'cakeimage_filter' gallery.slug 'top' page.number%}">Лучшие сверху </a></li>
+								<li {%if afilter == 'comm'%}class="active"{%endif%}><a class="cake_mc_filter" href="{% url 'cakeimage_filter' gallery.slug 'comm' page.number%}">По коментариям </a></li>
+							</ul>
+							<a href="{% url 'cakeimage-add' gallery.slug %}" class="addfoto"><i>Добавить</i> <big>ФОТО</big></a>
+							<a href="{% url 'cakeimage_gallery_search' %}" class="back-link"><big>ВЕРНУТСЯ К ГАЛЕРЕЯМ</big></a>
+						</div>
+
+	<div class="boxes">
+		{% if page %}
+			{% for res in page.object_list %}
+				<div class="box">
+					<a class="box-img fancybox-thumb" rel="fancybox-thumb" href="#pop-up{{forloop.counter}}" >
+						<img src="{% thumbnail res.image "230x186" crop="center" as image %} {{ image.url }} {% endthumbnail %}" alt="{{ res.title }}" title="{{ res.title }}"/><b class="fade"></b>
+					</a>
+					<div class="box-bot">
+						<a href="{% url 'add_vote' res.get_contenttype_id res.id %}"
+						class={%if res|user_ranked:user %}"num-liked"{%else%}"num-like"{%endif%}>{{res|get_votes|length}}</a>
+						<a class="num-comm">{{res.num_comments}}</a>
+<a href="{% url 'public_userpage' res.author.username %}" class="autor"><img src="{% if res.author.profile.avatar %} {{MEDIA_URL}}{{res.author.profile.avatar}}{% else %}{{ STATIC_URL }}cake/images/ico10.png{% endif %}" alt="" class="a-img"/><span class="a-name">{{res.author.username}}</span></a>
+					</div>
+				</div>
+			{% endfor %}
+		{% else %}
+			<h3>Извините, сейчас нет изображений, Вы можете первыми <a href="{% url 'cakeimage-add' gallery.slug %}">загрузить изображения</a></h3>
+		{% endif %}
+
+	</div>
+
+
+<!--
+{% comment %}
+	<div class="boxes">
+		{% if page %}
+			{% for res in page.object_list %}
+				<div class="box">
+					<a class="box-img" href="{% url 'cake_mc_details' res.object.slug %}">
+						<img src="{% thumbnail res.object.image "230x186" crop="center" as image %} {{ image.url }} {% endthumbnail %}" alt="{{ res.object.title }}" title="{{ res.object.title }}"/><b class="fade"></b>
+					</a>
+					<div class="box-bot">
+						<a href="{% url 'add_vote' res.object.get_contenttype_id res.object.id %}"
+							class={%if res.object|user_ranked:user %}"num-liked"{%else%}"num-like"{%endif%}>{{res.object|get_votes|length}}</a>
+						<a href="{% url 'cake_mc_details' res.object.slug %}#all-com" class="num-comm">{{res.object.get_comments_num}}</a>
+<a href="{% url 'public_userpage' res.object.author.username %}" class="autor"><img src="{% if res.object.author.profile.avatar %} {{MEDIA_URL}}{{res.object.author.profile.avatar}}{% else %}{{ STATIC_URL }}cake/images/ico10.png{% endif %}" alt="" class="a-img"/><span class="a-name">{{res.object.author.username}}</span></a>
+					</div>
+				</div>
+			{% endfor %}
+		{% else %}
+			{% for mc in cake_mc_list %}
+				<div class="box">
+					<a class="box-img" href="{% url 'cake_mc_details' mc.slug %}">
+						<img src="{{MEDIA_URL}}{{mc.image}}" alt=""/><b class="fade"></b>
+					</a>
+					<div class="box-bot">
+						<a href="{% url 'add_vote' mc.get_contenttype_id mc.id %}"
+							class={%if mc|user_ranked:user %}"num-liked"{%else%}"num-like"{%endif%}>{{mc|get_votes|length}}</a>
+						<a href="{% url 'cake_mc_details' mc.slug %}#all-com" class="num-comm">{{mc.get_comments_num}}</a>
+						 <a href="{% url 'public_userpage' mc.author.username %}" class="autor"><img src="{% if mc.author.profile.avatar %} 1 {{MEDIA_URL}}{{mc.author.profile.avatar}}{% else %}{{ STATIC_URL }}cake/images/ico10.png{% endif %}" alt="" class="a-img"/><span class="a-name">{{mc.author.username}}</span></a>
+					</div>
+				</div>
+			{% endfor %}
+		{% endif %}
+	</div>
+{%endcomment%}
+-->
+	{% if paginator.num_pages > 1 %}
+	<div class="pagenavi">
+		{% if page.has_previous %}
+			<a href="{% url 'cakeimage_filter' gallery.slug afilter page.previous_page_number%}" class="prev cake_mc_filter">Предыдущие</a>
+		{% endif %}
+		{%if page.number > 3 %}
+			<a class="cake_mc_filter" href="{% url 'cakeimage_filter' gallery_slug afilter 1%}">{{1}}</a>
+			<span>...</span>
+		{%endif%}
+		{% for page_no in paginator.page_range %}
+			{% if page_no == page.number %}
+			        <span class="current">{{page.number}}</span>
+			{% else %}
+				{% if page_no > page.number|add:"-3" and page_no < page.number|add:"3" %}
+				<a class="cake_mc_filter" href="{% url 'cakeimage_filter' gallery.slug afilter page_no%}">{{page_no}}</a>
+				{% endif  %}
+			{% endif %}
+		{% endfor %}
+		{%if page.number < paginator.num_pages|add:'-2' %}
+			<span>...</span>
+			<a class="cake_mc_filter" href="{% url 'cakeimage_filter' gallery.slug afilter paginator.num_pages%}">{{paginator.num_pages}}</a>
+		{%endif%}
+		{% if page.has_next %}
+			<a  href="{% url 'cakeimage_filter' gallery.slug afilter page.next_page_number%}" class="next cake_mc_filter">Следующие</a>
+		{% endif %}
+	</div>
+	{% endif %}
+
+	<script type="text/javascript">
+	var cat = "{{cat}}";
+	var ing = "{{ing}}";
+	</script>
+	<script type="text/javascript" src="{{ STATIC_URL }}js/search/search.js"></script>
+
+
+{% if page %}
+	{% for res in page.object_list %}
+		<div style="display:none;">
+			<div id="pop-up{{forloop.counter}}" class="pop-up">
+				<div class="div-center-big">
+					<img src="{{MEDIA_URL}}{{res.image}}" alt="" class="b-img"/>
+					<div class="center-big-bottom">
+						<a href="#" class="social-links1"><img src="{{STATIC_URL}}images/social-links.jpg" alt=""/></a>
+						<a href="#" class="social-links2"><img src="{{STATIC_URL}}images/social-links2.jpg" alt=""/></a>
+						<div class="round-block">
+							<a href="{% url 'add_vote' res.get_contenttype_id res.id %}"
+						class={%if res|user_ranked:user %}"liked"{%else%}"like"{%endif%} style="text-align:center">{{res.num_votes}}</a>
+						{# todo: Не подсчитывается количество просмотров, нужен ajax запрос при клике на фото который инкрементирует текущее значение просмотров #}
+							<div class="loked2">{{res.visits_num}}</div>
+							<div class="com">{{res.num_comments}}</div>
+						</div>
+					</div>
+				</div>
+				<div class="post-autor">
+					<a href="{% url 'public_userpage' res.author.username %}" class="autor"><img src="{% if res.author.profile.avatar %} {{MEDIA_URL}}{{res.author.profile.avatar}}{% else %}{{ STATIC_URL }}cake/images/ico10.png{% endif %}" alt="" class="a-img"/><span class="a-name">{{res.author.username}}</span></a>
+				</div>
+				<div class="title"><span class="element-one"></span><h1>{{res.title}}</h1><span class="element-two"></span></div>
+
+				<div class="em">{{res.description}}</div>
+				<div class="tegs">
+					<div class="tags-title"><span>Теги</span></div>
+					{% if res.tags|length > 0 %}
+					<ul>
+						{% for tag in res.tags %}
+						<li><a href="#">{{tag.title}}</a>,</li>
+						{% endfor %}
+					</ul>
+					{% else %}
+					<ul>
+					Тегов нет
+					</ul>
+					{% endif %}
+				</div>
+				<div class="coms">
+					<div class="comment">
+					<a href="#" id="all-com"></a>
+					<div class="title"><span class="element-one"></span>
+					<h3>
+						<b class="num_comments">{{res.num_comments}}</b> <b id='comm-title'>{{"комментарий"|plural:res.num_comments}}</b>
+					</h3>
+					<span class="element-two"></span><a href="#ad-com" class="add-commen">Добавить комментарий</a></div>
+					{% with res as master_class %}
+					{% include "comments/cake_comments.html" %}
+					{% endwith %}
+					</div>
+				</div>
+			</div>
+		</div>
+	{% endfor %}
+{% endif %}

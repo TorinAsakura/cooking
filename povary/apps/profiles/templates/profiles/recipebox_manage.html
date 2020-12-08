@@ -1,0 +1,77 @@
+{% extends 'profiles/profile.html' %}
+
+{% block breadcrumbs %}
+	{{ block.super }} >> <a href="{% url 'recipebox_manage' %}">Управление коробками рецептов</a>
+{% endblock breadcrumbs %}
+
+{% block content %}
+	<h1>Управление коробками рецептов</h1>
+	<form method="post" action=".">
+		{% csrf_token %}
+		{{ create_recipebox_form.as_p }}
+		<p><input type="submit" value="Добавить"/>
+	</form>
+	{% for box in recipebox_list %}
+		<p>
+			<a id="box_link" href="{% url 'recipebox_details' box.id %}" data-id="{{ box.id }}">{{ box.title }}</a>
+			({{ box.recipe_list.count }} рецептов)
+			<a id="edit_box_link" href="{% url 'recipebox_edit' box.id %}">Редактировать</a>
+			<a id="remove_box_link" href="{% url 'recipebox_remove' box.id %}">Удалить</a>
+			{% if box.is_public %}
+				<span>Публичная коробка</span>
+			{% else %}
+				<span>Приватная коробка</span>
+			{% endif %}
+		</p>
+	{% empty %}
+		<p>У Вас нет коробок</p>
+	{% endfor %}
+	<div style="display:none;" id="edit_dialog">
+		<form method="post" action=".">
+		{% csrf_token %}
+		{{ create_recipebox_form.as_p }}
+		</form>
+	</div>
+	<div style="display:none;" id="remove_dialog">Вы уверены что хотите удалить коробку?</div>
+{% endblock content %}
+
+{% block extra_js %}
+	<script type="text/javascript">
+		$(function(){			
+			// handler for remove link
+			$("#remove_box_link").live("click", function(evnt){
+			    evnt.preventDefault();
+			    var targetUrl = $(this).attr("href");
+			    $("#remove_dialog").dialog({
+			      buttons : {
+			        "Да" : function() {
+			          window.location.href = targetUrl;
+			        },
+			        "Нет" : function() {
+			          $(this).dialog("close");
+			        }
+			      }
+				});
+			});
+
+			// handler for edit link
+			$("#edit_box_link").live("click", function(evnt){
+				evnt.preventDefault();
+			    var targetUrl = $(this).attr("href");
+			    $("#edit_dialog").load(targetUrl).dialog({
+			      buttons : {
+			        "Готово" : function() {
+			    		var form = $("#edit_dialog form");
+			    		form.attr('action', targetUrl);
+			    		form.submit();
+			    		$(this).dialog("close");
+			        },
+			        "Отмена" : function() {
+			         	$(this).dialog("close");
+			        }
+			      }
+				});
+			});
+		});
+	</script>
+{% endblock extra_js %}

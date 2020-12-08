@@ -1,0 +1,105 @@
+{% extends "base.html" %}
+{% load tags_tags static thumbnail %}
+
+{% block extra_header %}
+  <link rel="stylesheet" href="{{ STATIC_URL }}css/main.css" type="text/css"/>
+{% endblock extra_header %}
+
+{% block breadcrumbs %}
+    <a href="/"><img src="{% static 'images/home.png' %}" alt=""/></a> →
+    <a href="{% url 'article_list' %}">Статьи</a> →
+    <a href="{{ article.category.get_absolute_url }}">{{ article.category }}</a> →
+    <span>{{ article.title }}</span>
+{% endblock breadcrumbs %}
+
+{% block content %}
+        <br/>
+        <div class="center-block">
+            <div class="big-search">
+                <form action="{% url 'article_list' %}" method="get">
+                    <input type="text" class="search-inp" name="query" placeholder="Поиск по статьям"/>
+                    <input type="submit" class="search-inp-submit" value=""/>
+                </form>
+            </div>
+            <div class="infcentblock">
+                <h1>{{ article.title|safe }}</h1>
+                <div class="tags-block">
+                        <span>{{ article.pub_date }}</span>&nbsp;&nbsp;|
+                        <a href="{{ article.category.get_absolute_url }}">{{ article.category }}</a>
+                        {% if article.tags %}
+                        &nbsp;&nbsp;|
+                        <span>Тэги:</span>
+                        {% for tag in article.tags %}
+                            <a href="{% url 'tag_details' tag.slug article|contenttype_id %}">{{ tag.title }}</a>,
+                        {% endfor %}
+                        {% endif %}
+                </div>
+                <div class="post">
+                {% if article.image %}
+                    <div class="post-img f-left">
+                        <a class="img-fancybox" onclick="return false" href="/media{{  article.image  }}">
+                        <img src="{% thumbnail article.image "363x236" crop="center" as image %} {{ image.url }} {% endthumbnail %}" alt="{{ article.image_alt }}" title="{{ article.title }}"/>                        </a>
+                    </div>
+                {% endif %}
+                    <div class="distribution">
+                        <div class="distribution-com">
+                            <a href="#comments">Комментарии</a>
+                        </div>
+                        <div class="distribution-right">
+                        <!-- AddThis Button BEGIN -->
+                            <div class="addthis_toolbox addthis_default_style addthis_16x16_style" style="width: 100px; margin: 0;">
+                            <a class="addthis_button_twitter"></a>
+                            <a class="addthis_button_facebook"></a>
+                            <a class="addthis_button_vk"></a>
+                            <a class="addthis_button_google_plusone_share"></a>
+                            </div>
+                            <script type="text/javascript">var addthis_config = {"data_track_addressbar":true};</script>
+                            <script type="text/javascript" src="//s7.addthis.com/js/300/addthis_widget.js#pubid=ra-52a0c46563ed4fbb"></script>
+                        <!-- AddThis Button END -->
+
+                            <div class="print_and_send">
+                                <a href="#" class="send"><img src="{% static 'images/icons/send.jpg'%}" alt=""/></a>
+                                <a href="#" class="send"><img src="{% static 'images/icons/send2.jpg'%}" alt=""/></a>
+                            </div>
+                        </div>
+                    </div>
+                    <p>{{ article.body|linebreaksbr }}</p>
+                </div>
+            </div>
+            <div id="comments_container">
+                {% include 'comments/comments_in_detail_pages.html' with item_obj=article %}
+            </div>
+            <div class="slider-block">
+                <div class="d-carousel">
+                    <div class="title">
+                        <h3>Похожие статьи</h3>
+                    </div>
+                    <ul class="carousel">
+                        {% for article in similar_article %}
+                        <li>
+                        <div class="article-div">
+                            <a href="{{ article.content_object.get_absolute_url }}" class="articleimglink">
+                                {% if article.content_object.image %}
+                                    <img src="{{ article.content_object.image.url }}" alt="" />
+                                {% endif %}
+                            </a>
+                            <div class="article-box">
+                                <p><a href="{{ article.content_object.get_absolute_url }}">{{ article.content_object.title }}</a></p>
+                            </div>
+                        </div>
+                        </li>
+                        {% endfor %}
+                    </ul>
+                    <div class="clear"></div>
+                </div>
+            </div>
+        </div>
+
+        <div class="left-block">
+            {% include 'articles/articlecategory_list.html' %}
+            {% include 'articles/popular_articles.html' %}
+        </div>
+
+        <div class="clear"></div>
+
+{% endblock content %}

@@ -1,0 +1,54 @@
+{% load thumbnail stopword_tags comment_tags %}
+
+{{ comment_form.media }}
+
+<form
+	id="add_comment_form" method="post" action="."
+	data-url="{% url 'add_comment' item_obj.get_contenttype_id item_obj.id %}">
+	{% csrf_token %}
+	{{ comment_form.as_p }}
+	<p><input type="submit" value="Оставить комментарий"></p>
+</form>
+<section id="comments">
+	{% for comment in item_obj|get_comments %}
+		<article id="comment" data-id="{{ comment.id }}">
+			<h3>
+				<a name="comment_{{ comment.id }}"></a>
+				{{ comment.title|r_stopwords }}
+			</h3>
+			{% if comment.author.profile.avatar %}
+				{% thumbnail comment.author.profile.avatar "60x60" as im %}
+			    	<img src="{{ im.url }}" width="{{ im.width }}" height="{{ im.height }}">
+				{% endthumbnail %}
+			{% else %}
+				{% thumbnail anonymous_avatar "60x60" as im %}
+			    	<img src="{{ im.url }}" width="{{ im.width }}" height="{{ im.height }}">
+				{% endthumbnail %}
+			{% endif %}
+			<p>{{ comment.author.username }}</p>
+			<p>{{ comment.body|r_stopwords|safe }}</p>
+			{% if comment.answers.all %}
+				<a id="hide_answers" href="">Скрыть ответы</a>
+			{% endif %}
+			<a id="commentanswer_link" href="">Ответить на комментарий</a>
+			<form
+				method="post"
+				action="{% url 'add_commentanswer' item_obj.get_contenttype_id item_obj.id comment.id %}"
+				style="display:none;">
+				{% csrf_token %}
+				{{ commentanswer_form.as_p }}
+				<p><input type="submit" value="Ответить"/></p>
+			</form>
+			<ul id="comment_answers">
+				{% for answer in comment.answers.all %}
+					<li>
+						<p>{{ answer.body|r_stopwords|safe }}</p>
+					</li>
+				{% endfor %}
+			</ul>
+		</article>
+		<hr/>
+	{% endfor %}
+</section>
+
+<script type="text/javascript" src="{{ STATIC_URL }}/js/comments/comments.js"></script>

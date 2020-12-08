@@ -1,0 +1,172 @@
+{% extends 'base.html' %}
+{% load static core_tags%}
+
+{% block breadcrumbs %}
+    <a href="/"><img src="{% static 'images/home.png' %}" alt=""/></a> →
+    <a href="{% url 'profile_list' %}">Пользователи</a>
+{% endblock breadcrumbs %}
+
+{% block content %}
+
+<h1>Пользователи</h1>
+<br/>
+<div class="center-div">
+    <div class="compet-tabs" id="main1">
+        <ul class="tabs">
+            <li><a href="#"><span>Все пользователи</span></a></li>
+            <li><a href="#" {% if new %}class="current"{% endif %} ><span>Новые пользователи</span></a></li>
+        </ul>
+            <div class="big-search">
+                <form action="{% url 'profile_list' %}" method="get">
+                    <input type="text" class="search-inp" name="query" placeholder="Поиск по пользователям"/>
+                    <input type="submit" class="search-inp-submit" value=""/>
+                </form>
+            </div>
+        <div class="sorting">
+            <div class="sorting-left">
+                <p>
+                Отсориторвать по :
+                    <a class="down {% if request.GET.sort == 'recipes' %}active{% endif %}" href="{% if request.GET.sort == 'recipes' and request.GET.order == 'up'%}{% get_sort_link request 'recipes' 'down'%}{% else %}{% get_sort_link request 'recipes' 'up'%}{% endif %}">Количеству рецептов</a>
+                    |
+                    <a class="down {% if request.GET.sort == 'rating' %}active{% endif %}" href="{% if request.GET and not request.GET.sort %}&{% else %}?{% endif %}sort=rating&order={% if request.GET.sort == 'rating' and request.GET.order == 'up'%}down{% else %}up{% endif %}">Рейтингу </a>
+                    |
+                    <a class="down {% if request.GET.sort == 'joined' %}active{% endif %}" href="{% if request.GET and not request.GET.sort %}&{% else %}?{% endif %}sort=joined&order={% if request.GET.sort == 'joined' and request.GET.order == 'up'%}down{% else %}up{% endif %}">Дате регистрации </a>
+                    |
+                    <a href="#">Самые активные</a>
+                    |
+                    <a href="#">Профессионалы</a>
+                </p>
+            </div>
+    </div>
+        <div class="panes">
+            <div>
+                <div class="users-block">
+                    <div class="users">
+                        {% for profile in profile_list %}
+                            <div class="user">
+                            <div class="user-foto">
+                                {% if profile.avatar %}
+                                    <a href="{{ profile.get_absolute_url }}"><img src="{{ profile.avatar.url }}" alt=""/></a>
+                                {% endif %}
+                            </div>
+                            <div class="title-link">
+                                <a href="{{ profile.get_absolute_url }}">{{ profile.user.firstnake }} {{ profile.user.last_name }} ({{ profile.user }})</a>
+                            </div>
+                            {% if profile.online %}
+                                <div class="online">В сети</div>
+                            {% endif %}
+                            <div class="destination">
+                                {{ profile.rating }} баллов
+                            </div>
+                            <div class="destination">
+                                {{ profile.user.recipe_set.count }} рецептов
+                            </div>
+                        </div>
+                        {% endfor %}
+                    </div>
+{% include "page_pagination.html" with part_list=part_list object_list=profile_list prev_base_page=prev_base_page next_base_page=next_base_page objects_per_page=profile_per_page %}
+                </div>
+            </div>
+            <div>
+                <div class="users-block">
+                    <div class="users">
+                        {% for profile in new_profiles%}
+                            <div class="user">
+                            <div class="user-foto">
+                                {% if profile.avatar %}
+                                    <a href="{{ profile.get_absolute_url }}"><img src="{{ profile.avatar.url }}" alt=""/></a>
+                                {% endif %}
+                            </div>
+                            <div class="title-link">
+                                <a href="{{ profile.get_absolute_url }}">{{ profile.user.firstnake }} {{ profile.user.last_name }} ({{ profile.user }})</a>
+                            </div>
+                            {% if profile.online %}
+                                <div class="online">В сети</div>
+                            {% endif %}
+                            <div class="destination">
+                                {{ profile.rating }} баллов
+                            </div>
+                            <div class="destination">
+                                {{ profile.user.recipe_set.count }} рецептов
+                            </div>
+                        </div>
+                        {% endfor %}
+                    </div>
+{% include "page_pagination.html" with part_list=new_part_list object_list=new_profiles prev_base_page=new_prev_base_page next_base_page=new_next_base_page objects_per_page=profile_per_page %}
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="h-col-right h-col-right2">
+    <div class="filter-block">
+        <form>
+            <div class="title">
+                <h3>Поиск пользователей</h3>
+            </div>
+            <div class="custom-div">
+                <label>Страна</label>
+                <select  name="country">
+                    {% if not request.GET.country %}
+                        <option selected disabled>выберите из списка</option>
+                    {% endif %}
+                    {% for country in countries%}
+                        {% if not request.GET.ountry %}
+                            <option value="{{ country.id }}">{{ country }}</option>
+                        {% elif request.GET.country == country.id|stringformat:"s" %}
+                            <option selected value="{{ country.id }}">{{ country }}</option>
+                        {% endif %}
+                    {% endfor %}
+                </select>
+            </div>
+            <div class="custom-div">
+                <label>Город</label>
+                <select  name="city">
+                    {% if not request.GET.city %}
+                        <option selected disabled>выберите из списка</option>
+                    {% endif %}
+                    {% for city in cities%}
+                        {% if not request.GET.city %}
+                            <option value="{{ city.id }}">{{ city }}</option>
+                        {% elif request.GET.city == city.id|stringformat:"s" %}
+                            <option selected value="{{ city.id }}">{{ city }}</option>
+                        {% endif %}
+                    {% endfor %}
+                </select>
+            </div>
+            <div class="custom-div">
+                <label>Пол</label>
+                <div class="radio"><input type="radio" name="sex" {% if not request.GET.sex %}checked="checked"{% elif request.GET.sex == 'any' %}checked="checked"{% endif %} value="any"/><label>Любой</label></div>
+                <div class="radio"><input type="radio" name="sex" {% if request.GET.sex == 'male' %}checked="checked"{% endif %} value="male"/><label>Муж.</label></div>
+                <div class="radio"><input type="radio" name="sex" {% if request.GET.sex == 'female' %}checked="checked"{% endif %} value="female"/><label>Жен.</label></div>
+                <div class="clear"></div>
+            </div>
+            <div class="custom-div range">
+                <label>Возраст: <span>< <input type="text" id="amount1" name="age" placeholder="Любой" readonly="readonly" {% if request.GET.age %}value="{{ request.GET.age }}"{% endif %}/></span></label>
+                <div id="range1"></div>
+            </div>
+            <div class="custom-div range">
+                <label>Количество рецептов: <span>< <input type="text" id="amount2" name="recipes" placeholder="Любой" readonly="readonly" {% if request.GET.recipes %}value="{{ request.GET.recipes }}"{% endif %}/></span></label>
+                <div id="range2"></div>
+            </div>
+            <div class="custom-div">
+                <div class="check"><input type="checkbox" name="is_online" {% if request.GET.is_online %}checked="checked"{% endif %}/><label>Только онлайн</label></div>
+                <div class="clear"></div>
+            </div>
+
+            <input type="submit"/>
+
+        </form>
+    </div>
+</div>
+<div class="clear"></div>
+</div>
+
+
+{#	{% for profile in profile_list %}#}
+{#		<h1><a href="{% url 'public_userpage' profile.user.username %}">{{ profile.user.username }}</a></h1>#}
+{#		<p></p>#}
+{#	{% empty %}#}
+{#		<h1>Пользователей нет</h1>#}
+{#	{% endfor %}#}
+{% endblock content %}

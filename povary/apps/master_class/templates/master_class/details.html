@@ -1,0 +1,7 @@
+{% extends 'base.html' %}
+{% load stopword_tags %}
+
+{% block content %}
+	<h1>{{ master_class.title|r_stopwords }}</h1>
+	<p>{{ master_class.description|r_stopwords|safe }}</p>
+{% endblock content %}

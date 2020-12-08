@@ -1,0 +1,26 @@
+{% load widget_tweaks %}
+
+
+{% if icon %}
+    <i class="i-{{ icon }} dis"></i>
+{% endif %}
+
+{% if class %}
+    {% if field.field.required %}
+        {{ field|add_class:class|add_error_class:"invalid"|set_data:"validate-empty:true" }}
+    {% else %}
+        {{ field|add_class:class|add_error_class:"invalid" }}
+    {% endif %}
+{% else %}
+    {% if field.field.required %}
+        {{ field|add_error_class:"invalid"|set_data:"validate-empty:true" }}
+    {% else %}
+        {{ field|add_error_class:"invalid" }}
+    {% endif %}
+{% endif %}
+
+{% if not wo_errors %}
+    <div class="errors">
+        {{ field.errors }}
+    </div>
+{% endif %}

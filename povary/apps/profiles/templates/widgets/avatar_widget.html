@@ -1,0 +1,5 @@
+{% load fb_versions %}
+<input type="text" value="{{ value }}" name="{{ name }}" id="id_{{ name }}" style="display: none"/>
+<p><img src="{% if value %}{% version value 'medium' %}{% endif %}" id="current_avatar"/></p>
+<a href="javascript:" id="change_avatar" name="{{ name }}" value="{{ value }}" {% if not value %} style='display:none' {% endif %}>Поменять аватар</a>
+<a href="javascript:" id="upload_avatar" name="{{ name }}" value="{{ value }}">Загрузить аватар</a>

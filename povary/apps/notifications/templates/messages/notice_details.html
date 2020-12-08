@@ -1,0 +1,11 @@
+{% extends 'messages/profile_notices.html' %}
+
+{% block breadcrumbs %}
+	{{ block.super }} >> <a href="{% url 'notice_details' notice.id %}">{{ notice.title }}</a>
+{% endblock breadcrumbs %}
+
+{% block content %}
+	<h3>{{ notice.title }}</h3>
+	<p>{{ notice.body }}</p>
+	<p>{{ notice.from_name }}, {{ notice.created }}</p>
+{% endblock content %}

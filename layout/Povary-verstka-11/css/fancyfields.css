@@ -1,0 +1,437 @@
+
+* {margin: 0; padding: 0;}
+
+.ffTextBoxWrapper,
+.ffPasswordWrapper,
+.ffCheckboxWrapper,
+.ffRadioWrapper,
+.ffTextAreaWrapper,
+.ffSubmitWrapper,
+.ffResetWrapper,
+.ffButtonWrapper {display: inline-block; zoom: 1; *display: inline; margin: 0px 0;}
+
+.ffSelectWrapper{display: inline-block; zoom: 1; margin: 0px 0;}
+
+
+.ffTextBoxLeft, .ffTextBoxRight,
+.ffPasswordLeft, .ffPasswordRight,
+.ffCheckbox, .ffRadio, .ffSelectButton, .ffSelectButton span,
+.ffSelectMenuWrapper div.ffSelectMenuTop,
+.ffSelectMenuWrapper div.ffSelectMenuBottom,
+.ffSelectMenuWrapper > div > span,
+.ffTextAreaTop, .ffTextAreaTop span,
+.ffTextAreaBottom, .ffTextAreaBottom span,
+.ffSubmitWrapper a, .ffSubmitWrapper a span,
+.ffResetWrapper a, .ffResetWrapper a span,
+.ffButtonWrapper a, .ffButtonWrapper a span {
+	background-repeat: no-repeat;
+}
+
+
+/* text box */
+.ffTextBoxRight, .ffPasswordRight {
+	background-position: right -256px;
+	padding-right:0px;
+}
+.ffTextBoxLeft, .ffPasswordLeft {
+	background-position: 0 0;
+	padding: 0 ;
+}
+.ffTextBoxLeft input, .ffPasswordLeft input {
+	/*	border: 0;
+		height: 28px;
+		background-color: transparent;
+		margin-top: 6px\9;
+		height: 22px\9;*/
+}
+
+
+.ffTextBoxRight:hover,
+.ffPasswordRight:hover {background-position: right -288px;}
+.ffTextBoxLeft:hover,
+.ffPasswordLeft:hover {background-position: 0 -32px;}
+
+
+.focus .ffTextBoxRight,
+.focus .ffPasswordRight {background-position: right -320px;}
+.focus .ffTextBoxLeft,
+.focus .ffPasswordLeft {background-position: 0 -64px;}
+
+.ffTextBoxWrapper.disabled .ffTextBoxRight,
+.ffPasswordWrapper.disabled .ffPasswordRight {background-position: right -352px;}
+.ffTextBoxWrapper.disabled .ffTextBoxLeft,
+.ffPasswordWrapper.disabled .ffPasswordLeft {background-position: 0 -96px; color: #999;}
+
+
+/* checkbox */
+.ffCheckboxWrapper a {
+	text-decoration: none;
+	position: relative;
+font-size:12px; line-height:14px; color:#545454; font-style:normal;
+overflow: hidden;
+display: block;
+}
+.ffCheckbox {
+	width:15px; height:15px; margin-right:4px;
+	float: left;
+	background:url(../images/check.png) no-repeat 0 0;
+	cursor: pointer;
+}
+.ffCheckboxWrapper:hover a, .ffCeckboxWrapper.focus a {}
+.ffCheckboxWrapper:hover .ffCheckbox, .ffCeckboxWrapper.focus .ffCheckbox{background-position: 0px 0px;}
+.ffCheckboxWrapper.on .ffCheckbox {background-position: 0px -15px;}
+.ffCheckboxWrapper.on:hover .ffCheckbox, .ffCeckboxWrapper.on.focus .ffCheckbox {background-position: 0px -15px;}
+.ffCheckboxWrapper.disabled .ffCheckbox {background-position: 0px 0px;}
+.ffCheckboxWrapper.on.disabled .ffCheckbox {background-position: 0px 0px;}
+.ffCheckboxWrapper.disabled a, .ffCeckboxWrapper.disabled:hover a, .ffCeckboxWrapper.disabled.focus a {color: #999;}
+
+
+/* radio */
+.ffRadioWrapper a {
+	text-decoration: none;
+	color: #909090;
+	position: relative;
+	top: 0px;
+	font-size: 12px;
+	padding-left: 8px;
+	margin-right: 10px;line-height:16px;
+	 font-family: 'PT Sans', sans-serif; 
+}
+.ffRadio {
+	width: 15px;
+	height: 15px;
+	float: left;
+	background: url(../images/radio.png) no-repeat 0 0;
+	cursor: pointer;
+	margin-top:2px;
+	
+}
+.ffRadioWrapper:hover a, .ffRadioWrapper.focus a, .ffRadioWrapper.on a {color: #363636;}
+.ffRadioWrapper:hover .ffRadio, .ffRadioWrapper.focus .ffRadio{background: url(../images/radio.png) no-repeat 0 0;}
+.ffRadioWrapper.on .ffRadio {background: url(../images/radio.png) no-repeat 0 bottom;}
+.ffRadioWrapper.on:hover .ffRadio, .ffRadioWrapper.on.focus .ffRadio {background: url(../images/radio.png) no-repeat 0 bottom;}
+.ffRadioWrapper.disabled .ffRadio {background-position: 0px 0px;}
+.ffRadioWrapper.on.disabled .ffRadio {background-position: 0px 0px;}
+.ffRadioWrapper.disabled a, .ffRadioWrapper.disabled:hover a, .ffRadioWrapper.disabled.focus a {color: #363636;}
+
+
+/* selectbox */
+.ffSelectWrapper {width:163px; *clear:both;}
+.ffSelect {position: relative;}
+
+.ffSelect > a {
+	background-position: right -128px;
+	display: block;
+	text-decoration: none;
+	outline: 0;
+	cursor: default;
+}
+.ffSelect > a > span {
+	display: block;
+	background-position: 0 0;
+	overflow: hidden;
+	white-space: nowrap;
+	*white-space: normal;
+	text-overflow: ellipsis;
+	
+	padding-left:8px;
+padding-right: 27px;
+height: 28px;
+line-height: 28px;
+font-size: 12px;
+color: #3399cc;
+border: none;
+
+cursor:pointer;
+border:1px solid transparent;  border-bottom:none;
+}
+
+.ffSelect:hover > a, .ffSelectWrapper.focus .ffSelect > a {}
+.ffSelect:hover > a > span, .ffSelectWrapper.focus .ffSelect > a > span {color:#e23232;  background:url(../images/sel2.gif) no-repeat  center 12px;}
+.ffSelectWrapper.active  .ffSelect> a { z-index: 1005; position: relative; }
+.ffSelectWrapper.active  .ffSelect > a > span {color: #525252;}
+.ffSelectWrapper.disabled .ffSelect > a {background-position: right -224px;}
+.ffSelectWrapper.disabled .ffSelect > a > span {background-position: 0 -96px; color: #999;}
+
+
+.ffSelectMenuWrapper {width: 100%;}
+
+
+.ffSelectMenuWrapper .ffSelectMenuMidBG ul{list-style-type:none;margin:0 0;padding:0;}
+.ffSelectMenuWrapper .ffSelectMenuMidBG li {padding: 5px 8px; text-align: left; cursor: default; line-height:18px; background-color: #fff;color:#666666;}
+.ffSelectMenuWrapper .ffSelectMenuMidBG li SPAN{font-weight: bold; font-size: 12px; }
+.ffSelectMenuWrapper .ffSelectMenuMidBG li.disabled SPAN{color:#888;}
+.ffSelectMenuWrapper .ffSelectMenuMidBG li.on{background-color: #efefef; color:#818181;}
+
+
+.ffSelectMenuWrapper{}
+.ffSelectMenuTop {
+	height: 0px;	
+	background-position: 0 -394px;
+
+}
+.ffSelectMenuTop span {
+	display: block;
+	height: 5px;
+	margin-left: 8px;
+	background: right -384px;
+}
+
+.ffSelectMenuBottom {
+	height: 5px;
+	background-position: 0 -414px;
+}
+.ffSelectMenuBottom span {
+	display: block;
+	height: 5px;
+	margin-left: 8px;
+	background-position: right -404px;
+}
+.ffSelectMenuMidBG {}
+.ffSelectMenuMid  {max-height: 200px; overflow: auto; }
+
+.scrollingBarWrapper{width:24px;height:200px;background:url(images/scrollingBarBg.png) no-repeat;right:3px!important;}
+.scrollingHandle {width:24px;padding-top:20px;background:url(images/scrollingHandleTop.png) no-repeat 0 0;}
+.scrollingHandleBottom{width:24px;background:url(images/scrollingHandleBottom.png) no-repeat 0px bottom}
+
+
+
+/* textarea 
+.ffTextAreaWrapper textarea {
+    border: 0;
+    margin: 10px 10px 10px 15px;
+    padding:0 ;
+    font-size: 14px;
+    color: #555;
+    background: none;
+    font-family: Arial;
+    resize: none;
+}
+
+
+.ffTextAreaTop {
+	height: 5px;
+	background-position: 0 -394px;
+}
+.ffTextAreaTop span {
+	display: block;
+	height: 5px;
+	margin-left: 8px;
+	background-position: right -384px;
+}
+
+.ffTextAreaMid {
+    background: transparent url(images/sides.png) repeat-y right 0;
+}
+.ffTextAreaMid .ffTextAreaLeft {
+    background: url(images/sides.png) repeat-y 0 0;
+    margin-right: 4px;
+}
+
+
+.ffTextAreaBottom {
+	height: 5px;
+	background-position: 0 -414px;
+}
+.ffTextAreaBottom span {
+	display: block;
+	height: 5px;
+	margin-left: 6px;
+	background-position: right -404px;
+}
+*/
+
+/* button */
+.ffButtonWrapper > a {
+	background-position: right -585px;
+	display: block;
+	text-decoration: none;
+	outline: 0;
+}
+.ffButtonWrapper > a > span {
+	display: block;
+	height: 36px;
+	padding-bottom: 2px;
+	line-height: 39px;
+	font-size: 15px;
+	background-position: 0 -424px;
+	text-align: center;
+	padding: 0 10px 0 15px;
+	color: #fff;
+	font-weight: bold;
+	text-transform: uppercase;
+	margin-right: 5px;
+}
+
+.ffButtonWrapper:hover > a {background-position: right -625px;}
+.ffButtonWrapper:hover > a > span {background-position: 0 -464px;}
+.ffButtonWrapper > a:active {background-position: right -665px; position: relative; }
+.ffButtonWrapper > a:active > span {background-position: 0 -504px;}
+.ffButtonWrapper.disabled > a {background-position: right -705px; position: static;}
+.ffButtonWrapper.disabled > a > span {background-position: 0 -544px;color: #c1c1c1;}
+
+input[type="text"], input[type="password"], textarea, select {outline: none;} /* remove webkit yellow border */
+
+select.mobileSelect{opacity:0;filter:alpha(opacity=0);position:absolute;top:0;display:block;}
+
+
+.change {display:inline-block;}
+.change .ffSelect > a {background: url(../images/arr2.png) no-repeat right center #cb0333; float:left;
+-moz-border-radius: 7px; -webkit-border-radius: 7px; border-radius: 7px;
+height: 21px;
+line-height: 21px;
+color:#fff;
+text-decoration:none;
+-webkit-box-shadow: 1px 1px 0 #af022c;
+-moz-box-shadow: 1px 1px 0 #af022c;
+box-shadow: 1px 1px 0 #af022c;}
+.change .ffSelect > a > span {height: 21px; line-height: 21px; padding-right:34px; padding-left: 11px; color:#fff; font-family: 'a_futuraroundregular';}
+.change .ffSelectWrapper { width:203px;}
+.change .ffSelectWrapper.active .ffSelect > a  {color:#fff; background: url(../images/arr3.png) no-repeat right center #2598c9; -webkit-box-shadow: 1px 1px 0 #0d5376; -moz-box-shadow: 1px 1px 0 #0d5376; box-shadow: 1px 1px 0 #0d5376;}
+.change .ffSelectWrapper.active .ffSelect > a > span {color:#fff; }
+.change .ffSelectMenuTop {background:url(../images/top.png) no-repeat top; height:13px; width:203px;}
+.change .ffSelectMenuMidBG {background:#fff; border:2px solid rgba(223,223,212,0.8); border-top:none; -moz-border-radius: 0 0 3px 3px; -webkit-border-radius: 0 0 3px 3px; border-radius: 0 0 3px 3px;}
+.change .ffSelectMenuWrapper .ffSelectMenuMidBG li {background: none; font-size:14px; color:#8f8f8f; font-family: 'PT Sans', 'pt_sansregular', sans-serif; line-height:17px; padding:4px 5px 4px 8px;}
+.change .ffSelectMenuWrapper .ffSelectMenuMidBG li span {display:block; cursor:pointer; font-weight:100; line-height:17px; font-size:14px; color:#8f8f8f; font-family: 'PT Sans', 'pt_sansregular', sans-serif; padding:0px 0px 0px 22px; background:url(../images/radio.png) no-repeat left bottom;}
+.change .ffSelectMenuWrapper .ffSelectMenuMidBG li.on {background:none;}
+.change .ffSelectMenuWrapper .ffSelectMenuMidBG li.on span{background:url(../images/radio.png) no-repeat left top;}
+
+
+/**/
+.date-choice .ffSelectWrapper {width:74px; height:30px; *clear:both;}
+
+.date-choice .ffSelect > a {
+	background:url(../images/select-bg.jpg) no-repeat right 11px;
+	border:2px solid #ebebeb;
+	display: block;
+	text-decoration: none;
+	outline: 0;
+	cursor: default;
+	 -moz-border-radius: 3px; 
+  -webkit-border-radius: 3px; 
+  -khtml-border-radius: 3px; 
+  border-radius: 3px; 
+  behavior: url(PIE.htc);
+}
+.date-choice .ffSelect > a > span {
+	display: block;
+	background-position: 0 0;
+	overflow: hidden;
+	white-space: nowrap;
+	*white-space: normal;
+	text-overflow: ellipsis;
+	
+	padding-left:8px;
+padding-right: 27px;
+height: 30px;
+line-height: 30px;
+font-size: 14px;
+color: #585858;
+border: none;
+
+cursor:pointer;
+border:1px solid transparent;  border-bottom:none;
+}
+
+.date-choice .ffSelectMenuWrapper .ffSelectMenuMidBG ul {border: 2px solid #ebebeb; border-top:none;}
+.date-choice .ffSelectMenuWrapper .ffSelectMenuMidBG li SPAN {font-size:14px; font-weight:100;}
+
+/*------------------------*/
+.block-select .ffSelectWrapper {width:365px; *clear:both; display: block; height:32px;}
+.block-select2 .ffSelectWrapper {width:178px; *clear:both; display: block; height:32px;}
+.block-select3 .ffSelectWrapper {width:278px; *clear:both; display: block; height:32px;}
+.half-left .block-select3 .ffSelectWrapper {width:260px;}
+.block-select4 .ffSelectWrapper {width: 77px;}
+.block-select5 .ffSelectWrapper {width: 469px;}
+
+.form-row2 .block-select .ffSelectWrapper , .form-row2 .block-select2 .ffSelectWrapper , .block-select .ffSelectWrapper  {height:33px;}
+
+.gray-block .ffSelect > a,  .block-select  .ffSelect > a  { height:30px !important;
+background-color: #e8e8e8;
+-moz-border-radius: 3px;
+-webkit-border-radius: 3px;
+-khtml-border-radius:  3px;
+border-radius:  3px;
+behavior: url(PIE.htc);
+-webkit-box-shadow: 0 1px 2px rgba(0,0,0,.38), inset 0 1px rgba(0,0,0,.14);
+-moz-box-shadow: 0 1px 2px rgba(0,0,0,.38), inset 0 1px rgba(0,0,0,.14);
+box-shadow: 0 1px 2px rgba(0,0,0,.38), inset 0 1px rgba(0,0,0,.14);
+background-image: -webkit-linear-gradient(bottom, #e3e3e3, #fff);
+background-image: -moz-linear-gradient(bottom, #e3e3e3, #fff);
+background-image: -o-linear-gradient(bottom, #e3e3e3, #fff);
+background-image: -ms-linear-gradient(bottom, #e3e3e3, #fff);
+background-image: linear-gradient(to top, #e3e3e3, #fff);
+background-position: 0 0;}
+.gray-block .ffSelect > a > span,  .block-select  .ffSelect > a > span {background:url(../images/select-but.png) no-repeat right 0; 	padding-left:11px;padding-right: 27px;height: 29px;
+line-height: 29px;font-size: 14px;color: #929292; border: none; border-top:1px solid transparent;}
+
+.gray-block .ffSelect:hover > a, .gray-block .ffSelectWrapper.focus .ffSelect > a {}
+.gray-block .ffSelect:hover > a > span, .gray-block .ffSelectWrapper.focus .ffSelect > a > span {color:#333;  }
+.gray-block .ffSelectWrapper.active  .ffSelect> a { z-index: 1005; position: relative; }
+.gray-block .ffSelectWrapper.active  .ffSelect > a > span {color: #333;}
+
+.gray-block .ffSelectMenuWrapper .ffSelectMenuMidBG , .block-select .ffSelectMenuWrapper .ffSelectMenuMidBG {border:1px solid #e2e2e2; border-top:none;}
+.gray-block .ffSelectMenuWrapper .ffSelectMenuMidBG ul, .block-select .ffSelectMenuWrapper .ffSelectMenuMidBG ul{list-style-type:none;margin:0 0;padding:0; background:#e3e3e3;}
+.gray-block .ffSelectMenuWrapper .ffSelectMenuMidBG li, .block-select .ffSelectMenuWrapper .ffSelectMenuMidBG li {padding: 5px 8px; text-align: left; cursor: default; line-height:18px; background-color: #fff; font-size: 14px; color: #929292;}
+.gray-block .ffSelectMenuWrapper .ffSelectMenuMidBG li.selected, .block-select.ffSelectMenuWrapper .ffSelectMenuMidBG  li.selected  {background-color: #e8e8e8; color:#333;}
+.gray-block .ffSelectMenuWrapper .ffSelectMenuMidBG li SPAN, .block-select .ffSelectMenuWrapper .ffSelectMenuMidBG li SPAN{font-size: 14px; font-weight:100;}
+.gray-block .ffSelectMenuWrapper .ffSelectMenuMidBG li.on, .block-select .ffSelectMenuWrapper .ffSelectMenuMidBG  li.on{background-color: #e8e8e8; color:#333;}
+
+
+/*------------------------*/
+
+.custom-div .ffSelectWrapper {width:212px; *clear:both; display: block; height:30px;}
+
+.custom-div .ffSelect > a { height:28px !important;
+-moz-border-radius: 3px;
+-webkit-border-radius: 3px;
+-khtml-border-radius:  3px;
+border-radius:  3px;
+behavior: url(PIE.htc);
+background-position:0 0;
+-webkit-box-shadow: 0 1px 2px #9f8f8a, inset 0 1px rgba(176,163,158,.37);
+-moz-box-shadow: 0 1px 2px #9f8f8a, inset 0 1px rgba(176,163,158,.37);
+box-shadow: 0 1px 2px #9f8f8a, inset 0 1px rgba(176,163,158,.37);
+background-image: -webkit-linear-gradient(bottom, #f5f0f0, #fdfcfc);
+background-image: -moz-linear-gradient(bottom, #f5f0f0, #fdfcfc);
+background-image: -o-linear-gradient(bottom, #f5f0f0, #fdfcfc);
+background-image: -ms-linear-gradient(bottom, #f5f0f0, #fdfcfc);
+background-image: linear-gradient(to top, #f5f0f0, #fdfcfc);
+}
+.custom-div .ffSelect > a > span {background:url(../images/select-bg2.png) no-repeat right 0; 	padding-left:11px; padding-right: 26px; height: 27px; line-height: 27px;font-size: 14px;color: #949292; border: none; border-top:1px solid transparent;}
+
+.custom-div .ffSelect:hover > a > span, .custom-div .ffSelectWrapper.focus .ffSelect > a > span {color:#333;  background:url(../images/select-bg2.png) no-repeat right 0;}
+.custom-div .ffSelectMenuWrapper .ffSelectMenuMidBG {border:1px solid #e2e2e2; border-top:none;}
+.custom-div .ffSelectMenuWrapper .ffSelectMenuMidBG ul{list-style-type:none;margin:0 0;padding:0; background:#e3e3e3;}
+.custom-div .ffSelectMenuWrapper .ffSelectMenuMidBG li {padding: 5px 8px; text-align: left; cursor: default; line-height:18px; background-color: #fff; font-size: 14px; color: #929292;}
+.custom-div .ffSelectMenuWrapper .ffSelectMenuMidBG li.selected {background-color: #e8e8e8; color:#333;}
+.custom-div .ffSelectMenuWrapper .ffSelectMenuMidBG li SPAN{font-size: 14px; font-weight:100;}
+.custom-div .ffSelectMenuWrapper .ffSelectMenuMidBG li.on{background-color: #e8e8e8; color:#333;}
+
+.custom-div .ffSelectMenuTop {	height: 0px;	}
+
+
+
+.filter-block-right .custom-div .ffSelect > a { height:30px !important;
+-moz-border-radius: 3px;
+-webkit-border-radius: 3px;
+-khtml-border-radius:  3px;
+border-radius:  3px;
+behavior: url(PIE.htc);
+background-position:0 0;
+-webkit-box-shadow: 0 1px 2px rgba(0,0,0,.38), inset 0 1px rgba(0,0,0,.14);
+-moz-box-shadow: 0 1px 2px rgba(0,0,0,.38), inset 0 1px rgba(0,0,0,.14);
+box-shadow: 0 1px 2px rgba(0,0,0,.38), inset 0 1px rgba(0,0,0,.14);
+background-image: -webkit-linear-gradient(bottom, #e3e3e3, #fff);
+background-image: -moz-linear-gradient(bottom, #e3e3e3, #fff);
+background-image: -o-linear-gradient(bottom, #e3e3e3, #fff);
+background-image: -ms-linear-gradient(bottom, #e3e3e3, #fff);
+background-image: linear-gradient(to top, #e3e3e3, #fff);
+}
+.filter-block-right .custom-div .ffSelect > a > span, .filter-block-right .custom-div .ffSelect > a:hover > span {background:url(../images/select-but.png) no-repeat right 0; 	padding-left:11px;padding-right: 27px;height: 29px;
+line-height: 29px;font-size: 14px;color: #929292; border: none; border-top:1px solid transparent;}
+
+
+
+
+/* EDITOR PROPERTIES - PLEASE DON'T DELETE THIS LINE TO AVOID DUPLICATE PROPERTIES */

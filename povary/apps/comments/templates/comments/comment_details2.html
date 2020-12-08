@@ -1,0 +1,39 @@
+{% load thumbnail stopword_tags static %}
+
+<article id="comment" data-id="{{ comment.id }}">
+    <a name="comment_{{ comment.id }}"></a>
+
+    <div class="r-img">
+        {% thumbnail comment.author.profile.avatar "30x30" as im %}
+            <img src="{{ im.url }}" width="{{ im.width }}" height="{{ im.height }}" alt=""/>
+        {% endthumbnail %}
+    </div>
+
+    <div class="comment-in">
+        <a href="{% url 'public_userpage' comment.author.username %}" class="name">{{ comment.author.username }}</a>
+        <span class="date">{{ comment.created|timesince }}</span>
+        <p>{{ comment.body|r_stopwords|safe }}</p>
+        <div class="rating">
+            <span class="plus">0</span>
+            <span class="minus"></span> &nbsp; &middot;
+            <form method="post" action="{% url 'add_commentanswer' item_obj.get_contenttype_id item_obj.id comment.id %}" style="display:none;">
+                {% csrf_token %}
+                    <a href="#" class="reply">Ответить</a>
+            </form>
+            <ul id="comment_answers">
+                {% for answer in comment.answers.all %}
+                    <li>
+                        <p>{{ answer.body|r_stopwords|safe }}</p>
+                    </li>
+                {% endfor %}
+            </ul>
+        </div>
+        <div class="share">
+            <a href="#">поделиться ></a>
+            <a href="#"><img src="{% static 'images/icons/soc4.jpg' %}" alt=""/></a>
+            <a href="#"><img src="{% static 'images/icons/soc5.jpg' %}" alt=""/></a>
+            <a href="#"><img src="{% static 'images/icons/soc6.jpg' %}" alt=""/></a>
+        </div>
+    </div>
+    <div class="clear"></div>
+</article>

@@ -1,0 +1,22 @@
+{% load thumbnail %}
+
+<div class="articles">
+    <div class="title">
+        <h4>Популярные статьи</h4>
+    </div>
+    {% for article in popular_articles_list %}
+        <div class="articles-in">
+            {% if article.image %}
+                <div class="articles-img">
+                    <a href="{{ article.get_absolute_url }}">
+                    <img src="{% thumbnail article.image "97x68" crop="center" as image %} {{ image.url }} {% endthumbnail %}" alt="{{ article.image_alt }}" title="{{ article.title }}"/>
+                    </a>
+                </div>
+            {% endif %}
+            <div class="articles-text">
+                <a href="{{ article.get_absolute_url }}">{{ article.title }}</a>
+                <span class="num-comm">{{ article.comments_num }} коментариев</span>
+            </div>
+        </div>
+    {% endfor %}
+</div>

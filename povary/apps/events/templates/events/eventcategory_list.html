@@ -1,0 +1,9 @@
+{% extends 'base.html' %}
+
+{% block content %}
+	{% for eventcategory in eventcategory_list %}
+		<h1><a href="{% url 'eventcategory_details' eventcategory.slug %}">{{ eventcategory.title }}</a></h1>
+	{% empty %}
+		<h1>Нет категорий</h1>
+	{% endfor %}
+{% endblock content %}

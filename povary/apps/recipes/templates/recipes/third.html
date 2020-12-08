@@ -1,0 +1,157 @@
+{% extends "base.html" %}
+{% load i18n static core_tags widget_tweaks%}
+
+
+{% block breadcrumbs %}
+    <a href="/"><img src="{% static 'images/home.png' %}" alt=""/></a> →
+    <a href="{% url 'recipe-add' %}">Добавление рецепта</a>
+{% endblock breadcrumbs %}
+
+{% block subheader %}
+
+<div class="search-div">
+	<p>Поиск по рецептам</p>
+	<div class="search">
+			<form method="get" action="{% url 'haystack_search' %}">
+			  <span class="s-bg"></span>
+	                {{ search_form.q|attr:"class:search-text" }}
+	                <input type="submit" class="search-btn" value=""/>
+			</form>
+	</div>
+	 <a href="{% url 'haystack_search' %}">Расширеный поиск</a>
+</div>
+{% endblock subheader %}
+
+{% block content %}
+    <form action="." method="post" enctype="multipart/form-data">{% csrf_token %}
+
+    {{ wizard.management_form }}
+
+    {{ step_formset.management_form }}
+
+    {{ form.errors }}
+
+    {% for step_form in step_formset.forms %}
+        {{ step_form.errors }}
+    {% endfor %}
+
+    <div class="recept-page">
+    <h1>Добавление рецепта </h1>
+        <div class="steps">
+            <div class="step "><div class="step-img"><img src="{% static 'images/icons/step4.jpg' %}" alt=""/></div><b>1</b><span>Оcновные данные</span><div class="corn"></div></div>
+            <div class="lineimg"><span style="width:100%;"></span></div>
+            <div class="step"><div class="step-img"><img src="{% static 'images/icons/step4.jpg' %}" alt=""/></div><b>2</b><span>Ингридиенты</span><div class="corn"></div></div>
+            <div class="lineimg"><span style="width:100%;"></span></div>
+            <div class="step active"><div class="step-img"><img src="{% static 'images/icons/step1_1.jpg' %}" alt=""/></div><b>3</b><span>Приготовление</span><div class="corn"></div></div>
+        </div>
+        <div class="application">
+            <div class="recipe-block">
+                <div class="desc">
+                    <p>Как будем готовить? В какой последовательности? Разбейте рецепт на этапы приготовления. Опишите только текущий шаг и перейдите к следующему</p>
+                    <p>Фотографии наглядно показывают действие, что очень облегчает инструкцию </p>
+                </div>
+                <div class="filter-block-right">
+                    <div class="filter-block">
+                        <form>
+                            <div class="title">
+                                <h3>Дополнительно</h3>
+                            </div>
+                            <div class="custom-div">
+                                <label>Диета</label>
+                                {{ form.diet }}
+                                <div class="clear"></div>
+                            </div>
+                            <div class="custom-div">
+                                <label>Национальная кухня</label>
+                                {{ form.cuisine }}
+                                <a href="#" class="show-more">Другие национальности</a>
+                                <div class="clear"></div>
+                            </div>
+                            <div class="custom-div">
+                                <label>Блюда к празднику</label>
+                                {{ form.holiday }}
+                            </div>
+                            <div class="custom-div">
+                                <label>Способ приготовления</label>
+                                {{ form.preparation_method }}
+
+                            </div>
+                            <div class="custom-div">
+                                <label>Время употребления</label>
+                                {{ form.eating_time }}
+                                <div class="clear"></div>
+                            </div>
+                            <div class="custom-div">
+                                <label>Возраст</label>
+                                {{ form.age_limit }}
+                                <div class="clear"></div>
+                            </div>
+                        </form>
+                        <div class="shadow"></div>
+                    </div>
+                </div>
+
+                <div class="steps-block">
+
+                    {% for step_form in step_formset.forms %}
+
+                        <div class="step-title">1 шаг</div>
+                        <div class="step">
+
+
+                            <div class="step-foto" style="background: url('{% static "images/addf.jpg" %}') 5px 5px no-repeat; ">
+                                {{ step_form.image }}
+                            </div>
+
+                            <div class="step-text-block">
+                                <div class="description-stap">
+                                        <label>Описание шага</label>
+                                        {{ step_form.description }}
+                                    <a href="#" class="close"></a>
+                                </div>
+                            </div>
+                        </div>
+
+                    {% endfor %}
+
+                        <div id="extra-step" data-value="1">
+                            {% with step_formset.empty_form as form %}
+
+                            <div class="step-title">__step__ шаг</div>
+                            <div class="step">
+
+
+                                <div class="step-foto" style="background: url('{% static "images/addf.jpg" %}') 5px 5px no-repeat; ">
+                                    {{ form.image }}
+                                </div>
+
+                                <div class="step-text-block">
+                                    <div class="description-stap">
+                                            <label>Описание шага</label>
+                                            {{ form.description }}
+                                        <a href="#" class="close"></a>
+                                    </div>
+                                </div>
+                            </div>
+
+                            {% endwith %}
+
+                        </div>
+
+
+                    <a id="add-extra-step" class="submit">Добавить шаг</a>
+                </div>
+
+                <div class="clear"></div>
+            </div>
+        </div>
+        <div class="pagenavi2">
+            <button class="grey-btn" name="wizard_goto_step" type="submit" value="{{ wizard.steps.prev }}">{% trans "Назад" %}</button>
+            <input type="submit" class="submit next-sm" value="Опубликовать"/>
+        </div>
+        <div class="clear"></div>
+    </div>
+
+</form>
+
+{% endblock %}

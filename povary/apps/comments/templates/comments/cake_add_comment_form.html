@@ -1,0 +1,32 @@
+{% load widget_tweaks %}
+
+<div class="add-comment global_comment">
+	<a href="#" id="ad-com"></a>
+	<div class="add-comment-title">Добавьте коментарий</div>
+	<a href="#" class="c-img"><img src="{{STATIC_URL}}cake/images/nophoto.jpg" alt=""/></a>
+	<form
+		id="add_comment_form" method="post" action="."
+		data-url="{% url 'add_comment' master_class.get_contenttype_id master_class.id True %}">
+		{% csrf_token %}		
+		<div class="add-comment-form">
+			<div class="form-row">
+				{{ comment_form.body|attr:"class:textarea-com" }}				
+			</div>
+		</div>
+		<!--<div class="add-comment-form">
+			<div class="form-row">
+				<div class="form-div">
+					<input type="text" class="com-text1" placeholder="Ваше имя"/>
+				</div>
+				<div class="form-div">
+					<input type="text" class="com-text2" placeholder="Ваш email"/>
+				</div>
+			</div>
+			<div class="form-row">
+				<textarea class="textarea-com" placeholder="Текст коментария"></textarea>
+			</div>
+		</div>-->
+		<input type="submit" class="com-submit" value="Отправить"/>
+	</form>
+	<b class="corn"></b>
+</div>

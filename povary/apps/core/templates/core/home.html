@@ -1,0 +1,378 @@
+{% extends 'base.html' %}
+{% load core_tags comment_tags vote_tags thumbnail widget_tweaks pytils_numeral %}
+
+{% block categories %}
+
+{% endblock categories %}
+
+{% block subheader %}
+
+<div class="top-cols">
+			<div class="t-col">
+				<div class="t-col-title"><a href="#">Соусы и приправы</a></div><p><a href="#">Небольшое описани что находиться в разделе</a></p>
+			</div>
+			<div class="t-col">
+				<div class="t-col-title"><a href="#">Салаты</a></div><p><a href="#">Лучшие салаты разных стран и народов</a></p>
+			</div>
+			<div class="t-col">
+				<div class="t-col-title"><a href="#">Вторые блюда</a></div><p><a href="#">Много полезных рецептов будьте осторожны!</a></p>
+			</div>
+			<div class="t-col last">
+				<div class="t-col-title"><a href="#">Вторые блюда</a></div><p><a href="#">Много полезных рецептов будьте осторожны!</a></p>
+			</div>
+</div>
+<div class="search-div">
+	<p>Поиск по рецептам</p>
+	<div class="search">
+			<form method="get" action="{% url 'haystack_search' %}">
+			  <span class="s-bg"></span>
+	        {{ search_form.q|attr:"class:search-text" }}
+	                <input type="submit" class="search-btn" value=""/>
+			</form>
+	</div>
+	 <a href="{% url 'haystack_search' %}">Расширеный поиск</a>
+</div>
+{% endblock subheader %}
+
+{% block content %}
+
+		<div class="home-cols">
+			<div class="h-col-left">
+				<div class="scrollable" id="slideshow">
+					<div class="items">
+						{% for slide_recipe in slideshow_recipes %}
+						<div class="item"><a href="{% url 'recipe_details' slide_recipe.slug %}">
+							<img src="{{MEDIA_URL}}{{slide_recipe.main_image}}" alt="" class="slide-img"/>
+							<div class="slide-text"><div class="slide-text-in"><h4>{{slide_recipe.title}}</h4><p>{{slide_recipe.description|safe}}</p><span class="more">узнать больше</span></div></div>
+						</a></div>
+						{% endfor %}
+					</div>
+					<ul class="navi">
+						{% for slide_recipe in slideshow_recipes %}
+						<li><a href="#"></a></li>
+						{% endfor %}
+					</ul>
+				</div>
+				<div class="main" id="main1">
+					<ul class="tabs">
+						<li><a href="#"><span>Мастер Классы</span></a></li>
+						<li><a href="#"><span>Фотогаллерея</span></a></li>
+					</ul>
+					<div class="panes">
+						<div>
+							<div class="scrollable slideshow" id="slideshow2">
+								<div class="items">
+									{% for masterclass in masterclass_list %}
+									<div class="item">
+										<a href="{% url 'cake_mc_details' masterclass.slug %}"><img src="{% thumbnail masterclass.image "235x222" crop="center" as image %} {{ image.url }} {% endthumbnail %}" alt="" title="" class="slide-img"/></a>
+									</div>
+									{% endfor %}
+								</div>
+								<ul class="slide-tabs">
+									{% for masterclass in masterclass_list %}
+									<li>
+										<a>
+											<span class="t-img"><img src="{% thumbnail masterclass.image "28x28" crop="center" as image %} {{ image.url }} {% endthumbnail %}" alt="{{masterclass.image_alt}}" title="" class="slide-img"/></span>
+											<span class="t-name">
+												<b>{{ masterclass.title }}</b>
+												<span class="t-autor">Автор: {{ masterclass.author.username }}</span>
+											</span>
+											<span class="t-ico"><img src="{{STATIC_URL}}images/icons/icon1.png" alt=""/></span>
+										</a>
+									</li>
+									{% endfor %}
+								</ul>
+							</div>
+						</div>
+						<div>
+							<div class="scrollable slideshow" id="slideshow3">
+								<div class="items">
+									{% for gallery_image in gallery_list %}
+									<div class="item">
+										<a href="#"><img src="{% thumbnail gallery_image.image "235x222" crop="center" as image %} {{ image.url }} {% endthumbnail %}" alt="{{gallery_image.title }}" class="slide-img"/></a>
+									</div>
+									{% endfor %}
+								</div>
+								<ul class="slide-tabs">
+									{% for gallery_image in gallery_list %}
+									<li>
+										<a>
+											<span class="t-img"><img src="{% thumbnail gallery_image.image "28x28" crop="center" as image %} {{ image.url }} {% endthumbnail %}" alt=""/></span>
+											<span class="t-name">
+												<b>{{ gallery_image.gallery.title }}</b>
+												<span class="t-autor">Автор: {{ gallery_image.author.username }}</span>
+											</span>
+											<span class="t-ico"><img src="{{STATIC_URL}}images/icons/icon1.png" alt=""/></span>
+										</a>
+									</li>
+									{% endfor %}
+								</ul>
+							</div>
+						</div>
+					</div>
+				</div>
+				<div class="section articles">
+					<div class="title"><h3>Популярные статьи</h3></div>
+					{% for article in article_list %}
+					<div class="row">
+						<div class="row-img"><a href="{% url 'article_details' article.slug %}">
+						<img src="{% thumbnail article.image "77x77" crop="center" as image %} {{ image.url }} {% endthumbnail %}" alt="{{ article.title }}" title="{{ article.title }}"/></a></div>
+						<div class="row-text">
+							<h5><a href="{% url 'article_details' article.slug %}">{{ article.title|safe|truncatewords:"7"  }}</a></h5>
+							<p>
+								{{ article.body|safe|slice:":300" }} ...
+							</p>
+							<span class="num-comm"><big>{{ article|get_comments|length }} </big> {{ article|get_comments|length|choose_plural:"коментарий,комментария,комментариев" }}</span>
+							<a href="{% url 'article_details' article.slug %}" class="more-btn">Читать дальше</a>
+						</div>
+					</div>
+					{% endfor %}
+					<a href="{% url 'article_list' %}" class="more">все статьи</a>
+				</div>
+				<div class="section">
+					<div class="title"><h3>Наши тортоделы <img src="{{STATIC_URL}}images/icons/icon1.jpg" alt=""/></h3></div>
+					<div class="people">
+						{% for cakemaster in cakemaster_list %}
+							<div class="man"><a href="{% url 'public_userpage' cakemaster.user.username %}" class="man-name">{{cakemaster.user.username}}</a><a href="{% url 'public_userpage' cakemaster.user.username %}" class="man-img"><img src="{{MEDIA_URL}}{{cakemaster.avatar}}" alt=""/></a></div>
+						{% endfor %}
+					</div>
+				</div>
+			</div>
+			<div class="h-col-right">
+				<div class="day-rec">
+					<h3>Рецепт дня</h3>
+					<a href="{% url 'recipe_details' day_recipe.slug %}" class="rec-img"><img src="{{MEDIA_URL}}{{day_recipe.main_image}}" alt="{{day_recipe.image_alt}}"/><span>{{day_recipe.title}}</span></a>
+					<div class="autor">
+						<a href="{% url 'public_userpage' day_recipe.author.username %}">{{day_recipe.author}}</a>
+						<a href="{% url 'public_userpage' day_recipe.author.username %}"><img src="{{MEDIA_URL}}{{day_recipe.author.profile.avatar}}" alt=""/></a>
+					</div>
+					<div class="desc">
+						<p>{{day_recipe.description|safe|striptags|truncatechars:129}}</p>
+						<a href="{% url 'recipe_details' day_recipe.slug %}" class="more">далее</a>
+						<span class="num-like"><big>{{day_recipe|get_votes|length}}</big></span>
+						<span class="num-comm"><big>{{day_recipe|get_comments|length}}</big></span>
+					</div>
+				</div>
+
+				<div class="developments">
+								<div class="developments-title">НАШИ  СОБЫТИЯ</div>
+								<ul class="tabs2">
+									<li><a href="#">кулинары</a>|</li>
+									<li><a href="#">тортоделы</a></li>
+								</ul>
+								<div class="panes2">
+									<div>
+										{% for event in event_list %}
+{#										<a href="{% url 'eventcategory_details' eventcategory.slug %}">{{ eventcategory.title }}</a></li>#}
+										<div class="developments-block">
+											<div class="date">
+												<strong class="numb">{{ event.start_date.day }}</strong>
+												<span>{{ event.start_date|date:"M" }}</span>
+											</div>
+											<div class="developments-block-text">
+												{{ event.description|truncatechars:200|safe }}
+											</div>
+										</div>
+										{% endfor %}
+										<a class="more" href="{% url 'event_list' %}">все события</a>
+									</div>
+									<div>
+										{% for event in cake_event_list %}
+{#										<a href="{% url 'eventcategory_details' eventcategory.slug %}">{{ eventcategory.title }}</a></li>#}
+										<div class="developments-block">
+											<div class="date">
+												<strong class="numb">{{ event.start_date.day }}</strong>
+												<span>{{ event.start_date|date:"M" }}</span>
+											</div>
+											<div class="developments-block-text">
+												{{ event.description|truncatechars:200|safe }}
+											</div>
+										</div>
+										{% endfor %}
+										<a class="more" href="{% url 'cake_event_list' %}">все события</a>
+								</div>
+							</div>
+				<div class="rss-block">
+					<h4>Подпишись на рассылку</h4>
+					<form>
+						<input type="text" class="rss-input" placeholder="Введите свой e-mail..."/>
+						<input type="submit" class="more-btn" value="Подписаться"/>
+						<div class="social-block-links">
+                            <div class="addthis_toolbox addthis_default_style">
+                                <a class="addthis_button_facebook_follow" addthis:userid="YOUR-USERNAME">
+                                    <img src="{{STATIC_URL}}images/social-l1.jpg" alt=""/>
+                                </a>
+                                <a class="addthis_button_twitter_follow" addthis:userid="YOUR-USERNAME">
+                                    <img src="{{STATIC_URL}}images/social-l2.jpg" alt=""/>
+                                </a>
+{#							<a href="#"><img src="{{STATIC_URL}}images/social-l1.jpg" alt=""/></a>#}
+{#							<a href="#"><img src="{{STATIC_URL}}images/social-l2.jpg" alt=""/></a>#}
+							<a href="#"><img src="{{STATIC_URL}}images/social-l3.jpg" alt=""/></a>
+                            </div>
+                            <script type="text/javascript" src="//s7.addthis.com/js/300/addthis_widget.js#pubid=ra-52a0c46563ed4fbb"></script>
+						</div>
+					</form>
+				</div>
+			</div>
+		</div>
+            <div class="h-col-center">
+				<div class="best-rec" id="slider2">
+					<h3>Лучшие рецепты</h3>
+					<a href="javascript:void(0)" class="browse left prev" id="butleft"></a>
+					<a href="javascript:void(0)" class="browse right next" id="butright"></a>
+					<div class="floating">
+						<ul class="clearfix">
+							{% for recipe_set in best_recipes %}
+							{% for recipe in recipe_set %}
+							<li id="image{{recipe.id}}">
+								<a href="{% url 'recipe_details' recipe.slug %}" class="thickbox imtitle" title="{{ recipe.title }}">{{ recipe.title }}</a>
+								<a href="{% url 'recipe_details' recipe.slug %}" class="thickbox" title="{{ recipe.title }}">
+								<img src="{% thumbnail recipe.main_image "105x105" crop="center" as image %} {{ image.url }} {% endthumbnail %}" alt="{{ recipe.title }}" title="{{ recipe.title }}"/>
+								</a>
+							</li>
+							{% endfor %}
+							{% endfor %}
+						</ul>
+					</div>
+					<div id="texts">
+						{% for recipe_set in best_recipes %}
+						{% for recipe in recipe_set %}
+						<div id="text{{recipe.id}}" class="text" style="display: block;">
+							<h3><a href="{% url 'recipe_details' recipe.slug %}">{{ recipe.title }}</a></h3>
+							<p>{{ recipe.description|safe|striptags }}</p>
+							<a href="{% url 'recipe_list' %}" class="more">все рецепты</a>
+							<span class="num-like"><big>{{ recipe.num_votes }}</big></span>
+							<span class="num-comm"><big>{{ recipe|get_comments|length }}</big></span>
+						</div>
+						{% endfor %}
+						{% endfor %}
+					</div>
+				</div>
+				<div class="main" id="main2">
+								<ul class="tabs">
+									<li><a href="#"><span>Лучшие рецепты</span></a></li>
+									<li><a href="#"><span>Новые рецепты</span></a></li>
+								</ul>
+								<div class="panes">
+									<div class="pane-slider">
+										<div class="scrollable" id="scrollable">
+											<div class="items">
+												{% for recipe_set in best_recipes %}
+												<div class="item">
+													<ul class="recipts">
+														{% for recipe in recipe_set %}
+														<li>
+															<a href="{% url 'recipe_details' recipe.slug %}" class="rec-img">
+															<img src="{% thumbnail recipe.main_image "75x51" crop="center" as image %} {{ image.url }} {% endthumbnail %}" alt="{{ recipe.title }}" title="{{ recipe.title }}"/>
+															</a>
+															<div class="rec-inf">
+																<a href="{% url 'recipe_details' recipe.slug %}">{{ recipe.title }}</a>
+																<p><small>Автор:</small> {{ recipe.author }}</p>
+															</div>
+														</li>
+														{% endfor %}
+													</ul>
+												</div>
+												{% endfor %}
+											</div>
+										</div>
+										<a href="javascript:void(0)" class="browse left prev" id="prev1"></a>
+										<a href="javascript:void(0)" class="browse right next" id="next1"></a>
+									</div>
+									<div class="pane-slider">
+										<div class="scrollable" id="scrollable2">
+											<div class="items">
+											   {% for recipe_set in new_recipes %}
+												<div class="item">
+													<ul class="recipts">
+														{% for recipe in recipe_set %}
+														<li>
+															<a href="{% url 'recipe_details' recipe.slug %}" class="rec-img">
+															<img src="{% thumbnail recipe.main_image "75x51" crop="center" as image %} {{ image.url }} {% endthumbnail %}" alt="{{ recipe.title }}" title="{{ recipe.title }}"/>
+															</a>
+															<div class="rec-inf">
+																<a href="{% url 'recipe_details' recipe.slug %}">{{ recipe.title }}</a>
+																<p><small>Автор:</small> {{ recipe.author }}</p>
+															</div>
+														</li>
+														{% endfor %}
+													</ul>
+												</div>
+												{% endfor %}
+											</div>
+										</div>
+										<a href="javascript:void(0)" class="browse left prev" id="prev2"></a>
+										<a href="javascript:void(0)" class="browse right next" id="next2"></a>
+									</div>
+								</div>
+							</div>
+				<div class="section">
+					<div class="title"><h3>Последние темы формума</h3></div>
+					<div class="main" id="main3">
+						<a href="http://pilatus.biz/forum2/" class="more">Все темы</a>
+						<ul class="tabs">
+							<li><a href="#"><span>Повара</span></a></li>
+							<li><a href="#"><span>Тортоделы</span></a></li>
+						</ul>
+						<div class="panes">
+							<div>
+								<ul class="themes">
+									{% for topic in last_topics %}
+									<li>
+										<div class="autor"><a href="#"><img src="{{ STATIC_URL }}images/autor3.jpg" alt=""/></a><a href="#">Budha</a></div>
+										<div class="theme-date">Казимир Петрович<br/>2 мин. назад</div>
+										<div class="theme-title">
+											<a href="#">Поход в кафе</a>
+											<p>228 ответов</p>
+										</div>
+									</li>
+									{% endfor %}
+								</ul>
+							</div>
+							<div></div>
+						</div>
+					</div>
+				</div>
+
+				<div class="question-block">
+				{% if question %}
+					<img src="{{ STATIC_URL }}images/q-img.jpg" alt=""/>
+					<div class="qust1">Правильно ли отдыхать с алкоголем? </div>
+					<div class="qust2">Текст необходимый для обьяснения что к чему?</div>
+					<a href="#" class="yes">Да</a>
+					<a href="#" class="no">Нет</a>
+				{% endif %}
+				</div>
+				<div class="section">
+					<div class="title"><h3>Наши кулинары <img src="{{ STATIC_URL }}images/icons/icon2.jpg" alt=""/></h3></div>
+					<div class="people">
+						{% for povar in povary_list %}
+							<div class="man"><a href="{% url 'public_userpage' povar.user.username %}" class="man-name">{{ povar.user.username }}</a><a href="{% url 'public_userpage' povar.user.username %}" class="man-img"><img src="{{MEDIA_URL}}{{povar.avatar}}" alt=""/></a></div>
+						{% endfor %}
+					</div>
+				</div>
+			</div>
+   {%comment%}
+	<!--<h1>Популярные темы форума</h1>
+	<table>
+		<tr>
+			<th>Тема</th>
+			<th>Ответы</th>
+			<th>Автор</th>
+			<th>Дата</th>
+		</tr>
+		{% for topic in last_forum_topics %}
+			<tr>
+				<td>{{ topic.0 }}</td>
+				<td>{{ topic.1 }}</td>
+				<td>{{ topic.2 }}</td>
+				<td>{{ topic.3|fromtimestamp }}</td>
+			</tr>
+		{% endfor %}
+	</table>
+	-->
+	{%endcomment%}
+
+    </div>
+
+{% endblock %}

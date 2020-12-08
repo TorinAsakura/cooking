@@ -1,0 +1,91 @@
+#fancybox-buttons {
+	position: fixed;
+	left: 0;
+	width: 100%;
+	z-index: 8050;
+}
+
+#fancybox-buttons.top {
+	top: 120px;
+	height:1px;
+}
+
+#fancybox-buttons.bottom {
+	bottom: 10px;
+}
+
+#fancybox-buttons ul {
+	display: block;
+	width: 166px;
+	height: 30px;
+	margin: 0 auto;
+	padding: 0;
+	list-style: none;
+	
+}
+
+#fancybox-buttons ul li {
+	float: left;
+	margin: 0;
+	padding: 0;
+}
+
+#fancybox-buttons a {
+	display: block;
+	
+	outline: none;
+}
+
+#fancybox-buttons a:hover {
+	opacity: 1;
+}
+
+#fancybox-buttons a.btnPrev {
+	
+}
+
+#fancybox-buttons a.btnNext {
+
+}
+
+#fancybox-buttons a.btnPlay {
+	background-position: 0 -30px;
+}
+
+#fancybox-buttons a.btnPlayOn {
+	background-position: -30px -30px;
+}
+
+#fancybox-buttons a.btnToggle {
+	background-position: 3px -60px;
+	border-left: 1px solid #111;
+	border-right: 1px solid #3e3e3e;
+	width: 35px
+}
+
+#fancybox-buttons a.btnToggleOn {
+	background-position: -27px -60px;
+}
+
+#fancybox-buttons a.btnClose {
+	border-left: 1px solid #111;
+	width: 35px;
+	background-position: -56px 0px;
+}
+
+#fancybox-buttons a.btnDisabled {
+	opacity : 0.4;
+	cursor: default;
+}
+
+.btnPrev, .btnNext {position:absolute; width:36px; height:36px;  top:-86px;}
+.btnPrev {left:10px; background:url(../images/arrs.png) no-repeat 0 bottom; }
+.btnPrev:hover {background:url(../images/arrs.png) no-repeat 0 0;}
+
+.btnNext {right:36px; background:url(../images/arrs.png) no-repeat right bottom; }
+.btnNext:hover {background:url(../images/arrs.png) no-repeat right 0; }
+
+
+
+
+

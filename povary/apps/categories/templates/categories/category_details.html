@@ -1,0 +1,52 @@
+{% extends 'base.html' %}
+{% load thumbnail %}
+
+{% block breadcrumbs %}
+	{{ block.super }} >> <a href=".">{{ category.title }}</a>
+{% endblock breadcrumbs %}
+{% block content %}
+	<h1>{{ category.title|upper }}</h1>
+	<h3>Подкатегории</h3>
+	{% for subcategory in subcategory_list %}
+		<div>
+			<a href="{% url 'subcategory_details' category.slug subcategory.slug %}">{{ subcategory.title }}</a>
+			{% thumbnail subcategory.image "100x100" crop="center" as im %}
+				<a href="{% url 'subcategory_details' category.slug subcategory.slug %}">
+					<img src="{{ im.url }}" width="{{ im.width }}" height="{{ im.height }}">
+				</a>
+			{% endthumbnail %}
+		</div>
+	{% endfor %}
+	<h3>Рецепты</h3>
+	{% for recipe in recipe_list %}
+		<div>
+			<p>
+				<a href="{% url 'recipe_details' recipe.slug %}">{{ recipe.title }}</a>
+			</p>
+			{% thumbnail recipe.cover_image "100x100" crop="center" as im %}
+				<img src="{{ im.url }}" width="{{ im.width }}" height="{{ im.height }}">
+			{% endthumbnail %}
+
+		</div>
+	{% empty %}
+		<p>В данной категории нет рецептов</p>
+		<a href="{% url 'recipe-add' %}">Добавить рецепт в категорию</a>
+	{% endfor %}
+	{% if recipe_list %}
+		<div class="pagination">
+		    <span class="step-links">
+		        {% if recipe_list.has_previous %}
+		            <a href="?page={{ recipe_list.previous_page_number }}">пред.</a>
+		        {% endif %}
+
+		        <span class="current">
+		            Страница {{ recipe_list.number }} из {{ recipe_list.paginator.num_pages }}
+		        </span>
+
+		        {% if recipe_list.has_next %}
+		            <a href="?page={{ recipe_list.next_page_number }}">след.</a>
+		        {% endif %}
+		    </span>
+		</div>
+	{% endif %}
+{% endblock content %}

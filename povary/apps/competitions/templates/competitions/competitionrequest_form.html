@@ -1,0 +1,66 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="zayavka-mess">
+    <form action="" method="post">
+        {% csrf_token %}
+    <h1>Заявка на участие в конкурсе</h1>
+    <div class="application">
+        <div class="recipe-block">
+            <div class="block-title">
+            </div>
+            <div class="col-right">
+                <div class="form-row">
+                    <label>Название рецепта<span>*</span></label>
+                    <input name="title" type="text" class="input-text" placeholder=""/>
+                    <div class="ok"></div>
+                    <div class="clear"></div>
+                </div>
+                <div class="form-row">
+                    <label>Краткое описание</label>
+                    <textarea name="description" class="textarea shot-area"></textarea>
+                    <div class="info-div">Правильное название не только отображает суть, но и даст больше шансов на рейтиг 		улучшить сложное</div>
+                    <div class="clear"></div>
+                </div>
+                <div class="form-row">
+                    <label>Ингредиенты</label>
+                    <div class="sort">
+                        <div class="change-block"><span class="move"></span><input type="text" class="input-text" value="Морковка"/></div>
+                        <a class="add-link" id="adding">Добавить еще один ингредиент</a>
+                    </div>
+                    <div class="clear"></div>
+                </div>
+                <div class="form-row">
+                    <label>Основной текст рецепта</label>
+                    <textarea name="body" class="textarea textarea2"></textarea>
+                    <div class="clear"></div>
+                </div>
+                <div class="form-row">
+                    <div class="block-checkbox-in"><input type="checkbox"/><label>Скрыть мою работу </label><span>( Ваша работа будет отображаться тогда когда начнется голосование )</span></div>
+                    <div class="block-checkbox-in"><input name="show_my_name" type="checkbox"/><label>Скрыть мое имя </label><span>( Имя будет показано после закрытия голосования )</span></div>
+                    <div class="clear"></div>
+                </div>
+                <input type="submit" class="submit" value="Отправить заявку"/>
+            </div>
+            <div class="col-left">
+                <div class="fot-h">Титульное изображение</div>
+                <a href="#" class="big-foto"></a>
+                <div class="block-foto">
+                    <div class="fot-h">Дополнительные изображения</div>
+                    <a href="#" name="image1" class="mini-foto"></a>
+                    <a href="#" name="image2" class="mini-foto"></a>
+                    <a href="#" name="image3" class="mini-foto"></a>
+                    <a href="#" name="image4" class="mini-foto"></a>
+                    <a href="#" name="image5" class="mini-foto"></a>
+                    <a href="#" name="image6" class="mini-foto"></a>
+                </div>
+            </div>
+            <div class="clear"></div>
+        </div>
+    </div>
+    </form>
+</div>
+
+    {{ form.as_p }}
+
+{% endblock %}

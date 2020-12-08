@@ -1,0 +1,19 @@
+{% extends 'profiles/profile.html' %}
+
+{% block breadcrumbs %}
+	{{ block.super }} >> <a href="{% url 'profile_settings' %}">Настройки профиля</a>
+{% endblock breadcrumbs %}
+
+{% block content %}
+	<table>
+		<form method="post" action=".">
+			{% csrf_token %}
+			{{ settings_form.as_table }}
+			<tr>
+				<td>
+					<input type="submit" value="Обновить"/>
+				</td>
+			</tr>
+		</form>
+	</table>
+{% endblock content %}

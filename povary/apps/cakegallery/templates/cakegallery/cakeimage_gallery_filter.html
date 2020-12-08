@@ -1,0 +1,83 @@
+{% extends 'cake_base.html' %}
+{% load vote_tags comment_tags widget_tweaks %}
+
+{% block content %}
+<div class="cont-in">
+	<div class="title">
+			<div class="soc-icons">
+				<a href="#"><img src="{{STATIC_URL}}cake/images/ico5.png" alt=""/></a>
+				<a href="#"><img src="{{STATIC_URL}}cake/images/ico6.png" alt=""/></a>
+				<a href="#"><img src="{{STATIC_URL}}cake/images/ico7.png" alt=""/></a>
+			</div>
+			<span class="element-one"></span>
+			<h1>ФОТО ГАЛЕРЕИ</h1>
+			<span class="element-two"></span>
+	</div>
+	<div class="block-tabs">
+		<div class="block-tabs-top">
+				<div class="block-search">
+					<div class="search">
+						<form id="search_form" method="get" action="{% url 'get_cake_gallery' '+q+' '' '' 1%}">
+							{{search_form.q|attr:"class:search-text"|attr:"placeholder:Ищите галереи по названию или категории"}}
+							<input type="submit" class="search-submit" value=""/>
+						</form>
+					</div>
+				</div>
+				<ul class="tabs">
+					<li><a class="tab1 current"><i>По</i> <big>КатегорияМ</big></a></li>
+					<!--<li><a class="tab2"><i>По</i> <big>ингредиентам</big></a></li>-->
+				</ul>
+				<span class="or"></span>
+			</div>
+		<div class="block-tabs-center" style="display:block;">
+				<div class="panes">
+					<div class="pane1" style="display:block;">
+						<ul class="panel-tabs-lists">
+							<li cat='' class="choose active"><a class="cake_mc_filter" href="{% url 'get_cake_gallery' ''  '' '' 1 %}">Все галереи</a></li>
+							{% for cati in category_list %}
+								<li cat='{{cati.slug}}' class="choose"><a class="cake_mc_filter" href="{% url 'get_cake_gallery' '' cati.slug  '' 1 %}">{{cati.title}}</a></li>
+							{% endfor %}
+						</ul>
+					</div>
+					<!--
+					<div class="pane2">
+						<ul class="panel-tabs-lists">
+							<li ing='' class="choose active"><a class="cake_mc_filter" href="{% url 'get_cake_gallery' ''  '' '' 1%}">Все ингредиенты</a></li>
+							{% for ingi in ingredient_list %}
+								<li ing="{{ingi.ndb_no}}" class="choose"><a class="cake_mc_filter" href="{% url 'get_cake_gallery' '' ''  '' 1%}">{{ingi.name_rus}}</a></li>
+							{% endfor %}
+						</ul>
+					</div>
+					-->
+				</div>
+
+		</div>
+	</div>
+
+	<div id="ajax_res">
+
+		{% include 'cakegallery/search_result.html' %}
+
+	</div>
+</div>
+<script type="text/javascript">
+$(function(){
+	$("#search_form").live("submit", function(evnt){
+			var form = $(this);
+            evnt.preventDefault();
+            form_url = form.attr('action');
+            q = form.find("input").val();
+            form_url = form_url.replace('+q+', q);
+            $.get(form_url, function(data){
+                if (data.status == 'error' || data.status == "validation_error"){
+                    alert(data.message);
+                }
+                else{
+                    $("#ajax_res").html(data);
+                }
+            });
+	});
+
+});
+</script>
+{% endblock %}

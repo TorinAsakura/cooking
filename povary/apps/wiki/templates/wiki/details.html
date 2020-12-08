@@ -1,0 +1,25 @@
+{% extends 'base.html' %}
+{% load markup %}
+
+{% block content %}
+	<h1>
+		<span>{{ page.title }}</span>
+		<a href="{% url 'wikipage_edit' page.slug %}#id_body">Править</a>
+	</h1>
+	<p> {{ page.body|markdown }} </p>
+	<h3 id="warnings">
+		<span>Предупреждения</span>
+		<a href="{% url 'wikipage_edit' page.slug %}#id_warnings">Править</a>
+	</h3>
+	<p>{{ page.warnings|markdown }}</p>
+	<h3 id="links">
+		<span>Ссылки на первоисточники</span>
+		<a href="{% url 'wikipage_edit' page.slug %}#id_prooflinks">Править</a>
+	</h3>
+	<p>{{ page.prooflinks|markdown }}</p>
+	<a href="{% url 'wikipage_edit' page_slug %}">Редактировать</a>
+	<a href="{% url 'wikipage_history' page_slug %}">История</a>
+
+	{% include "comments/comments.html" %}
+
+{% endblock content %}

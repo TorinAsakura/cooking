@@ -1,0 +1,13 @@
+{% load articles_tags %}
+
+<div class="category">
+    <div class="title">
+        <h3>Категории</h3>
+    </div>
+    <ul class="category-list category-list2">
+        <li><a href="{% url 'article_list' %}" class="big"><i>Все статьи</i><span>{{ article_list.paginator.count }}</span> </a></li>
+        {% for category in categories %}
+            <li><a href="{{ category.get_absolute_url }}"><i>{{ category.title }}</i><span>{{ category|get_published_articles_count }}</span> </a></li>
+        {% endfor %}
+    </ul>
+</div>

@@ -1,0 +1,789 @@
+﻿<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+    <head>
+        <title>Повара</title>
+        <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+       
+        <link href='http://fonts.googleapis.com/css?family=PT+Sans:400,700,400italic,700italic&subset=latin,latin-ext,cyrillic' rel='stylesheet' type='text/css'/>
+		<link href='http://fonts.googleapis.com/css?family=Lobster&subset=latin,cyrillic-ext,latin-ext,cyrillic' rel='stylesheet' type='text/css'>
+		<link href='http://fonts.googleapis.com/css?family=Marck+Script&subset=latin,latin-ext,cyrillic' rel='stylesheet' type='text/css'>
+		<link href='http://fonts.googleapis.com/css?family=Cuprum:400,700,700italic&subset=latin,latin-ext,cyrillic' rel='stylesheet' type='text/css'>
+		<link rel="stylesheet" href="./css/main.css" type="text/css"/>
+        <link rel="stylesheet" href="./css/scrollable-horizontal.css" type="text/css"/>		
+		<link rel="stylesheet" type="text/css" href="css/fancyfields.css" media="screen" />
+		<link rel="stylesheet" type="text/css" href="css/jquery.fancybox.css" />
+		<link rel="stylesheet" type="text/css" href="css/jquery.fancybox-thumbs.css?v=1.0.7" />
+		<script type="text/javascript" src="js/jquery-1.8.2.js"></script>
+		<script type="text/javascript" src="js/jquery-ui-1.10.1.custom.min.js"></script>
+		<!--[if lt IE 9]><script src="js/css3-mediaqueries.js"></script><![endif]-->
+		<!--[if IE]><script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script><![endif]-->
+		<script type="text/javascript" src="http://cdn.jquerytools.org/1.2.7/all/jquery.tools.min.js"></script>	
+		<script type="text/javascript" src="js/fancyfields-1.2.js"></script>		
+		<script type="text/javascript" src="js/jquery.fancybox.js"></script>		
+		<script type="text/javascript" src="js/jquery.fancybox-thumbs.js?v=1.0.7"></script>
+		<script type="text/javascript" src="js/slider.js"></script>
+		<script type="text/javascript" src="js/jQuery.dPassword.js"></script>
+		<script type="text/javascript" src="js/jquery.jcarousel.js"></script>
+		<script src="js/jquery.ui.sortable.js" type="text/javascript"></script>	
+		<script src="js/jquery.ui.slider.js" type="text/javascript"></script>		
+		<script type="text/javascript" src="js/custom.js"></script>
+    </head>
+    <body>
+		<div id="container">
+			<header id="header">				
+				<div class="top-search">
+					<a href="#" class="ful-s">Расширенный поиск</a>
+					<input type="text" class="s-text"/>
+					<input type="submit" value="НАЙТИ" class="s-btn"/>
+				</div>
+				<div class="top">
+					<a href="#" class="tortod">Тортоделы</a>
+					<a class="povar" href="#">Повары</a>
+					<ul class="tul-right">
+						<li class="mess"><a href="#">10 новых сообщений</a></li>
+						<li class="userlink">
+							<a class="usera" href="#">Александр Иванович<img src="images/icons/mark6.gif" alt=""/></a>
+							<div class="user-info-block">
+								<div class="user-photo"><img src="images/img5.jpg" alt=""><a href="#">Загрузить новое фото</a></div>
+								<div class="user-right">
+									<div class="user-name">Иванова Анна Владимировна</div>
+									<div class="user-nickname">Mynickname</div>
+									<a href="#" class="user-cabinet-link">Мой личный кабинет</a>
+									<a href="#" class="submit user-page-link"><img src="images/icons/ico16.png" alt=""/> Моя публичная страница</a>
+								</div>
+								<div class="line"></div>
+								<a href="#" class="more-link">Выйти</a>
+							</div>
+						</li>
+					</ul>
+					<ul class="tul-left">
+						<li class="add"><a href="#">Добавить</a>
+							<ul>
+								<li><a href="#">Рецепт</a></li>
+								<li><a href="#">Мастер класс</a></li>
+								<li><a href="#">Фото</a></li>
+							</ul>
+						</li>
+					</ul>
+					<a href="javascript:void(0)" class="search-link">Поиск</a>
+				</div>
+				<a href="#" id="logo"></a>
+				<nav class="nav">
+					<ul class="right">
+						<li class="parent">
+							<a href="#">Тортоделы</a>
+							<ul>
+								<li><a href="#">Пункт 1</a></li>
+								<li><a href="#">Пункт 2</a></li>
+								<li><a href="#">Пункт 3</a></li>
+							</ul>
+						</li>
+						<li><a href="#">Группы</a></li>
+						<li><a href="#">Статьи</a></li>
+						<li><a href="#">Форум</a></li>
+					</ul>
+					<ul class="left">
+						<li><a href="#">Рецепты</a></li>							
+						<li><a href="#">Конкурсы</a></li>
+						<li class="parent">
+							<a href="#">Пользователи</a>
+							<ul>
+								<li><a href="#">Пункт 1</a></li>
+								<li><a href="#">Пункт 2</a></li>
+								<li><a href="#">Пункт 3</a></li>
+							</ul>
+						</li>
+					</ul>
+				</nav>
+				<div class="links">
+						<a href="#"><img src="images/home.png" alt=""/></a> → 
+						<a href="#">Конкурсы</a>
+					</div>
+			</header>
+			<div id="wrapper">
+				<div class="content">					
+					<h1>Страница пользователя</h1>
+					<br/>
+					<div class="center-block">
+						<div class="" id="main1">
+							<ul class="tabs">
+								<li><a href="#"><span>Инфо</span></a></li>
+								<li><a href="#"><span>Мои рецепты</span></a></li>
+								<li><a href="#"><span>Мои мастер классы</span></a></li>
+								<li><a href="#"><span>Мои фото</span></a></li>
+								<li><a href="#"><span>Коробка рецептов</span></a></li>
+								<li><a href="#"><span>Мои награды</span></a></li>
+							</ul>
+							<div class="panes">
+								<div>
+									<div class="bag-block bag-block2">
+										<div class="bag-block-left">
+											<div class="user-block">
+												<div class="h1">Устинов Дмитрий <span class="nick">(nickname)</span></div>
+												<div class="address-line"><span><a href="#">Украина</a>, <a href="#">Киев</a></span>|<span class="time">Заходил 56 минут назад</span></div>
+												<p>Если бы ты знала время так же хорошо, как я, ты бы этого не сказала. Его не потеряешь!</p>
+												<a href="#" class="edit">Изменить статус</a>
+												<div class="active-user"><span>Активность на сайте:</span> Кулинар</div>
+												<ul class="about">
+													<li>
+														<a class="opener">О себе</a>
+														<div class="slide">
+															<p>Рассказывают, что однажды Конфуций отправился повидаться с Лао-цзы. Он был намного старше и, конечно, рассчитывал, что Лао-цзы будет вести себя по отношению к нему с должным почтением. Когда он вошёл в комнату, где сидел в молчании Лао-цзы, тот не встал и вообще не обратил на него особого внимания. Он даже не предложил сесть! Конфуций был шокирован таким приёмом. С негодованием</p>
+														</div>
+													</li>
+													<li>
+														<a class="opener">Кулинария в моей жизни</a>
+														<div class="slide">
+															<p>Рассказывают, что однажды Конфуций отправился повидаться с Лао-цзы. Он был намного старше и, конечно, рассчитывал, что Лао-цзы будет вести себя по отношению к нему с должным почтением. Когда он вошёл в комнату, где сидел в молчании Лао-цзы, тот не встал и вообще не обратил на него особого внимания. Он даже не предложил сесть! Конфуций был шокирован таким приёмом. С негодованием</p>
+														</div>
+													</li>
+													<li>
+														<a class="opener">Мои любимые кулинарные книги</a>
+														<div class="slide">
+															<p>Рассказывают, что однажды Конфуций отправился повидаться с Лао-цзы. Он был намного старше и, конечно, рассчитывал, что Лао-цзы будет вести себя по отношению к нему с должным почтением. Когда он вошёл в комнату, где сидел в молчании Лао-цзы, тот не встал и вообще не обратил на него особого внимания. Он даже не предложил сесть! Конфуций был шокирован таким приёмом. С негодованием</p>
+														</div>
+													</li>
+													<li>
+														<a class="opener">Мой любимый Повар</a>
+														<div class="slide">
+															<p>Рассказывают, что однажды Конфуций отправился повидаться с Лао-цзы. Он был намного старше и, конечно, рассчитывал, что Лао-цзы будет вести себя по отношению к нему с должным почтением. Когда он вошёл в комнату, где сидел в молчании Лао-цзы, тот не встал и вообще не обратил на него особого внимания. Он даже не предложил сесть! Конфуций был шокирован таким приёмом. С негодованием</p>
+														</div>
+													</li>
+												</ul>
+											</div>
+											<div class="my-foto">
+												<div class="side-title">
+													<a class="f-right" href="#">432</a>
+													<h4>Мои фотографии</h4>
+												</div>
+												<div class="fotos">
+													<a href="#" class="foto"><img src="images/fone1.jpg" alt=""/></a>
+													<a href="#" class="foto"><img src="images/fone1.jpg" alt=""/></a>
+													<a href="#" class="foto"><img src="images/fone1.jpg" alt=""/></a>
+													<a href="#" class="foto"><img src="images/fone1.jpg" alt=""/></a>
+													<a href="#" class="foto"><img src="images/fone1.jpg" alt=""/></a>
+													<a href="#" class="foto"><img src="images/fone1.jpg" alt=""/></a>
+												</div>	
+											</div>
+											<div class="block-comment">
+												<div class="" id="main4">
+													<ul class="tabs">
+														<li><a href="#"><span>Стена</span></a></li>
+														<li><a href="#"><span>Лента</span></a></li>
+													</ul>
+													<div class="panes4">
+														<div>
+															<div class="wall-table">
+																<form>
+																<div class="form-row">
+																	<label>Оставить комментарии / задать вопрос</label>
+																	<div class="textarea-block"><textarea class="textarea"></textarea></div>
+																	<div class="clear"></div>
+																</div>
+																	<input type="submit" class="submit" value="Отправить"/>
+																</form>
+															</div>
+															<div class="theme-block-in">
+																<div class="foto-block">
+																	<div class="foto">
+																		<a href="#"><img src="images/fone1.jpg" alt=""/></a>
+																	</div>
+																	<div class="inline">В сети</div>
+																</div>
+																<div class="text-block">
+																	<a href="#" class="name">Мария Петровна</a>
+																	<p>Рассказывают, что однажды Конфуций отправился повидаться с Лао-цзы. Он был намного старше и, конечно, рассчитывал, что Лао-цзы будет вести себя по отношению к нему с должным почтением. Когда он вошёл в комнату, где сидел в молчании Лао-цзы, тот не встал и вообще не обратил на него особого внимания. Он даже не предложил сесть! Конфуций был шокирован таким приёмом. С негодованием</p>
+																	<div class="min-block-right"><a href="#" class="reply">Ответить</a><div class="date">вчера в 15:11</div></div>
+																</div>
+															</div>
+															<div class="theme-block-in">
+																<div class="foto-block">
+																	<div class="foto">
+																		<a href="#"><img src="images/fone1.jpg" alt=""/></a>
+																	</div>
+																	<div class="inline">В сети</div>
+																</div>
+																<div class="text-block">
+																	<a href="#" class="name">Мария Петровна</a>
+																	<p>Рассказывают, что однажды Конфуций отправился повидаться с Лао-цзы. Он был намного старше и, конечно, рассчитывал, что Лао-цзы будет вести себя по отношению к нему с должным почтением. Когда он вошёл в комнату, где сидел в молчании Лао-цзы, тот не встал и вообще не обратил на него особого внимания. Он даже не предложил сесть! Конфуций был шокирован таким приёмом. С негодованием</p>
+																	<div class="min-block-right"><a href="#" class="reply">Ответить</a><div class="date">вчера в 15:11</div></div>
+																</div>
+															</div>
+															<div class="theme-block-in">
+																<div class="foto-block">
+																	<div class="foto">
+																		<a href="#"><img src="images/fone1.jpg" alt=""/></a>
+																	</div>
+																	<div class="inline">В сети</div>
+																</div>
+																<div class="text-block">
+																	<a href="#" class="name">Мария Петровна</a>
+																	<p>Рассказывают, что однажды Конфуций отправился повидаться с Лао-цзы. Он был намного старше и, конечно, рассчитывал, что Лао-цзы будет вести себя по отношению к нему с должным почтением. Когда он вошёл в комнату, где сидел в молчании Лао-цзы, тот не встал и вообще не обратил на него особого внимания. Он даже не предложил сесть! Конфуций был шокирован таким приёмом. С негодованием</p>
+																	<div class="min-block-right"><a href="#" class="reply">Ответить</a><div class="date">вчера в 15:11</div></div>
+																</div>
+															</div>
+														</div>
+														<div>
+															<div class="lent">
+																<div class="lent-in">
+																	<div class="top">
+																		<div class="title-div">Добавлен рецепт <a href="#">“Лучший соус на свете”</a></div>
+																		<div class="date">20 апреля 2013</div>
+																	</div>
+																	<a href="#" class="line-img"><img src="images/img28.jpg" alt=""/></a>
+																</div>
+																<div class="lent-in">
+																	<div class="top">
+																		<div class="title-div">В коробку рецептов добавлен новый рецепт  <a href="#">“Лучший соус на свете”</a></div>
+																		<div class="date">20 апреля 2013</div>
+																	</div>
+																</div>
+																<div class="lent-in">
+																	<div class="top">
+																		<div class="title-div">Оставил комментарий к рецепту  <a href="#">“Лучший соус на свете”</a></div>
+																		<div class="date">20 апреля 2013</div>
+																	</div>
+																	<p><i>“Отличный соус, приготовил с съел.”</i></p>
+																</div>
+																<div class="lent-in">
+																	<div class="top">
+																		<div class="title-div">Добавлен рецепт <a href="#">“Лучший соус на свете”</a></div>
+																		<div class="date">20 апреля 2013</div>
+																	</div>
+																	<a href="#" class="line-img"><img src="images/img28.jpg" alt=""/></a>
+																</div>
+																<div class="lent-in">
+																	<div class="top">
+																		<div class="title-div">В коробку рецептов добавлен новый рецепт  <a href="#">“Лучший соус на свете”</a></div>
+																		<div class="date">20 апреля 2013</div>
+																	</div>
+																</div>
+															</div>
+														</div>
+													</div>
+												</div>
+											</div>
+										</div>
+										<div class="bag-block-right">
+											<div class="rayting-block">
+												<div class="rayting-block-in">
+													<div class="title">
+														<h4>Рейтинг пользователя</h4>
+													</div>
+													<div class="bal">
+														<a class="toggle active">13941 баллов</a>
+														<div class="hidden-inf">
+															<p>Рецепты - 1040</p>
+															<p>Мастеклассы - 40</p>
+															<p>Комментарии - 144</p>
+															<p>Конкурсы - 204</p>
+															<p>Фото - 1503</p>
+															<span>5 уровень</span>
+														</div>	
+													</div>
+												</div>
+												<div class="rows">
+													<div class="row gray">Рецептов<a class="f-right" href="#">123</a></div>
+													<div class="row">Мастер Классов<a class="f-right" href="#">32</a></div>
+													<div class="row gray">Фото.Торты<a class="f-right" href="#">432</a></div>
+												</div>	
+											</div>
+											<div class="honors">
+												<div class="title">
+													<h4>Мои награды</h4>
+												</div>
+												<a href="#"><img src="images/lider.jpg" alt=""/></a>
+												<a href="#"><img src="images/lider2.jpg" alt=""/></a>
+												<a href="#"><img src="images/lider.jpg" alt=""/></a>
+												<a href="#"><img src="images/lider2.jpg" alt=""/></a>
+												<div class="honor-link"><a href="#" >Открыть доску наград</a></div>
+											</div>
+											<div class="master-class">
+												<div class="side-title"><a href="#" class="f-right">432</a><h4>Мои мастре классы</h4></div>
+												<div class="myrec">
+													<a href="#" class="rec-img"><img src="images/fone1.jpg" alt=""/></a>
+													<div class="rec-title">
+														<a href="#">Запеченные грибы с прорезями</a>
+														<div class="athor">Мастика</div>
+														<span class="num-like"><big>12</big></span>
+														<span class="num-comm"><big>18</big></span>
+													</div>
+												</div>
+												<div class="myrec">
+													<a href="#" class="rec-img"><img src="images/fone1.jpg" alt=""/></a>
+													<div class="rec-title">
+														<a href="#">Запеченные грибы с прорезями</a>
+														<div class="athor">Мастика</div>
+														<span class="num-like"><big>12</big></span>
+														<span class="num-comm"><big>18</big></span>
+													</div>
+												</div>
+												<a class="read-more" href="#">Все мастер классы пользователя</a>
+											</div>
+										</div>
+									</div>
+								</div>
+								<div><div class="h1">Мои рецепты</div></div>
+								<div><div class="h1">Мои мастер классы</div></div>
+								<div>
+									<div class="h1">Мои фото</div>
+									<a href="#pop-up4" id="reate-album">Создание альбома</a><br/>
+									<a href="#pop-up5" id="edit-album">Редактирование альбома</a><br/>
+									<a href="#pop-up6" id="edit-foto">Редактирование фотографии</a><br/>
+									<a href="#pop-up7" id="my-albums">Мои альбомы</a>
+								</div>
+								<div><div class="h1">Коробка рецептов</div></div>
+								<div>
+									<div class="center-block">
+										<div class="h1">Мои награды</div>
+										<div class="div-row">
+											<div class="honors-div">
+												<div class="honors-div-foto"><a href="#"><img src="images/img1.jpg" alt=""/></a></div>
+												<div class="honors-div-text">
+													<h3>Победитель "Волшебное лукошко 2012</h3>
+													<p>18 июня 2012</p>
+													<p>Поздравляем Светлану  Никитину, Инну и Юлию (Mamaya) с победой в конкурсе "Волшебное  лукошко"! Желаем новых кулинарных шедевров и дальнейших  побед.</p>
+													<br/>
+													<h3>Комментарии</h3>
+													<div class="award-div">
+														
+															<div class="award-div-img">
+																<a href="#"><img src="images/r-img.jpg" alt=""/></a>
+															</div>
+															<div class="award-div-text">
+																<div class="name"><a href="#">Юрий Петрович</a> пишет вам:</div>
+																<div class="inline">2 часа назад</div>
+															</div>
+															<div class="clear"></div>
+															<p>Поздравляем! Это лучше блюдо из всех преложенных 100%.</p>
+														
+													</div>
+													<div class="award-div">
+														
+															<div class="award-div-img">
+																<a href="#"><img src="images/r-img.jpg" alt=""/></a>
+															</div>
+															<div class="award-div-text">
+																<div class="name"><a href="#">Юрий Петрович</a> пишет вам:</div>
+																<div class="inline">2 часа назад</div>
+															</div>
+															<div class="clear"></div>
+															<p>Поздравляем! Это лучше блюдо из всех преложенных 100%.</p>
+														
+													</div>
+													<div class="honor-link">
+														<a href="#">Все комментарии</a>
+													</div>
+												</div>
+											</div>
+											<div class="winner-div">
+												<div class="winner-name"><a href="#">Победитель</a></div>
+												<span>1 место</span>
+											</div>
+										</div>
+										<div class="div-row">
+											<div class="honors-div">
+												<div class="honors-div-foto"><a href="#"><img src="images/img1.jpg" alt=""/></a></div>
+												<div class="honors-div-text">
+													<h3>Победитель "Волшебное лукошко 2012</h3>
+													<p>18 июня 2012</p>
+													<p>Поздравляем Светлану  Никитину, Инну и Юлию (Mamaya) с победой в конкурсе "Волшебное  лукошко"! Желаем новых кулинарных шедевров и дальнейших  побед.</p>
+													<br/>
+													<h3>Комментарии</h3>
+													<div class="award-div">
+														
+															<div class="award-div-img">
+																<a href="#"><img src="images/r-img.jpg" alt=""/></a>
+															</div>
+															<div class="award-div-text">
+																<div class="name"><a href="#">Юрий Петрович</a> пишет вам:</div>
+																<div class="inline">2 часа назад</div>
+															</div>
+															<div class="clear"></div>
+															<p>Поздравляем! Это лучше блюдо из всех преложенных 100%.</p>
+														
+													</div>
+													<div class="award-div">
+														
+															<div class="award-div-img">
+																<a href="#"><img src="images/r-img.jpg" alt=""/></a>
+															</div>
+															<div class="award-div-text">
+																<div class="name"><a href="#">Юрий Петрович</a> пишет вам:</div>
+																<div class="inline">2 часа назад</div>
+															</div>
+															<div class="clear"></div>
+															<p>Поздравляем! Это лучше блюдо из всех преложенных 100%.</p>
+														
+													</div>
+													<div class="honor-link">
+														<a href="#">Все комментарии</a>
+													</div>
+												</div>
+											</div>
+											<div class="winner-div">
+												<div class="winner-name"><a href="#">Победитель</a></div>
+												<span>1 место</span>
+											</div>
+										</div>
+										<div class="div-row">
+											<div class="honors-div">
+												<div class="honors-div-foto"><a href="#"><img src="images/img1.jpg" alt=""/></a></div>
+												<div class="honors-div-text">
+													<h3>Победитель "Волшебное лукошко 2012</h3>
+													<p>18 июня 2012</p>
+													<p>Поздравляем Светлану  Никитину, Инну и Юлию (Mamaya) с победой в конкурсе "Волшебное  лукошко"! Желаем новых кулинарных шедевров и дальнейших  побед.</p>
+													<br/>
+													<h3>Комментарии</h3>
+													<div class="award-div">
+														
+															<div class="award-div-img">
+																<a href="#"><img src="images/r-img.jpg" alt=""/></a>
+															</div>
+															<div class="award-div-text">
+																<div class="name"><a href="#">Юрий Петрович</a> пишет вам:</div>
+																<div class="inline">2 часа назад</div>
+															</div>
+															<div class="clear"></div>
+															<p>Поздравляем! Это лучше блюдо из всех преложенных 100%.</p>
+														
+													</div>
+													<div class="award-div">
+														
+															<div class="award-div-img">
+																<a href="#"><img src="images/r-img.jpg" alt=""/></a>
+															</div>
+															<div class="award-div-text">
+																<div class="name"><a href="#">Юрий Петрович</a> пишет вам:</div>
+																<div class="inline">2 часа назад</div>
+															</div>
+															<div class="clear"></div>
+															<p>Поздравляем! Это лучше блюдо из всех преложенных 100%.</p>
+														
+													</div>
+													<div class="honor-link">
+														<a href="#">Все комментарии</a>
+													</div>
+												</div>
+											</div>
+											<div class="winner-div">
+												<div class="winner-name"><a href="#">Победитель</a></div>
+												<span>1 место</span>
+											</div>
+										</div>
+										<div class="pagenavi">
+											<a href="#" class="prev disabled">Назад</a>
+											<a href="#">1</a>
+											<a href="#">2</a>
+											<span class="current">3</span>
+											<a href="#">4</a>
+											<a href="#">5</a>
+											<a href="#">6</a>
+											<a href="#">7</a>
+											<a href="#">8</a>
+											<a href="#"><img src="images/arr-next.jpg" alt=""/></a>
+											<a href="#" class="next">Следующие</a>
+										</div>
+									</div>
+								</div>								
+							</div>
+						</div>
+					</div>
+					<div class="left-block">						
+						<div class="main-photo"><img src="images/img5.jpg" alt=""/></div>
+						<a href="#pop-up1" id="send-message" class="submit more-link"><img src="images/icons/send3.jpg" alt=""/>Отправить сообщение</a>
+						<a href="#pop-up3" id="fav-pop" class="submit more-link"><img src="images/icons/plus4.png" alt=""/>Следовать</a>
+						<br/>
+						<div class="side-block">
+							<div class="side-title"><a href="#" class="f-right">432</a><h4>За мной следуют</h4></div>
+							<div class="side-photos">
+								<a href="#"><img src="images/autor.jpg" alt=""/></a>
+								<a href="#"><img src="images/autor2.jpg" alt=""/></a>
+								<a href="#"><img src="images/autor3.jpg" alt=""/></a>
+								<a href="#"><img src="images/autor4.jpg" alt=""/></a>
+							</div>
+						</div>
+						<div class="side-block">
+							<div class="side-title"><a href="#" class="f-right">234</a><h4>За кем я следую</h4></div>
+							<div class="side-photos">
+								<a href="#"><img src="images/img5.jpg" alt=""/></a>
+								<a href="#"><img src="images/img6.jpg" alt=""/></a>
+								<a href="#"><img src="images/img7.jpg" alt=""/></a>
+								<a href="#"><img src="images/img8.jpg" alt=""/></a>
+							</div>
+						</div>
+						<div class="big-bag">
+							<span>Всего в коробке</span>
+							<a href="#pop-up2" class="corobka">100 рецептов</a>
+						</div>
+						<div class="side-block">
+							<div class="side-title"><a href="#" class="f-right">126</a><h4>Мои рецепты</h4></div>
+							<div class="myrec">
+								<a href="#" class="rec-img"><img src="images/img1.jpg" alt=""/></a>
+								<div class="rec-title">
+									<a href="#">Запеченные грибы с прорезями и луком</a>
+									<span class="num-like"><big>12</big></span>
+									<span class="num-comm"><big>18</big></span>
+									<span class="num-plus"><big>18</big></span>
+								</div>
+							</div>
+							<div class="myrec">
+								<a href="#" class="rec-img"><img src="images/img1.jpg" alt=""/></a>
+								<div class="rec-title">
+									<a href="#">Запеченные грибы с прорезями и луком</a>
+									<span class="num-like"><big>12</big></span>
+									<span class="num-comm"><big>18</big></span>
+									<span class="num-plus"><big>18</big></span>
+								</div>
+							</div>
+							<div class="myrec">
+								<a href="#" class="rec-img"><img src="images/img1.jpg" alt=""/></a>
+								<div class="rec-title">
+									<a href="#">Запеченные грибы с прорезями и луком</a>
+									<span class="num-like"><big>12</big></span>
+									<span class="num-comm"><big>18</big></span>
+									<span class="num-plus"><big>18</big></span>
+								</div>
+							</div>
+							<a href="#pop-up2" class="corobka read-more">Все рецепты пользователя</a>
+							<div class="clear"></div>
+							<br/>
+						</div>
+					</div>
+					<div class="clear"></div>
+				</div>
+			</div>			
+		</div>
+		<footer id="footer">
+				<div id="footer-in">
+					<div class="cont-in">
+						<div class="bottom">
+							<a href="#" class="add-rec"><i>Добавте свой</i><big>Собственый рецепт</big></a>
+							<div class="f-left">
+								<nav class="foot-nav">
+									<ul>
+										<li><a href="#">Рецепты</a></li>
+										<li><a href="#">Конкурсы</a></li>
+										<li><a href="#">Пользователи</a></li>
+										<li><a href="#">Тортоделы</a></li>
+										<li><a href="#">Статьи</a></li>
+										<li><a href="#">Группы</a></li>
+										<li><a href="#">Форум</a></li>
+									</ul>
+								</nav>
+								<div class="soc-icons">
+									<a href="#" class="s1"></a>
+									<a href="#" class="s2"></a>
+									<a href="#" class="s3"></a>
+								</div>
+								<img src="images/soc.jpg" alt=""/>
+							</div>
+						</div>
+						<ul class="foot-links">
+							<li><a href="#">Карта сайта</a></li>
+							<li><a href="#">Реклама</a></li>
+							<li><a href="#">Обратная</a></li>
+						</ul>
+						<p>©2003-2013 Кулинарный портал «ПОВАРЫ.ru». Все права сохранены.   </p>
+					</div>
+				</div>
+			</footer>
+		<div style="display:none;">
+			<div class="pop-up" id="pop-up1">
+				<div class="pop-title">
+					<a href="javascript:$.fancybox.close()" class="close">закрыть</a>
+					<div class="mess-img"><img src="images/fone1.jpg" alt=""></div>
+					<div class="mess-title">Новое сообщение</div>
+				</div>
+				<div class="pop-in">
+					<div class="message-form">
+						<form>
+							<div class="form-row">
+								<label>Тема</label>
+								<input type="text" class="input-text" />
+							</div>
+							<div class="form-row">
+								<label>Сообщение</label>
+								<div class="textarea-block"><textarea class="textarea"></textarea></div>
+							</div>
+							<input type="submit" class="submit" value="Отправить"/>
+						</form>
+					</div>
+				</div>
+			</div>
+			<div class="pop-up" id="pop-up2">
+				<div class="pop-title">
+					<a href="javascript:$.fancybox.close()" class="close">закрыть</a>
+					<h2>Коробка рецептов</h2>
+				</div>
+				<div class="pop-in">
+					<div class="corobka-pop">						
+							<div class="form-row">
+								<label>Коробка рецептов</label>
+								<div class="block-select block-select2">
+									<select><option>Салаты</option><option>Салаты</option><option>Салаты</option></select>
+								</div>
+								<div class="clear"></div>
+							</div>
+							<div class="fotos">
+								<a href="#" class="foto"><img src="images/fone1.jpg" alt=""/></a>
+								<a href="#" class="foto"><img src="images/fone1.jpg" alt=""/></a>
+								<a href="#" class="foto"><img src="images/fone1.jpg" alt=""/></a>
+								<a href="#" class="foto"><img src="images/fone1.jpg" alt=""/></a>
+								<a href="#" class="foto"><img src="images/fone1.jpg" alt=""/></a>
+								<a href="#" class="foto"><img src="images/fone1.jpg" alt=""/></a>
+								<a href="#" class="foto"><img src="images/fone1.jpg" alt=""/></a>
+								<a href="#" class="foto"><img src="images/fone1.jpg" alt=""/></a>
+								<a href="#" class="foto"><img src="images/fone1.jpg" alt=""/></a>
+								<a href="#" class="foto"><img src="images/fone1.jpg" alt=""/></a>
+								<a href="#" class="foto"><img src="images/fone1.jpg" alt=""/></a>
+								<a href="#" class="foto"><img src="images/fone1.jpg" alt=""/></a>
+								<a href="#" class="foto"><img src="images/fone1.jpg" alt=""/></a>
+								<a href="#" class="foto"><img src="images/fone1.jpg" alt=""/></a>
+								<a href="#" class="foto"><img src="images/fone1.jpg" alt=""/></a>
+								<a href="#" class="foto"><img src="images/fone1.jpg" alt=""/></a>
+								<a href="#" class="foto"><img src="images/fone1.jpg" alt=""/></a>
+								<a href="#" class="foto"><img src="images/fone1.jpg" alt=""/></a>
+								<a href="#" class="foto"><img src="images/fone1.jpg" alt=""/></a>
+								<a href="#" class="foto"><img src="images/fone1.jpg" alt=""/></a>
+							</div>	
+							<div class="pagenavi">
+								<a href="#">1</a>
+								<a href="#">2</a>
+								<span class="current">3</span>
+								<a href="#">4</a>
+								<a href="#">5</a>
+								<a href="#">6</a>
+								<a href="#">7</a>
+								<a href="#">8</a>
+								<a href="#"><img src="images/arr-next.jpg" alt=""></a>
+							</div>
+						
+					</div>
+				</div>
+			</div>
+			<div class="pop-up" id="pop-up3">
+				<div class="pop-in">
+					<a href="#" class="add-btn">Добавить фотографии</a>
+					<h2>Любимое</h2>
+					<div class="fav-pop">
+						<div class="fotos">
+							<div class="foto"><a href="#" class="fav-img"><img src="images/fone1.jpg" alt=""/></a><a href="#" class="remove"></a></div>
+							<div class="foto"><a href="#" class="fav-img"><img src="images/fone1.jpg" alt=""/></a><a href="#" class="remove"></a></div>
+							<div class="foto"><a href="#" class="fav-img"><img src="images/fone1.jpg" alt=""/></a><a href="#" class="remove"></a></div>
+							<div class="foto"><a href="#" class="fav-img"><img src="images/fone1.jpg" alt=""/></a><a href="#" class="remove"></a></div>
+							<div class="foto"><a href="#" class="fav-img"><img src="images/fone1.jpg" alt=""/></a><a href="#" class="remove"></a></div>
+							<div class="foto"><a href="#" class="fav-img"><img src="images/fone1.jpg" alt=""/></a><a href="#" class="remove"></a></div>
+							<div class="foto"><a href="#" class="fav-img"><img src="images/fone1.jpg" alt=""/></a><a href="#" class="remove"></a></div>
+							<div class="foto"><a href="#" class="fav-img"><img src="images/fone1.jpg" alt=""/></a><a href="#" class="remove"></a></div>
+							<div class="foto"><a href="#" class="fav-img"><img src="images/fone1.jpg" alt=""/></a><a href="#" class="remove"></a></div>
+							<div class="foto"><a href="#" class="fav-img"><img src="images/fone1.jpg" alt=""/></a><a href="#" class="remove"></a></div>
+							<div class="foto"><a href="#" class="fav-img"><img src="images/fone1.jpg" alt=""/></a><a href="#" class="remove"></a></div>
+							<div class="foto"><a href="#" class="fav-img"><img src="images/fone1.jpg" alt=""/></a><a href="#" class="remove"></a></div>
+							<div class="foto"><a href="#" class="fav-img"><img src="images/fone1.jpg" alt=""/></a><a href="#" class="remove"></a></div>
+							<div class="foto"><a href="#" class="fav-img"><img src="images/fone1.jpg" alt=""/></a><a href="#" class="remove"></a></div>
+							<div class="foto"><a href="#" class="fav-img"><img src="images/fone1.jpg" alt=""/></a><a href="#" class="remove"></a></div>
+							<div class="foto"><a href="#" class="fav-img"><img src="images/fone1.jpg" alt=""/></a><a href="#" class="remove"></a></div>
+						</div>	
+						<a href="#pop-up5" id="edit-album2" class="gr-link f-right">Редактировать альбом</a>
+						<a href="#" class="gr-link f-left">Удалить альбом</a>
+						<div class="clear"></div>
+					</div>
+				</div>
+			</div>
+			<div class="pop-up" id="pop-up4">
+				<div class="pop-in">
+					<div class="pop-form">
+					<h2>Создание нового альбома</h2>
+						<div class="alb-img"><img src="images/add-foto2.jpg" alt=""/></div>
+						<div class="form-right">
+							<div class="form-row"><label>Название альбома</label><input type="text" class="input-text"/></div>
+							<div class="form-row"><label>Описание</label><div class="textarea-block"><textarea class="textarea"></textarea></div></div>
+							<div class="form-row"><label>Кто может просматривать этот альбом</label>
+								<div class="block-select">
+									<select><option>Салаты</option><option>Салаты</option><option>Салаты</option></select>
+								</div>
+							</div>
+							<div class="form-row"><label>Кто может комментировать фотографии</label>
+								<div class="block-select">
+									<select><option>Салаты</option><option>Салаты</option><option>Салаты</option></select>
+								</div>
+							</div>
+						</div>
+						<div class="line"></div>
+						<a href="#" class="grey-btn">Отмена</a>
+						<input type="submit" value="Создать" class="submit"/>
+					</div>
+				</div>
+			</div>
+			<div class="pop-up" id="pop-up5">
+				<div class="pop-in">
+					<div class="pop-form">
+					<h2>Редактирование альбома</h2>
+						<div class="alb-img"><img src="images/img33.jpg" alt=""/></div>
+						<div class="form-right">
+							<div class="form-row"><label>Название альбома</label><input type="text" class="input-text"/></div>
+							<div class="form-row"><label>Описание</label><div class="textarea-block"><textarea class="textarea"></textarea></div></div>
+							<div class="form-row"><label>Кто может просматривать этот альбом</label>
+								<div class="block-select">
+									<select><option>Салаты</option><option>Салаты</option><option>Салаты</option></select>
+								</div>
+							</div>
+							<div class="form-row"><label>Кто может комментировать фотографии</label>
+								<div class="block-select">
+									<select><option>Салаты</option><option>Салаты</option><option>Салаты</option></select>
+								</div>
+							</div>
+						</div>
+						<div class="line"></div>
+						<a href="#" class="grey-btn">Отмена</a>
+						<input type="submit" value="Сохранить" class="submit"/>
+						<a href="#" class="gr-link f-left">Удалить альбом</a>
+					</div>
+				</div>
+			</div>
+			<div class="pop-up" id="pop-up6">
+				<div class="pop-in">
+					<div class="pop-form">
+					<h2>Редактирование фотографии</h2>
+						<div class="form-foto-edit">
+							<div class="form-row"><label>Описание фотографии</label><div class="textarea-block"><textarea class="textarea"></textarea></div></div>
+							<div class="form-row"><label>Альбом фотографиии</label>
+								<div class="block-select">
+									<select><option>Название альбома</option><option>Название альбома</option><option>Название альбома</option></select>
+								</div>
+							</div>
+							<div class="form-row">
+								<input type="checkbox"/><label>Сделать обложкой альбома</label>
+							</div>
+						</div>
+						<div class="line"></div>
+						<a href="#" class="grey-btn">Отмена</a>
+						<input type="submit" value="Сохранить" class="submit"/>
+					</div>
+				</div>
+			</div>
+			<div class="pop-up" id="pop-up7">
+				<div class="pop-in">
+					<div class="pop-form">
+					<a href="#" class="add-btn">Добавить альбом</a>
+					<h2>Мои альбомы</h2>
+					<div class="albums">
+						<div class="album-div"><a href="#" class="album"><img src="images/img33.jpg" alt=""/><span class="al-bot"><span class="al-num">30 фото</span><span class="al-name">Название</span></span></a><a href="#" class="edit-al"></a></div>
+						<div class="album-div"><a href="#" class="album"><img src="images/img33.jpg" alt=""/><span class="al-bot"><span class="al-num">30 фото</span><span class="al-name">Название</span></span></a><a href="#" class="edit-al"></a></div>
+						<div class="album-div"><a href="#" class="album"><img src="images/img33.jpg" alt=""/><span class="al-bot"><span class="al-num">30 фото</span><span class="al-name">Название</span></span></a><a href="#" class="edit-al"></a></div>
+						<div class="album-div"><a href="#" class="album"><img src="images/img33.jpg" alt=""/><span class="al-bot"><span class="al-num">30 фото</span><span class="al-name">Название</span></span></a><a href="#" class="edit-al"></a></div>
+						<div class="album-div"><a href="#" class="album"><img src="images/img33.jpg" alt=""/><span class="al-bot"><span class="al-num">30 фото</span><span class="al-name">Название</span></span></a><a href="#" class="edit-al"></a></div>
+						<div class="album-div"><a href="#" class="album"><img src="images/img33.jpg" alt=""/><span class="al-bot"><span class="al-num">30 фото</span><span class="al-name">Название</span></span></a><a href="#" class="edit-al"></a></div>
+						<div class="album-div"><a href="#" class="album"><img src="images/img33.jpg" alt=""/><span class="al-bot"><span class="al-num">30 фото</span><span class="al-name">Название</span></span></a><a href="#" class="edit-al"></a></div>
+						<div class="album-div"><a href="#" class="album"><img src="images/add-foto3.jpg" alt=""/><span class="al-bot"><span class="al-num">30 фото</span><span class="al-name">Название</span></span></a><a href="#" class="edit-al"></a></div>
+						<div class="album-div"><a href="#" class="album"><img src="images/img33.jpg" alt=""/><span class="al-bot"><span class="al-num">30 фото</span><span class="al-name">Название</span></span></a><a href="#" class="edit-al"></a></div>
+					</div>
+					</div>
+				</div>
+			</div>
+		</div>		
+    </body>
+</html>
+
+

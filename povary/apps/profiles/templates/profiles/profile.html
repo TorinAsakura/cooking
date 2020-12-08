@@ -1,0 +1,339 @@
+{% extends 'base.html' %}
+{% load fb_versions profile_tags thumbnail upload_tags comment_tags vote_tags %}
+
+{% block css%}
+		<link href='http://fonts.googleapis.com/css?family=PT+Sans:400,700,400italic,700italic&subset=latin,latin-ext,cyrillic' rel='stylesheet' type='text/css'/>
+		<link href='http://fonts.googleapis.com/css?family=Lobster&subset=latin,cyrillic-ext,latin-ext,cyrillic' rel='stylesheet' type='text/css'>
+		<link href='http://fonts.googleapis.com/css?family=Marck+Script&subset=latin,latin-ext,cyrillic' rel='stylesheet' type='text/css'>
+		<link href='http://fonts.googleapis.com/css?family=Cuprum:400,700,700italic&subset=latin,latin-ext,cyrillic' rel='stylesheet' type='text/css'>
+		<link rel="stylesheet" href="{{STATIC_URL}}/css/main.css" type="text/css"/>
+        <link rel="stylesheet" href="{{STATIC_URL}}/css/scrollable-horizontal.css" type="text/css"/>
+		<link rel="stylesheet" type="text/css" href="{{STATIC_URL}}css/fancyfields.css" media="screen" />
+		<link rel="stylesheet" type="text/css" href="{{STATIC_URL}}css/jquery.fancybox-thumbs.css?v=1.0.7" />
+
+{%endblock%}
+{%block javascript%}
+		<script type="text/javascript" src="{{STATIC_URL}}js/jquery-1.8.2.js"></script>
+		<!--[if lt IE 9]><script src="js/css3-mediaqueries.js"></script><![endif]-->
+		<!--[if IE]><script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script><![endif]-->
+		<script type="text/javascript" src="http://cdn.jquerytools.org/1.2.7/all/jquery.tools.min.js"></script>
+		<script type="text/javascript" src="{{STATIC_URL}}js/fancyfields-1.2.js"></script>
+		<script type="text/javascript" src="{{STATIC_URL}}js/jquery.fancybox.js"></script>
+		<script type="text/javascript" src="{{STATIC_URL}}js/jquery.fancybox-thumbs.js?v=1.0.7"></script>
+		<script type="text/javascript" src="{{STATIC_URL}}js/slider.js"></script>
+		<script type="text/javascript" src="{{STATIC_URL}}js/jQuery.dPassword.js"></script>
+		<script type="text/javascript" src="{{STATIC_URL}}js/jquery.jcarousel.js"></script>
+		<script type="text/javascript" src="{{STATIC_URL}}js/custom.js"></script>
+{%endblock %}
+
+
+
+{% if messages %}
+<ul class="messages">
+    {% for message in messages %}
+    <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
+    {% endfor %}
+</ul>
+{% endif %}
+
+{% block breadcrumbs %}
+	<a href="{% url 'home' %}"><img src="{{ STATIC_URL }}images/home.png" alt=""/></a> →
+	<a href="{% url 'profile' %}">Личный кабинет</a>
+{% endblock breadcrumbs %}
+
+{% block content %}
+	<h1>Личный кабинет</h1>
+	<br/>
+	<div class="center-block">
+		<div class="" id="main1">
+			<ul class="tabs">
+				<li><a href="#"><span>Коробка рецептов</span></a></li>
+				<li><a href="#"><span>Комментарии мне</span></a></li>
+				<li><a href="#"><span>Следуют</span></a></li>
+				<li><a href="#"><span>Личные сообщения</span></a></li>
+				<li><a href="#"><span>Изменить профайл</span></a></li>
+				<li><a href="#"><span>Настройки</span></a></li>
+			</ul>
+		</div>
+	</div>
+	<div class="left-block">
+		<div class="main-photo">
+		{% if avatar_img %}
+			<img id="current_avatar" src="{{ avatar_img }}" />
+		{% elif original_avatar %}
+			{% thumbnail original_avatar "300x300" as im %}
+				<img id="current_avatar" src="{{ im.url }}" />
+			{% endthumbnail %}
+		{% else %}
+			<img id="current_avatar" src="" style="display:none;"/>
+		{% endif %}
+		<!--
+		{% if avatar_img or original_avatar %}
+			<a id="change_avatar" href="javascript:" id="change_avatar">
+				Поменять аватар
+			</a>
+		{% else %}
+			<a id="change_avatar" href="javascript:" id="change_avatar" style="display:none;">
+				Поменять аватар
+			</a>
+		{% endif %}
+		<a href="javascript:" id="upload_avatar" name="{{ name }}" value="{{ value }}">
+			Загрузить аватар
+		</a>
+		-->
+		<a href="#">Загрузить новое фото</a></div>
+		<a href="{% url 'public_userpage' user.username %}" class="pers-link">Ваша персональная страница</a>
+		<a href="{% url 'recipe-add' %}" class="submit submit-wide">Добавить рецепт</a>
+		<a href="#" class="submit submit-wide">Добавить мастер-класс</a>
+		<div class="side-block">
+			<div class="side-title"><a href="#" class="f-right">{{ followers_all }}</a><h4>За мной следуют</h4></div>
+			<div class="side-photos">
+				{% for follower in followers %}
+				<a href="{% url 'public_userpage' follower.username %}"><img src="{{MEDIA_URL}}{{follower.avatar}}" alt=""/></a>
+				{%empty%}
+				No followers
+				{%endfor%}
+			</div>
+		</div>
+		<div class="side-block">
+			<div class="side-title"><a href="#" class="f-right">{{ followings_all }}</a><h4>За кем я следую</h4></div>
+			{% for following in followings %}
+				<a href="{% url 'public_userpage' following.username %}"><img src="{{MEDIA_URL}}{{following.avatar}}" alt=""/></a>
+				{%empty%}
+				No followings
+			{%endfor%}
+		</div>
+		<div class="side-block">
+			<div class="side-title"><a href="#" class="f-right">{{ my_recipes_all }}</a><h4>Мои рецепты</h4></div>
+			{% for myrec in my_recipes %}
+			<div class="myrec">
+				<a href="{% url 'recipe_details' myrec.slug %}" class="rec-img"><img src="{{MEDIA_URL}}{{myrec.main_image}}" alt=""/></a>
+				<div class="rec-title">
+					<a href="{% url 'recipe_details' myrec.slug %}">{{myrec.title}}</a>
+					<span class="num-like"><big>{{myrec|get_votes|length}}</big></span>
+					<span class="num-comm"><big>{{myrec|get_comments|length}}</big></span>
+					<span class="num-plus"><big>18</big></span>
+				</div>
+			</div>
+			{% empty %}
+			You have no recipes
+			{% endfor %}
+		</div>
+	</div>
+	<div class="clear"></div>
+
+
+
+
+	<p>
+		<a href="{% url 'povary_password_change' %}">Изменить пароль</a> |
+		<a href="{% url 'profile_settings' %}">Настройки профиля</a> |
+		<a href="{% url 'public_userpage' request.user.username %}">Публичная страница</a> |
+		<a href="{% url 'recipebox_manage' %}">Коробки рецептов</a> |
+		<a href="{% url 'profile_notices' %}">Уведомления</a> ({% unviewed_notice_num request.user %})
+	</p>
+
+    {%comment%}
+    <!--
+    <div>
+	<table>
+		<form method="post" action="."> {% csrf_token %}
+			{{ form.as_table }}
+			<tr>
+				<td>
+					<input type="submit" value="Обновить">
+				</td>
+			</tr>
+		</form>
+	</table>
+
+		<div id="change_avatar_form" title="Изменить аватар">
+			{% if original_avatar %}
+				{% thumbnail original_avatar "600x600" as im %}
+					<img src="{{ im.url }}" id="jcrop_target"/>
+				{% endthumbnail %}
+			{% else %}
+				<img src="" id="jcrop_target"/>
+			{% endif %}
+			<a id="crop_avatar_done" href="javascript:" data_url="{% url 'crop_avatar' %}" data_profile_id="{{ request.user.profile.id }}">Готово</a>
+		</div>
+
+		<div id="upload_avatar_form" title="Загрузить аватар">
+			<form id="fileupload" method="post" action="{% url 'upload_avatar' %}" enctype="multipart/form-data">
+				{% csrf_token %}
+            <div class="row fileupload-buttonbar">
+                <div class="span7">
+                    <span class="btn btn-primary fileinput-button">
+                        <i class="icon-plus icon-white"></i>
+                        <span>Add files...</span>
+                        <input type="file" name="original_avatar">
+                    </span>
+                    <button type="submit" class="btn btn-success start">
+                        <i class="icon-upload icon-white"></i>
+                        <span>Start upload</span>
+                    </button>
+                    <button type="reset" class="btn btn-warning cancel">
+                        <i class="icon-ban-circle icon-white"></i>
+                        <span>Cancel upload</span>
+                    </button>
+                </div>
+                <div class="span5 fileupload-progress fade">
+                    <div class="progress progress-success progres-striped active">
+                        <div class="bar" style="width:0%"></div>
+                    </div>
+                    <div class="progress-extended">&nbsp;</div>
+                </div>
+            </div>
+            <div class="fileupload-loading"></div>
+            <table class="table table-striped"><tbody class="files" data-toggle="modal-gallery" data-target="#modal-gallery"></tbody></table>
+        </form>
+        <div class="fileupload-content">
+            <table class="files"></table>
+            <div class="fileupload-progressbar"></div>
+        </div>
+		</div>
+	</div>
+	 -->
+	{%endcomment%}
+	<!-- Modal window for croping avatar -->
+
+{% endblock content %}
+
+{% block extra_header %}
+
+	<!--
+    <link rel="stylesheet" href="{{ STATIC_URL }}css/bootstrap.min.css">
+    <link rel="stylesheet" href="{{ STATIC_URL }}css/style.css">
+    <link rel="stylesheet" href="{{ STATIC_URL }}css/bootstrap-responsive.min.css">
+	<link rel="stylesheet" href="{{ STATIC_URL }}css/bootstrap-image-gallery.min.css">
+    -->
+
+    <link rel="stylesheet" href="{{ STATIC_URL }}css/jquery.fileupload-ui.css">
+    <!-- Shim to make HTML5 elements usable in older Internet Explorer versions -->
+    <!--[if lt IE 9]><script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script><![endif]-->
+
+	<!-- JCrop -->
+	<script src="{{ STATIC_URL }}js/jquery.Jcrop.min.js"></script>
+	<script src="{{ STATIC_URL }}filebrowser/js/fileuploader.js"></script>
+	<link rel="stylesheet" href="{{ STATIC_URL }}filebrowser/css/filebrowser.css" type="text/css" />
+	<link rel="stylesheet" href="{{ STATIC_URL }}css/jquery.Jcrop.css" type="text/css" />
+
+	<script src="{{ STATIC_URL }}js/jquery.ui.widget.js"></script>
+    <script src="{{ STATIC_URL }}js/tmpl.min.js"></script>
+    <script src="{{ STATIC_URL }}js/load-image.min.js"></script>
+    <script src="{{ STATIC_URL }}js/canvas-to-blob.min.js"></script>
+    <script src="{{ STATIC_URL }}js/bootstrap.min.js"></script>
+    <script src="{{ STATIC_URL }}js/bootstrap-image-gallery.min.js"></script>
+    <script src="{{ STATIC_URL }}js/jquery.iframe-transport.js"></script>
+    <script src="{{ STATIC_URL }}js/jquery.fileupload.js"></script>
+    <script src="{{ STATIC_URL }}js/jquery.fileupload-fp.js"></script>
+    <script src="{{ STATIC_URL }}js/jquery.fileupload-ui.js"></script>
+    <script src="{{ STATIC_URL }}js/locale.js"></script>
+
+<!-- JCrop -->
+   <style type="text/css">
+   #home #header {
+   	height: 241px;
+   }
+	#home .content {
+		padding: 0px 50px 0px;
+	}
+   </style>
+{% endblock extra_header %}
+
+{% block extra_js %}
+	<script>
+		var jcrop_api;
+		$(function() {
+			// Calendar for birhday
+			$( "#id_birthday" ).datepicker({ dateFormat: "dd.mm.yy"});
+
+			$("#change_avatar_form").dialog({
+				autoOpen: false,
+				modal: true,
+				width: 700,
+				height: 600,
+			});
+			$("#upload_avatar_form").dialog({
+				autoOpen: false,
+				modal: true,
+				width: 900,
+				height: 600,
+				buttons: [
+					{
+						text: "Готово",
+						click: function(){
+							$(this).dialog('close');
+						}
+					},
+					{
+						text: "Отмена",
+						click: function(){
+							$(this).dialog('close');
+						}
+
+					}
+				]
+			});
+			$( "#change_avatar" ).button().live('click',function(){
+				$( "#change_avatar_form" ).dialog( "open" );
+			});
+			$( "#upload_avatar" ).button().live('click', function(){
+				$( "#upload_avatar_form" ).dialog( "open" );
+			});
+
+
+			// Changing image url for
+			// var jcrop_api;
+
+			$("#jcrop_target").Jcrop({
+            bgColor:     'black',
+            bgOpacity:   .4,
+            setSelect: [150, 150, 350, 350],
+            aspectRatio: 1,
+        	},
+        	function(){
+    				jcrop_api = this;
+    			}
+        	);
+			$("#crop_avatar_done").click(function(){
+				var select = jcrop_api.tellSelect();
+				var url = $(this).attr('data_url');
+				var profile_id = $(this).attr('data_profile_id');
+				var data = {"x": select.x, "y": select.y,
+					"x2": select.x2, "y2": select.y2, "profile_id": profile_id,
+				}
+				$.get(url, data, function(resp_data){
+					if ($("#current_avatar").attr('src') == ''){
+						$("#current_avatar").show();
+						$("#change_avatar").show();
+					}
+					$("#current_avatar").attr('src', resp_data.url);
+					$("#id_avatar").val(resp_data.path);
+					$( "#change_avatar_form" ).dialog( "close" );
+				});
+			});
+			$("#upload_avatar_done").click(function(){
+				$("#upload_avatar_form").dialog('close');
+			});
+		});
+	</script>
+	{% upload_js %}
+    <script>
+        $(function () {
+            'use strict';
+
+            $('#fileupload').fileupload({
+                acceptFileTypes: /(\.|\/)(gif|jpe?g|png)$/i,
+                autoUpload: true,
+            }).
+            bind('fileuploaddone', function(e, data){
+            	jcrop_api.setImage(data.result[0].thumbnail_url, function(){
+                	jcrop_api.setSelect([150, 150, 350, 350]);
+            	});
+                $("#change_avatar_form").dialog("open");
+                $( "#upload_avatar_form" ).dialog( "close" );
+            });
+        });
+    </script>
+{% endblock extra_js %}

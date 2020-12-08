@@ -1,0 +1,120 @@
+{% extends 'recipes/details.html' %}
+{% load upload_tags %}
+
+{% block breadcrumbs %}
+    {{ block.super }} >> <a href="{% url 'recipe_gallery_upload' recipe.slug %}">Добавление фото к галлерее</a>
+{% endblock breadcrumbs %}
+
+{% block extra_header %}
+    <meta charset="utf-8">
+    <title>Django Jquery File Upload Example</title>
+    <meta name="description" content="">
+    <meta name="viewport" content="width=device-width">
+    <!-- Bootstrap CSS Toolkit styles -->
+    <link rel="stylesheet" href="{{ STATIC_URL }}css/bootstrap.min.css">
+    <!-- Generic page styles -->
+    <link rel="stylesheet" href="{{ STATIC_URL }}css/style.css">
+    <!-- Bootstrap styles for responsive website layout, supporting different screen sizes -->
+    <link rel="stylesheet" href="{{ STATIC_URL }}css/bootstrap-responsive.min.css">
+    <!-- CSS to style the file input field as button and adjust the Bootstrap progress bars -->
+    <link rel="stylesheet" href="{{ STATIC_URL }}css/bootstrap-image-gallery.min.css">
+    <link rel="stylesheet" href="{{ STATIC_URL }}css/jquery.fileupload-ui.css">
+    <!-- Shim to make HTML5 elements usable in older Internet Explorer versions -->
+    <!--[if lt IE 9]><script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script><![endif]-->
+{% endblock extra_header %}
+
+{% block content %}
+    <div class="container">
+        <form id="fileupload" method="post" action="{% url 'recipe_gallery_upload' recipe.slug %}" enctype="multipart/form-data">{% csrf_token %}
+            <div class="row fileupload-buttonbar">
+                <div class="span7">
+                    <span class="btn btn-primary fileinput-button">
+                        <i class="icon-plus icon-white"></i>
+                        <span>Добавить файлы</span>
+                        <input type="file" name="image" multiple>
+                    </span>
+                    <button type="submit" class="btn btn-success start">
+                        <i class="icon-upload icon-white"></i>
+                        <span>Начать загрузку</span>
+                    </button>
+                    <button type="reset" class="btn btn-warning cancel">
+                        <i class="icon-ban-circle icon-white"></i>
+                        <span>Отменить загрузку</span>
+                    </button>
+                    <button type="button" class="btn btn-danger delete">
+                        <i class="icon-trash icon-white"></i>
+                        <span>Удалить файлы</span>
+                    </button>
+                    <input type="checkbox" class="toggle">
+                </div>
+                <div class="span5 fileupload-progress fade">
+                    <div class="progress progress-success progres-striped active">
+                        <div class="bar" style="width:0%"></div>
+                    </div>
+                    <div class="progress-extended">&nbsp;</div>
+                </div>
+            </div>
+            <button class="btn" id="ready_button" style="display:none;">
+                <span>Готово</span>
+            </button>
+            <div class="fileupload-loading"></div>
+            <table class="table table-striped"><tbody class="files" data-toggle="modal-gallery" data-target="#modal-gallery"></tbody></table>
+        </form>
+        <div class="fileupload-content">
+            <table class="files">
+            </table>
+            <div class="fileupload-progressbar"></div>
+        </div>
+    </div>
+    <!-- modal-gallery is the modal dialog used for the image gallery -->
+    <div id="modal-gallery" class="modal modal-gallery hide fade" data-filter=":odd">
+        <div class="modal-header">
+            <a class="close" data-dismiss="modal">&times;</a>
+            <h3 class="modal-title"></h3>
+        </div>
+        <div class="modal-body"><div class="modal-image"></div></div>
+        <div class="modal-footer">
+            <a class="btn modal-download" target="_blank">
+                <i class="icon-download"></i>
+                <span>Скачать</span>
+            </a>
+            <a class="btn btn-success modal-play modal-slideshow" data-slideshow="5000">
+                <i class="icon-play icon-white"></i>
+                <span>Слайдшоу</span>
+            </a>
+            <a class="btn btn-info modal-prev">
+                <i class="icon-arrow-left icon-white"></i>
+                <span>Предыдущий</span>
+            </a>
+            <a class="btn btn-primary modal-next">
+                <span>Следующий</span>
+                <i class="icon-arrow-right icon-white"></i>
+            </a>
+        </div>
+    </div>
+{% endblock content %}
+
+{% block extra_js %}
+    {% upload_js %}
+    <script src="//ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
+    <script src="{{ STATIC_URL }}js/jquery.ui.widget.js"></script>
+    <script src="{{ STATIC_URL }}js/tmpl.min.js"></script>
+    <script src="{{ STATIC_URL }}js/load-image.min.js"></script>
+    <script src="{{ STATIC_URL }}js/canvas-to-blob.min.js"></script>
+    <script src="{{ STATIC_URL }}js/bootstrap.min.js"></script>
+    <script src="{{ STATIC_URL }}js/bootstrap-image-gallery.min.js"></script>
+    <script src="{{ STATIC_URL }}js/jquery.iframe-transport.js"></script>
+    <script src="{{ STATIC_URL }}js/jquery.fileupload.js"></script>
+    <script src="{{ STATIC_URL }}js/jquery.fileupload-fp.js"></script>
+    <script src="{{ STATIC_URL }}js/jquery.fileupload-ui.js"></script>
+    <script src="{{ STATIC_URL }}js/locale.js"></script>
+    <script src="{{ STATIC_URL }}js/main.js"></script>
+    <script type="text/javascript">
+    $(function(){
+        $("#ready_button").click(function(evnt){
+            evnt.preventDefault();
+            window.location = "{% url 'recipe_details' recipe.slug %}";
+        });
+    });
+    </script>
+{% endblock extra_js %}

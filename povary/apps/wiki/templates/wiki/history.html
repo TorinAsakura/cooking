@@ -1,0 +1,85 @@
+{% extends 'base.html' %}
+
+{% block content %}
+	<div>
+		{% if compare_list %}
+			<h3>
+				Ожидают сравнения:
+				{% for version in compare_list %}
+					<p>
+						Номер: {{ version.revision }}
+						<a href="{% url 'rm_compare' wikipage_slug %}?version_id={{ version.id }}">Не сравнивать</a>
+					</p>
+				{% endfor %}
+				{% if compare_list|length == 2 %}
+					<a href="{% url 'versions_compare' wikipage_slug %}">Сравнить</a>
+				{% endif %}
+			</h3>
+		{% endif %}
+	</div>
+	{% for version in version_list %}
+		<div>
+			<a href="">Номер версии: {{ version.revision }}</a>
+			<p> Изменено: {{ version.changed }}, Пользователь: {{ version.author.username }}</p>
+			<p>
+				Обсуждений: {{ version.get_discussions.count }}
+				<a class="comment_version" href="{% url 'comment_wikiversion' version.id %}">Добавить комментарий</a>
+				<a class="version_discussion" href="{% url 'version_discussion' version.id %}">Обсуждения</a>
+			</p>
+			<p>
+				{% if version.id not in compare_box %}
+					<a href="{% url 'add2compare' wikipage_slug %}?version_id={{ version.id }}">Добавить к сравнению</a>
+				{% else %}
+					<a href="{% url 'rm_compare' wikipage_slug %}?version_id={{ version.id }}">Убрать из сравнения</a>
+				{% endif %}
+			</p>
+		</div>
+	{% endfor %}
+{% endblock content %}
+
+{% block extra_js %}
+<script type="text/javascript">
+$(function(){
+	$(".version_discussion").live("click", function(evnt){
+		evnt.preventDefault();
+		var url = this.href;
+        var dialog = $('<div style="display:none" class="loading"></div>').appendTo('body');
+        dialog.dialog({
+        	width: 500,
+        	position: "top",
+        	title: "Обсуждение версии",
+            close: function(event, ui) {
+                dialog.remove();
+            },
+            modal: true
+        });
+        dialog.load(
+            url,
+            function (responseText, textStatus, XMLHttpRequest) {
+                dialog.removeClass('loading');
+            }
+        );
+	});
+	$(".comment_version").live("click", function(evnt){
+		evnt.preventDefault();
+		var url = this.href;
+        var dialog = $('<div style="display:none" class="loading"></div>').appendTo('body');
+        dialog.dialog({
+        	width: 500,
+        	position: "top",
+        	title: "Обсуждение версии",
+            close: function(event, ui) {
+                dialog.remove();
+            },
+            modal: true
+        });
+        dialog.load(
+            url,
+            function (responseText, textStatus, XMLHttpRequest) {
+                dialog.removeClass('loading');
+            }
+        );
+	});
+});
+</script>
+{% endblock extra_js %}

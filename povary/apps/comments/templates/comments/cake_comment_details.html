@@ -1,0 +1,13 @@
+{% load thumbnail stopword_tags %}
+
+
+<div class="comm">
+		<a href="#" class="c-img"><img src="{{MEDIA_URL}}{{comment.author.profile.avatar}}" alt=""/></a>
+		<a href="#" class="comm-text">
+			<span class="c-title">{{comment.author.username}}</span>
+			<span class="c-date">{{comment.created|timesince}} назад</span>
+			<span class="c-text">{{comment.body|r_stopwords|safe}}</span>
+		</a><a href="#ad-com-ans" class="ansver" comment_id="{{ comment.id }}" activated="False">Ответить</a>	
+			<b class="corn"></b>
+</div>
+

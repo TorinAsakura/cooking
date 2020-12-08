@@ -1,0 +1,80 @@
+{% extends 'cake_base.html' %}
+
+{% block content %}
+
+
+    <link rel="stylesheet" href="//code.jquery.com/ui/1.10.4/themes/smoothness/jquery-ui.css">
+    <script src="//code.jquery.com/jquery-1.9.1.js"></script>
+    <script src="//code.jquery.com/ui/1.10.4/jquery-ui.js"></script>
+    <link rel="stylesheet" href="/resources/demos/style.css">
+    <script>
+        $(function() {
+            $("#datepicker1").datepicker({
+                altField: "#alternate",
+                altFormat: "DD, d MM, yy",
+                changeMonth: true,
+                changeYear: true
+            });
+            $("#datepicker2").datepicker({
+                altField: "#alternate",
+                altFormat: "DD, d MM, yy",
+                changeMonth: true,
+                changeYear: true
+            });
+        });
+    </script>
+
+                    <div class="cont-in">
+                        <div class="title">
+                            <div class="soc-icons">
+                                <a href="#"><img alt="" src="images/ico5.png"></a>
+                                <a href="#"><img alt="" src="images/ico6.png"></a>
+                                <a href="#"><img alt="" src="images/ico7.png"></a>
+                            </div>
+                            <span class="element-one"></span>
+                            <h1>ДОБАВЛЕНИЕ СОБЫТИЯ</h1>
+                            <span class="element-two"></span>
+                        </div>
+                        <div class="addfoto-block">
+                            <form>
+                                <div class="addfoto-block-in first">
+                                    <div class="block-in-right">
+                                        <label>Фото события<span>*</span></label>
+                                        <div class="download-foto-block">
+                                            <a class="download-foto-link" href="#">ЗАгрузите фото</a>
+                                        </div>
+                                    </div>
+                                    <div class="block-in-left">
+                                        <div class="form-row first">
+                                            <div class="form-block">
+                                                <label>Выберите категорию<span>*</span></label>
+                                                <div id="msdrpdd20_msddHolder" style="height:0px;overflow:hidden;position:absolute;" class="ddOutOfVision"><select class="styled" id="msdrpdd20"><option>Выберите категорию со списка</option><option>Мастичные</option><option>Шоколодные</option><option>Вафельные</option><option>Клубничные</option></select></div><div style="width: 280px;" class="dd" id="msdrpdd20_msdd"><div class="ddTitle" id="msdrpdd20_title"><span class="arrow" id="msdrpdd20_arrow" style="background-position: 0px 0px;"></span><span id="msdrpdd20_titletext" class="ddTitleText"><span class="ddTitleText">Выберите категорию со списка</span></span></div><div style="width: 278px;" class="ddChild" id="msdrpdd20_child"><a id="msdrpdd20_msa_0" class="selected enabled" href="javascript:void(0);"><span class="ddTitleText">Выберите категорию со списка</span></a><a id="msdrpdd20_msa_1" class="enabled" href="javascript:void(0);"><span class="ddTitleText">Мастичные</span></a><a id="msdrpdd20_msa_2" class="enabled" href="javascript:void(0);"><span class="ddTitleText">Шоколодные</span></a><a id="msdrpdd20_msa_3" class="enabled" href="javascript:void(0);"><span class="ddTitleText">Вафельные</span></a><a id="msdrpdd20_msa_4" class="enabled" href="javascript:void(0);"><span class="ddTitleText">Клубничные</span></a></div></div>
+                                            </div>
+                                            <div class="clear"></div>
+                                        </div>
+                                        <div class="form-row second">
+                                            <label>Название события<span>*</span></label>
+                                            <input type="text" value="" class="addfoto-block-input">
+                                            <div class="clear"></div>
+                                        </div>
+                                        <div class="form-row third">
+                                            <label>Описание<span>*</span></label>
+                                            <textarea placeholder="Опишите суть события" class="addfoto-block-textarea"></textarea>
+                                            <div class="clear"></div>
+                                        </div>
+                                        <div class="form-row four">
+                                            <label>Начало события<span>*</span></label>
+                                            <input type="datetime" id="datepicker1" value="" placeholder="01.01.1970" class="addfoto-block-input" style="width:30%;">
+                                            <label>Конец события</label>
+                                            <input type="datetime" id="datepicker2" value="" placeholder="01.01.1970" class="addfoto-block-input" style="width:30%;">
+                                            <div class="clear"></div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <input type="submit" value="ОПУБЛИКОВАТЬ" class="addfoto-block-submit">
+                            </form>
+                        </div>
+                    </div>
+
+
+{% endblock content %}

@@ -1,0 +1,267 @@
+{% extends 'cake_base.html' %}
+{% load widget_tweaks core_tags comment_tags vote_tags pymorphy_tags thumbnail %}
+
+{% block content %}
+<div class="pink-line">
+<div class="cont-in">
+<div class="title">
+	<div class="soc-icons">
+		<a href="#"><img src="{{STATIC_URL}}cake/images/ico5.png" alt=""/></a>
+		<a href="#"><img src="{{STATIC_URL}}cake/images/ico6.png" alt=""/></a>
+		<a href="#"><img src="{{STATIC_URL}}cake/images/ico7.png" alt=""/></a>
+	</div>
+	<span class="element-one"></span>
+	<h1>ЛУЧШИЕ рецепты</h1>
+	<span class="element-two"></span>
+</div>
+<div class="home-boxes">
+	<div class="quarter">
+		<div class="boxes">
+			<div class="box">
+				{% if cake_recipes.1 %}
+				<a class="box-img" href="{% url 'recipe_details' cake_recipes.1.slug %}">
+					<img src="{{MEDIA_URL}}{{cake_recipes.1.main_image}}" alt="{{cake_recipes.1.title}}"/>
+					<img src="{% thumbnail mc.image "480x187" crop="center" as image %} {{ image.url }} {% endthumbnail %}" alt="" title=""/>
+					<span class="box-title"><span class="box-pad">{{cake_recipes.1.title}}</span></span>
+					<b class="fade"></b>
+				</a>
+				<div class="box-bot">
+					<a class={%if cake_recipes.1|user_ranked:user %}"num-liked"{%else%}"num-like"{%endif%}
+						href="{% url 'add_vote' cake_recipes.1.get_contenttype_id cake_recipes.1.id %}">{{ cake_recipes.1|get_votes|length }}</a>
+					<a href="{% url 'recipe_details' cake_recipes.1.slug %}#all-com" class="num-comm">{{cake_recipes.1|get_comments|length}}</a>
+					<a href="{% url 'public_userpage' cake_recipes.1.author.username %}" class="autor"><img src="{{MEDIA_URL}}{{cake_recipes.1.author.profile.avatar}}" alt="" class="a-img"/><span class="a-name">{{cake_recipes.1.author.username}}</span></a>
+				</div>
+				{% endif %}
+			</div>
+			<div class="box">
+				{% if cake_recipes.2 %}
+				<a class="box-img" href="{% url 'recipe_details' cake_recipes.2.slug %}">
+					<img src="{{MEDIA_URL}}{{cake_recipes.2.main_image}}" alt="{{cake_recipes.2.title}}"/>
+					<span class="box-title"><span class="box-pad">{{cake_recipes.2.title}}</span></span>
+					<b class="fade"></b>
+				</a>
+				<div class="box-bot">
+					<a class={%if cake_recipes.2|user_ranked:user %}"num-liked"{%else%}"num-like"{%endif%} href="{% url 'add_vote' cake_recipes.2.get_contenttype_id cake_recipes.2.id %}">{{ cake_recipes.2|get_votes|length }}</a>
+					<a href="{% url 'recipe_details' cake_recipes.2.slug %}#all-com" class="num-comm">{{cake_recipes.2|get_comments|length}}</a>
+					<a href="{% url 'public_userpage' cake_recipes.2.author.username %}" class="autor"><img src="{{MEDIA_URL}}{{cake_recipes.2.author.profile.avatar}}" alt="" class="a-img"/><span class="a-name">{{cake_recipes.2.author.username}}</span></a>
+				</div>
+				{%endif%}
+			</div>
+		</div>
+		<a href="{% url 'cake_recipe_list' %}" class="add-rec"><i>Посмотрите все</i><big>{{recipes_total}} рецептов</big></a>
+	</div>
+	<div class="half">
+		<div class="boxes boxes4">
+			<div class="box">
+				{% if cake_recipes.0 %}
+				<a class="box-img" href="{% url 'recipe_details' cake_recipes.0.slug %}">
+					<img src="{{MEDIA_URL}}{{cake_recipes.0.main_image}}" alt="{{cake_recipes.0.title}}"/>
+					<span class="box-title"><span class="box-pad"><i>Рецепт дня</i>{{cake_recipes.0.title}}</span></span>
+					<b class="fade"></b>
+				</a>
+				<div class="box-bot">
+					<a class={%if cake_recipes.0|user_ranked:user %}"num-liked"{%else%}"num-like"{%endif%} href="{% url 'add_vote' cake_recipes.0.get_contenttype_id cake_recipes.0.id %}">{{ cake_recipes.0|get_votes|length }}</a>
+					<a href="{% url 'recipe_details' cake_recipes.0.slug %}#all-com" class="num-comm">{{cake_recipes.0|get_comments|length}}</a>
+					<a href="{% url 'public_userpage' cake_recipes.0.author.username %}" class="autor"><img src="{{MEDIA_URL}}{{cake_recipes.0.author.profile.avatar}}" alt="" class="a-img"/><span class="a-name">{{cake_recipes.0.author.username}}</span></a>
+				</div>
+				{% endif %}
+			</div>
+		</div>
+		<div class="boxes">
+			<div class="box">
+				{% if cake_recipes.6 %}
+				<a class="box-img" href="{% url 'recipe_details' cake_recipes.6.slug %}">
+					<img src="{{MEDIA_URL}}{{cake_recipes.6.main_image}}" alt="{{cake_recipes.6.title}}"/>
+					<span class="box-title"><span class="box-pad">{{cake_recipes.6.title}}</span></span>
+					<b class="fade"></b>
+				</a>
+				<div class="box-bot">
+					<a class={%if cake_recipes.6|user_ranked:user %}"num-liked"{%else%}"num-like"{%endif%} href="{% url 'add_vote' cake_recipes.6.get_contenttype_id cake_recipes.6.id %}">{{ cake_recipes.6|get_votes|length }}</a>
+					<a href="{% url 'recipe_details' cake_recipes.6.slug %}#all-com" class="num-comm">{{cake_recipes.6|get_comments|length}}</a>
+					<a href="{% url 'public_userpage' cake_recipes.6.author.username %}" class="autor"><img src="{{MEDIA_URL}}{{cake_recipes.6.author.profile.avatar}}" alt="" class="a-img"/><span class="a-name">{{cake_recipes.6.author.username}}</span></a>
+				</div>
+				{%endif%}
+			</div>
+			<div class="box">
+				{% if cake_recipes.7 %}
+				<a class="box-img" href="{% url 'recipe_details' cake_recipes.7.slug %}">
+					<img src="{{MEDIA_URL}}{{cake_recipes.7.main_image}}" alt="{{cake_recipes.7.title}}"/>
+					<span class="box-title"><span class="box-pad">{{cake_recipes.7.title}}</span></span>
+					<b class="fade"></b>
+				</a>
+				<div class="box-bot">
+					<a class={%if cake_recipes.6|user_ranked:user %}"num-liked"{%else%}"num-like"{%endif%} href="{% url 'add_vote' cake_recipes.7.get_contenttype_id cake_recipes.7.id %}">{{ cake_recipes.7|get_votes|length }}</a>
+					<a href="{% url 'recipe_details' cake_recipes.7.slug %}#all-com" class="num-comm">{{cake_recipes.7|get_comments|length}}</a>
+					<a href="{% url 'public_userpage' cake_recipes.7.author.username %}" class="autor"><img src="{{MEDIA_URL}}{{cake_recipes.7.author.profile.avatar}}" alt="" class="a-img"/><span class="a-name">{{cake_recipes.7.author.username}}</span></a>
+				</div>
+				{%endif%}
+			</div>
+		</div>
+	</div>
+	<div class="quarter">
+		<div class="boxes">
+			<div class="box">
+				{% if cake_recipes.4 %}
+				<a class="box-img" href="{% url 'recipe_details' cake_recipes.4.slug %}">
+					<img src="{{MEDIA_URL}}{{cake_recipes.4.main_image}}" alt="{{cake_recipes.4.title}}"/>
+					<span class="box-title"><span class="box-pad">{{cake_recipes.4.title}}</span></span>
+					<b class="fade"></b>
+				</a>
+				<div class="box-bot">
+					<a class={%if cake_recipes.4|user_ranked:user %}"num-liked"{%else%}"num-like"{%endif%} href="{% url 'add_vote' cake_recipes.4.get_contenttype_id cake_recipes.4.id %}">{{ cake_recipes.4|get_votes|length }}</a>
+					<a href="{% url 'recipe_details' cake_recipes.4.slug %}#all-com" class="num-comm">{{cake_recipes.4|get_comments|length}}</a>
+					<a href="{% url 'public_userpage' cake_recipes.4.author.username %}" class="autor"><img src="{{MEDIA_URL}}{{cake_recipes.4.author.profile.avatar}}" alt="" class="a-img"/><span class="a-name">{{cake_recipes.4.author.username}}</span></a>
+				</div>
+				{%endif%}
+			</div>
+			<div class="box">
+				{% if cake_recipes.5 %}
+				<a class="box-img" href="{% url 'recipe_details' cake_recipes.5.slug %}">
+					<img src="{{MEDIA_URL}}{{cake_recipes.5.main_image}}" alt="{{cake_recipes.5.title}}"/>
+					<span class="box-title"><span class="box-pad">{{cake_recipes.5.title}}</span></span>
+					<b class="fade"></b>
+				</a>
+				<div class="box-bot">
+					<a class={%if cake_recipes.5|user_ranked:user %}"num-liked"{%else%}"num-like"{%endif%} href="{% url 'add_vote' cake_recipes.5.get_contenttype_id cake_recipes.5.id %}">{{ cake_recipes.5|get_votes|length }}</a>
+					<a href="{% url 'recipe_details' cake_recipes.5.slug %}#all-com" class="num-comm">{{cake_recipes.5|get_comments|length}}</a>
+					<a href="{% url 'public_userpage' cake_recipes.5.author.username %}" class="autor"><img src="{{MEDIA_URL}}{{cake_recipes.5.author.profile.avatar}}" alt="" class="a-img"/><span class="a-name">{{cake_recipes.5.author.username}}</span></a>
+				</div>
+				{%endif%}
+			</div>
+		</div>
+		<a href="{% url 'recipe-add' %}" class="add-rec"><i>Добавьте свой</i><big>Собственный рецепт</big></a>
+	</div>
+	<div class="clear"></div>
+</div>
+</div>
+</div>
+<div class="cont-in">
+<!--MasterClasses-->
+<div class="title"><span class="element-one"></span><div class="h1">МАСТЕР КЛАССЫ</div><span class="element-two"></span></div>
+<div class="boxes boxes2">
+{% for mc in masterclass_list%}
+{% if forloop.counter0 < 2 %}
+
+	<div class="box">
+		<a class="box-img" href="{% url 'cake_mc_details' mc.slug %}">
+			<img src="{% thumbnail mc.image "480x187" crop="center" as image %} {{ image.url }} {% endthumbnail %}" alt="{{ mc.title }}" title=""/>
+			<span class="box-title"><span class="box-pad">{{ mc.title }}</span></span>
+			<b class="fade"></b>
+		</a>
+		<div class="box-bot">
+			<a class={%if mc|user_ranked:user %}"num-liked"{%else%}"num-like"{%endif%} href="{% url 'add_vote' mc.get_contenttype_id mc.id %}">{{ mc|get_votes|length }}</a>
+			<a href="{% url 'cake_mc_details' mc.slug %}#all-com" class="num-comm">{{ mc.get_comments_num }}</a>
+			<a href="{% url 'public_userpage' mc.author.username %}" class="autor"><img src="{{MEDIA_URL}}{{mc.author.profile.avatar}}" alt="" class="a-img"/><span class="a-name">{{mc.author.username}}</span></a>
+		</div>
+	</div>
+{%endif%}
+{%endfor%}
+</div>
+<div class="boxes">
+{% for mc in masterclass_list%}
+{% if forloop.counter0 > 1 %}
+	<div class="box">
+		<a class="box-img" href="{% url 'cake_mc_details' mc.slug %}">
+			<img src="{% thumbnail mc.image "230x186" crop="center" as image %} {{ image.url }} {% endthumbnail %}" alt="{{ mc.title }}" title=""/>
+			<span class="box-title"><span class="box-pad">{{ mc.title }}</span></span>
+			<b class="fade"></b>
+		</a>
+		<div class="box-bot">
+			<a class={%if mc|user_ranked:user %}"num-liked"{%else%}"num-like"{%endif%} href="{% url 'add_vote' mc.get_contenttype_id mc.id %}">{{ mc|get_votes|length }}</a>
+			<a href="{% url 'cake_mc_details' mc.slug %}#all-com" class="num-comm">{{ mc.get_comments_num }}</a>
+			<a href="{% url 'public_userpage' mc.author.username %}" class="autor"><img src="{{MEDIA_URL}}{{mc.author.profile.avatar}}" alt="" class="a-img"/><span class="a-name">{{mc.author.username}}</span></a>
+		</div>
+	</div>
+{%endif%}
+{%endfor%}
+</div>
+<!--endMasterClasses-->
+
+<div class="title"><span class="element-one"></span><div class="h1">ГАЛЕРЕИ</div><span class="element-two"></span></div>
+	<div class="galleries">
+		<div class="scrollable" id="scrollable2">
+			<div class="items">
+				{% for gallery_set in gallery_list %}
+				<div class="item">
+					{% for gallery in gallery_set %}
+					<a href="{{ gallery.get_absolute_url }}">
+					{# <a href="{% url 'cakeimage_gallery' gallery.subcategory.slug %}"> #}
+						<img src="{% thumbnail gallery.image "97x98" crop="center" as image %} {{ image.url }} {% endthumbnail %}" alt="{{gallery.title}}" title="{{gallery.title}}"/></a>
+					{% endfor %}
+				</div>
+				{% endfor %}
+			</div>
+		</div>
+		<a href="javascript:void(0)" class="browse left prev" id="prev2"></a>
+		<a href="javascript:void(0)" class="browse right next" id="next2"></a>
+	</div>
+
+<div class="halfs">
+	<div class="half">
+		<div class="title"><span class="element-one"></span><h3>ПОСЛЕДНИЕ НА ФОРУМЕ</h3><span class="element-two"></span></div>
+		<div class="comm">
+			<a href="#" class="c-img"><img src="{{STATIC_URL}}cake/images/autor.jpg" alt=""/></a>
+			<a href="#" class="comm-text">
+				<span class="c-title">Торт спартак</span>
+				<span class="c-text">Помогите с коржами, никак не могу сделать их более мягкими...</span>
+				<span class="c-name">Елена Руденко</span>
+				<span class="c-date">2 часа назад</span>
+			</a>
+				<b class="corn"></b>
+		</div>
+	</div>
+	<div class="half">
+		<div class="title"><span class="element-one"></span><h3>ПОСЛЕДНИЕ CОБЫТИЯ</h3><span class="element-two"></span></div>
+		<div class="boxes boxes3">
+			{% for event in event_list %}
+			<div class="box">
+				<a class="box-img" href="#">
+					<img src="{% thumbnail event.image "230x314" crop="center" as image %} {{ image.url }} {% endthumbnail %}" alt="{{event.title}}" title="{{event.title}}"/>
+					<span class="box-title">
+						<b class="date"><big>{{ event.start_date.day }}</big> {{ event.start_date|date:"M" }}</b>
+						<span class="box-pad">{{event.title}}</span>
+					</span>
+					<b class="fade"></b>
+				</a>
+				<div class="box-bot" style="display:none">
+					<a href="#" class="num-peop">20  идут</a>
+					<a href="#" class="join">Я пойду</a>
+				</div>
+			</div>
+			{% endfor %}
+		</div>
+	</div>
+</div>
+
+<div class="title"><span class="element-one"></span><div class="h1">НАШИ ТОРТОДЕЛЫ</div><span class="element-two"></span></div>
+	<div class="slider-bakers">
+		<div class="scrollable" id="scrollable">
+			<div class="items">
+				{% for master_set in masters %}
+				<div class="item">
+					<ul>
+						{% for master in master_set %}
+						<li>
+							<a href="{% url 'public_userpage' master.user.username %}" class="autor">
+								<img src="{{MEDIA_URL}}{{master.avatar}}" alt="" class="a-img"/>
+								<span class="a-name">{{master.user.username}}</span>
+							<i>{{master.user.profile.get_cake_recipes_num}} {{"рецепт"|plural:master.user.profile.get_cake_recipes_num}}
+							<br/>
+							{{master.user.profile.get_cake_mcs_num}} мастер {{"класс"|plural:master.user.profile.get_cake_mcs_num}}</i>
+							</a>
+						</li>
+						{% endfor %}
+					</ul>
+				</div>
+				{% endfor %}
+			</div>
+		</div>
+		<a href="javascript:void(0)" class="browse left prev" id="prev1"></a>
+		<a href="javascript:void(0)" class="browse right next" id="next1"></a>
+</div>
+</div>
+
+<script type="text/javascript" src="{{ STATIC_URL }}js/ranking/ranking.js"></script>
+
+{% endblock %}
+

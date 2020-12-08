@@ -1,0 +1,25 @@
+<link type="text/css" rel="stylesheet" href="/static/css/jquery.autocomplete/styles.css">
+<script type="text/javascript" src="/static/js/jquery-1.7.2.min.js"></script>
+<script type="text/javascript" src="/static/js/jquery.autocomplete.js"></script>
+<script type="text/javascript">
+	var options, a;
+	$(function(){
+		$("#id_city_str").live("keyup", function(){
+			if ($("#id_country_str").val()==''){
+				alert('Сначала выберите страну');
+				return;
+			};
+			$.get(
+				"/events/check_country_existence/",
+				{"country": $("#id_country_str").val()},
+				function(data){
+					if (data.status==false){
+						alert(data.message);
+					}
+				}
+			);
+		});
+	});
+</script>
+<input id="id_city_str" type="text" name="city_str" value="{{ value_name }}" {{ attrs }}/>
+<input id="id_city" type="hidden" name="city" value="{{ value_id }}"/>
